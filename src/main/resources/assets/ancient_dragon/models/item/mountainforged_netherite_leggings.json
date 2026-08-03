@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ancient_dragon:item/mountainforged_netherite_leggings"
+  }
+}

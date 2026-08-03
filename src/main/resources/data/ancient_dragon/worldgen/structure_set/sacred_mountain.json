@@ -1,0 +1,11 @@
+{
+  "placement": {
+    "type": "ancient_dragon:sacred_mountain"
+  },
+  "structures": [
+    {
+      "structure": "ancient_dragon:sacred_mountain",
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "ancient_dragon:mountainforged"
+      }
+    ],
+    "wings": [
+      {
+        "texture": "ancient_dragon:sky_wing"
+      }
+    ]
+  }
+}

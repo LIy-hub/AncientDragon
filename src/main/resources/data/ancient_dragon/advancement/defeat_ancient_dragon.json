@@ -1,0 +1,25 @@
+{
+  "display": {
+    "icon": {
+      "id": "ancient_dragon:ancient_dragon_heart"
+    },
+    "title": {
+      "translate": "advancement.ancient_dragon.victory.title"
+    },
+    "description": {
+      "translate": "advancement.ancient_dragon.victory.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "victory": {
+      "trigger": "ancient_dragon:victory"
+    }
+  },
+  "rewards": {
+    "experience": 500
+  }
+}

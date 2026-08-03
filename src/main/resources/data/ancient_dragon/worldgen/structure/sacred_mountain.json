@@ -1,0 +1,7 @@
+{
+  "type": "ancient_dragon:sacred_mountain",
+  "biomes": "#ancient_dragon:has_structure/sacred_mountain",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

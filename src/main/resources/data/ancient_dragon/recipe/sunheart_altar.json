@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "minecraft:gold_block",
+    "H": "ancient_dragon:ancient_dragon_heart",
+    "O": "minecraft:crying_obsidian"
+  },
+  "pattern": [
+    "GOG",
+    "OHO",
+    "OOO"
+  ],
+  "result": {
+    "id": "ancient_dragon:sunheart_altar"
+  }
+}

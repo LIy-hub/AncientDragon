@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "ancient_dragon:block/ancient_city_gateway_ns"
+    },
+    "axis=z": {
+      "model": "ancient_dragon:block/ancient_city_gateway_ew"
+    }
+  }
+}

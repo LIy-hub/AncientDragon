@@ -1,0 +1,226 @@
+{
+  "format_version": 1,
+  "profile": "blendlib:skinned_v1",
+  "mesh": "ancient_dragon:models3d/entity/ancient_dragon.glb",
+  "units_per_block": 0.0625,
+  "materials": {
+    "Teeth": {
+      "base_color": "ancient_dragon:textures/blendlib/entity_ancient_dragon__teeth.png",
+      "mode": "opaque",
+      "emissive": false,
+      "double_sided": false
+    },
+    "Tongue": {
+      "base_color": "ancient_dragon:textures/blendlib/entity_ancient_dragon__tongue.png",
+      "mode": "opaque",
+      "emissive": false,
+      "double_sided": false
+    },
+    "body": {
+      "base_color": "ancient_dragon:textures/blendlib/entity_ancient_dragon__body.png",
+      "mode": "cutout",
+      "emissive": false,
+      "double_sided": true,
+      "cutout_threshold": 0.1
+    },
+    "eyes": {
+      "base_color": "ancient_dragon:textures/blendlib/entity_ancient_dragon__eyes.png",
+      "mode": "opaque",
+      "emissive": true,
+      "double_sided": false
+    }
+  },
+  "animation": {
+    "initial_state": "ancient_dragon:combat_idle",
+    "states": {
+      "ancient_dragon:aerial_solar_breath": {
+        "clip": "DRG_Aerial_Solar_Breath",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:fly_cruise",
+        "blend_seconds": 0.1
+      },
+      "ancient_dragon:aerial_storm_burst": {
+        "clip": "DRG_Aerial_Storm_Burst",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:fly_cruise",
+        "blend_seconds": 0.08
+      },
+      "ancient_dragon:aerial_tail_sweep": {
+        "clip": "DRG_Aerial_Tail_Sweep",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:fly_cruise",
+        "blend_seconds": 0.08
+      },
+      "ancient_dragon:airborne_hold": {
+        "clip": "DRG_Airborne_Hold",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.15
+      },
+      "ancient_dragon:awaken_intro": {
+        "clip": "DRG_Awaken_Intro",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:combat_idle",
+        "blend_seconds": 0.2
+      },
+      "ancient_dragon:bite_heavy": {
+        "clip": "DRG_Bite_Heavy",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:combat_idle",
+        "blend_seconds": 0.08
+      },
+      "ancient_dragon:combat_idle": {
+        "clip": "DRG_Combat_Idle",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.15
+      },
+      "ancient_dragon:combat_stand": {
+        "clip": "DRG_Combat_Stand",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.15
+      },
+      "ancient_dragon:corpse_static": {
+        "clip": "DRG_Corpse_Static",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.0
+      },
+      "ancient_dragon:death_landmark": {
+        "clip": "DRG_Death_Landmark",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:corpse_static",
+        "blend_seconds": 0.18
+      },
+      "ancient_dragon:dive_strike": {
+        "clip": "DRG_Dive_Strike",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:fly_cruise",
+        "blend_seconds": 0.08
+      },
+      "ancient_dragon:dormant_hold": {
+        "clip": "DRG_Dormant_Hold",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.2
+      },
+      "ancient_dragon:fly_ascend": {
+        "clip": "DRG_Fly_Ascend",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:fly_cruise",
+        "blend_seconds": 0.12
+      },
+      "ancient_dragon:fly_bank_left": {
+        "clip": "DRG_Fly_Bank_Left",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:fly_cruise",
+        "blend_seconds": 0.1
+      },
+      "ancient_dragon:fly_bank_right": {
+        "clip": "DRG_Fly_Bank_Right",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:fly_cruise",
+        "blend_seconds": 0.1
+      },
+      "ancient_dragon:fly_cruise": {
+        "clip": "DRG_Fly_Cruise_Loop",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.18
+      },
+      "ancient_dragon:fly_descend": {
+        "clip": "DRG_Fly_Descend",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:fly_cruise",
+        "blend_seconds": 0.12
+      },
+      "ancient_dragon:fly_fast": {
+        "clip": "DRG_Fly_Fast_Loop",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.15
+      },
+      "ancient_dragon:fly": {
+        "clip": "DRG_Fly_Loop",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.15
+      },
+      "ancient_dragon:glide": {
+        "clip": "DRG_Glide_Loop",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.18
+      },
+      "ancient_dragon:ground_stalk": {
+        "clip": "DRG_Ground_Stalk",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.14
+      },
+      "ancient_dragon:hit_react": {
+        "clip": "DRG_Hit_React",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:combat_idle",
+        "blend_seconds": 0.05
+      },
+      "ancient_dragon:hover": {
+        "clip": "DRG_Hover_Loop",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.15
+      },
+      "ancient_dragon:land": {
+        "clip": "DRG_Land",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:combat_idle",
+        "blend_seconds": 0.14
+      },
+      "ancient_dragon:roar_storm": {
+        "clip": "DRG_Roar_Storm",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:combat_idle",
+        "blend_seconds": 0.1
+      },
+      "ancient_dragon:solar_breath": {
+        "clip": "DRG_Solar_Breath",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:combat_idle",
+        "blend_seconds": 0.1
+      },
+      "ancient_dragon:takeoff": {
+        "clip": "DRG_Takeoff",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:fly_cruise",
+        "blend_seconds": 0.16
+      },
+      "ancient_dragon:wing_slam": {
+        "clip": "DRG_Wing_Slam",
+        "loop": false,
+        "speed": 1.0,
+        "next": "ancient_dragon:combat_idle",
+        "blend_seconds": 0.08
+      }
+    }
+  },
+  "extensions_used": [],
+  "extensions_required": [],
+  "extensions": {}
+}

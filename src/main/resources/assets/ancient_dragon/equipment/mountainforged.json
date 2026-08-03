@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "ancient_dragon:mountainforged"
+      }
+    ],
+    "humanoid_baby": [
+      {
+        "texture": "ancient_dragon:mountainforged"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "ancient_dragon:mountainforged"
+      }
+    ]
+  }
+}

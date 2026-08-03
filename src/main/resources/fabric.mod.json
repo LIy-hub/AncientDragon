@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "ancient_dragon",
+  "version": "${version}",
+  "name": "Ancient Dragon",
+  "description": "A colossal, world-unique dragon boss encounter spanning a sacred mountain, aerial combat, and a harvestable corpse.",
+  "authors": [
+    "Liy"
+  ],
+  "contact": {
+    "homepage": "https://github.com/LIy-hub/AncientDragon",
+    "sources": "https://github.com/LIy-hub/AncientDragon",
+    "issues": "https://github.com/LIy-hub/AncientDragon/issues"
+  },
+  "license": [
+    "MIT",
+    "CC-BY-4.0"
+  ],
+  "icon": "assets/ancient_dragon/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.liy.ancientdragon.AncientDragonMod"
+    ],
+    "client": [
+      "com.liy.ancientdragon.client.AncientDragonClient"
+    ]
+  },
+  "mixins": [
+    "ancient_dragon.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "26.1.2",
+    "java": ">=25",
+    "fabric-api": "*",
+    "blendlib": ">=1.0.0-rc.1+26.1.2"
+  }
+}

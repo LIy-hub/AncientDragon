@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "ancient_dragon:block/sunheart_altar_top",
+    "bottom": "ancient_dragon:block/sunheart_altar_bottom",
+    "side": "ancient_dragon:block/sunheart_altar_side"
+  }
+}
