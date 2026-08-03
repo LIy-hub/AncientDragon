@@ -24,12 +24,12 @@ Initial public alpha.
 - Minecraft: `26.1.2`
 - Fabric Loader: `0.19.3` or newer
 - Java: `25` or newer
-- Required: Fabric API and BlendLib `1.0.0-rc.1+26.1.2` or newer compatible release
+- Required: Fabric API and BlendLib `1.0.0-alpha.1+26.1.2` or newer compatible release
 - Installation side: client and server
 
 ### Known limitations
 
 - This is an alpha release. Back up important worlds before installation or upgrade.
 - Natural sacred-mountain generation only affects previously ungenerated chunks.
-- BlendLib must be installed separately and is still being prepared for public distribution.
+- BlendLib must be installed separately from its public GitHub Release or CurseForge project.
 - Visual gameplay verification and broad mod-compatibility testing are ongoing.

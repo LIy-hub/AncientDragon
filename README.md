@@ -11,6 +11,20 @@ sleeps on a sacred mountain selected in a distant deep ocean. Players can discov
 open an Ancient City gateway, fight the dragon across aerial and ground phases, and harvest its
 corpse for shared progression rewards.
 
+### Screenshots
+
+![Ancient Dragon overlooking the sacred mountain sanctum](branding/screenshots/sacred-mountain-sanctum.png)
+
+*The sacred mountain sanctum and its dormant guardian.*
+
+![Ancient Dragon in aerial combat](branding/screenshots/ancient-dragon-aerial-closeup.png)
+
+*The Ancient Dragon at full scale during the storm phase.*
+
+![Ancient Dragon equipment and materials](branding/screenshots/equipment-showcase.png)
+
+*Armor, tools, weapons, wings, materials, and the Sunheart Altar.*
+
 ### Highlights
 
 - A deterministic 768×768 sacred mountain generated once per Overworld.
@@ -27,7 +41,8 @@ corpse for shared progression rewards.
 - Fabric Loader `0.19.3` or newer
 - Java `25` or newer
 - Fabric API `0.154.2+26.1.2`
-- BlendLib `1.0.0-rc.1+26.1.2` or a newer compatible release
+- [BlendLib `1.0.0-alpha.1+26.1.2`](https://github.com/LIy-hub/BlendLib-Public/releases/tag/v1.0.0-alpha.1%2B26.1.2)
+  or a newer compatible release
 - Ancient Dragon must be installed on both the server and every connecting client.
 
 Install Fabric Loader, then place Fabric API, BlendLib, and the Ancient Dragon JAR in the `mods`
@@ -51,7 +66,8 @@ Fabric 实体、BlendLib 语义动画与服务器权威战斗状态机已经连�
 ## 当前已完成
 
 - Minecraft `26.1.2` / Fabric Loader `0.19.3` / Fabric API `0.154.2+26.1.2`。
-- BlendLib `1.0.0-rc.1+26.1.2` 必需依赖；公开发布包准备完成前，源码构建暂从本地 Maven 解析。
+- [BlendLib `1.0.0-alpha.1+26.1.2`](https://github.com/LIy-hub/BlendLib-Public/releases/tag/v1.0.0-alpha.1%2B26.1.2)
+  必需依赖；Gradle 会从固定的公开 GitHub Release 下载并校验运行库。
 - 10 个蒙皮网格、100 个导出节点、28 个基础动作、4 张外置 Base Color PNG。
 - 从同一 GLB 骨架离线烘焙的格式 v2、逐 tick 局部 TRS 碰撞资源：服务端执行完整 FK，头、
   三段躯干、腿、主/副翼和五段尾部共 24 个网络碰撞箱都跟随完整姿态与程序骨骼。
@@ -108,8 +124,8 @@ Fabric 实体、BlendLib 语义动画与服务器权威战斗状态机已经连�
 
 ## 构建
 
-先在 `D:\BlendLib` 执行一次 `buildRelease`，确保本地 Maven 与公共 Common 编译 JAR
-存在。然后：
+构建不依赖作者电脑上的 `D:\BlendLib`。Gradle 会从 BlendLib-Public 的固定 Release 下载
+运行库、核对 SHA-256，并从中提取编译所需的 API/Common facade。然后执行：
 
 ```powershell
 $env:JAVA_HOME='C:\Program Files\Java\latest\jdk-25'
@@ -123,11 +139,8 @@ cd D:\AncientDragon
 D:\AncientDragon\build\libs\ancient-dragon-0.1.0-alpha.1.jar
 ```
 
-运行时还必须安装同版本 BlendLib：
-
-```text
-D:\BlendLib\build\release\blendlib-fabric-1.0.0-rc.1+26.1.2.jar
-```
+运行时还必须安装同版本
+[BlendLib Fabric JAR](https://github.com/LIy-hub/BlendLib-Public/releases/download/v1.0.0-alpha.1%2B26.1.2/blendlib-fabric-1.0.0-alpha.1%2B26.1.2.jar)。
 
 ## 本地观察模型
 

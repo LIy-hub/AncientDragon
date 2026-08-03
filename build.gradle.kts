@@ -1,6 +1,7 @@
 import java.nio.charset.StandardCharsets
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.security.MessageDigest
 import groovy.json.JsonSlurper
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
@@ -18,7 +19,20 @@ base {
 }
 
 repositories {
-    maven { url = uri(providers.gradleProperty("blendlib_local_maven_repo").get()) }
+    val blendLibVersion = providers.gradleProperty("blendlib_version").get()
+    ivy {
+        name = "blendLibGitHubReleases"
+        url = uri("https://github.com/LIy-hub/BlendLib-Public/releases/download/v$blendLibVersion")
+        patternLayout {
+            artifact("[artifact]-[revision].[ext]")
+        }
+        metadataSources {
+            artifact()
+        }
+        content {
+            includeModule("com.liy.blendlib", "blendlib-fabric")
+        }
+    }
     maven("https://maven.fabricmc.net/")
     mavenCentral()
 }
@@ -57,22 +71,58 @@ val minecraftVersion = providers.gradleProperty("minecraft_version").get()
 val loaderVersion = providers.gradleProperty("loader_version").get()
 val fabricVersion = providers.gradleProperty("fabric_version").get()
 val blendLibVersion = providers.gradleProperty("blendlib_version").get()
+val blendLibSha256 = providers.gradleProperty("blendlib_sha256").get().lowercase()
+
+val blendLibDistribution = configurations.create("blendLibDistribution") {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+    isTransitive = false
+}
+
+val unpackBlendLibCompileJars = tasks.register<Copy>("unpackBlendLibCompileJars") {
+    group = "build setup"
+    description = "Extracts the public BlendLib API and common facade nested in its runtime JAR."
+    val outputDirectory = layout.buildDirectory.dir("blendlib-compile")
+    inputs.files(blendLibDistribution)
+    inputs.property("blendlib_sha256", blendLibSha256)
+    outputs.dir(outputDirectory)
+
+    from({
+        val distribution = blendLibDistribution.singleFile
+        val digest = MessageDigest.getInstance("SHA-256")
+            .digest(distribution.readBytes())
+            .joinToString("") { "%02x".format(it) }
+        check(digest == blendLibSha256) {
+            "BlendLib public release checksum mismatch: expected $blendLibSha256, got $digest"
+        }
+        zipTree(distribution)
+    }) {
+        include("META-INF/jars/blendlib-api-*.jar")
+        include("META-INF/jars/blendlib-fabric-common-*.jar")
+        eachFile { path = name }
+        includeEmptyDirs = false
+    }
+    into(outputDirectory)
+}
+
+val blendLibCompileJars = fileTree(layout.buildDirectory.dir("blendlib-compile")) {
+    include("*.jar")
+}
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
     implementation("net.fabricmc:fabric-loader:$loaderVersion")
     implementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
     implementation("com.liy.blendlib:blendlib-fabric:$blendLibVersion")
-    // The local RC outer Fabric JAR nests the server facade for runtime, while its POM exposes
-    // only the pure API to javac. Compile against that exact public common facade without adding
-    // a second runtime copy; the outer mod remains the sole runtime dependency.
-    compileOnly(files(providers.gradleProperty("blendlib_common_compile_jar").get()))
+    add(blendLibDistribution.name, "com.liy.blendlib:blendlib-fabric:$blendLibVersion")
+    compileOnly(blendLibCompileJars)
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<JavaCompile>().configureEach {
+    dependsOn(unpackBlendLibCompileJars)
     options.encoding = "UTF-8"
     options.release.set(25)
     options.compilerArgs.add("-Xlint:all")

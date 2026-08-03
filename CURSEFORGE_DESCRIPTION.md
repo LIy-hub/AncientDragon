@@ -28,7 +28,8 @@ Sunheart Altar, equipment, tools, and weapons.
 - Fabric Loader 0.19.3+
 - Java 25+
 - Fabric API 0.154.2+26.1.2
-- BlendLib 1.0.0-rc.1+26.1.2 or a newer compatible release
+- [BlendLib 1.0.0-alpha.1+26.1.2](https://www.curseforge.com/minecraft/mc-mods/blendlib)
+  or a newer compatible release
 - Required on both client and server
 
 ### Important alpha notice
@@ -67,7 +68,8 @@ Ancient Dragon 为 Minecraft Fabric 加入一场完整且全世界唯一的古�
 - Fabric Loader 0.19.3 或更高版本
 - Java 25 或更高版本
 - Fabric API 0.154.2+26.1.2
-- BlendLib 1.0.0-rc.1+26.1.2 或更新的兼容版本
+- [BlendLib 1.0.0-alpha.1+26.1.2](https://www.curseforge.com/minecraft/mc-mods/blendlib)
+  或更新的兼容版本
 - 客户端和服务端都必须安装
 
 ### Alpha 提醒
