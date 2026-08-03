@@ -1,6 +1,6 @@
 # Ancient Dragon 发布就绪清单
 
-状态：**源码仓库可公开；二进制首发仍等待 BlendLib 公开发布与实机验收**（2026-08-04 审计）。
+状态：**源码、公开依赖与发布素材已就绪；二进制首发仅剩最终平台提交与实机回归确认**（2026-08-04 审计）。
 
 本文只记录发布门槛，不授予任何代码或素材许可。所有勾选项都应有可复核证据。
 
@@ -8,9 +8,9 @@
 
 - [x] 已创建 `LIy-hub/AncientDragon` 并绑定本地 `origin`。
 - [x] 本机离线执行 `gradlew check build` 成功；47 个测试套件、190 个测试全部通过，古龙资源校验通过。
-- [x] 当前运行 JAR 为 `ancient-dragon-0.1.0-alpha.1.jar`，大小 8,219,170 字节，SHA-256 为
-  `C2F6B0DA5CBC26C0B57B4BC6AA5618CE4A2E3B25BF3DC28F0F17295051FB4727`。
-- [x] 忽略缓存、临时输出、Blender 备份和可再生成的 Snowbrush 笔刷函数后，首提候选约 17 MiB；最大单文件约 4.75 MiB，未触及 GitHub 的 100 MiB 单文件上限。
+- [x] 当前运行 JAR 为 `ancient-dragon-0.1.0-alpha.1.jar`，大小 8,219,168 字节，SHA-256 为
+  `D552D1BACD2B510CDEADD88A0D9A7148A7C99829B81683019ADA260C33C28262`。
+- [x] 已筛选 3 张正式截图；最大单文件约 16.2 MiB，未触及 GitHub 的 100 MiB 单文件上限。
 - [x] 发布 JAR 未发现 Blender 源文件、日志、测试存档、`tmp`、`art` 或 Snowbrush 数据包条目。
 
 ## P0：公开仓库或上传模组前必须解决
@@ -19,10 +19,11 @@
   - 基础模型：Matt Alexander，`Realistic Minecraft Ender Dragon`，CC BY 4.0。
   - 纹理版本：Jazz Vincent / Stomy Circles，`Realistic Dragon Textures`，CC BY 4.0。
   - 两个上游条目均声明必须署名且允许商业使用；来源、许可证和修改内容已写入 `THIRD_PARTY_NOTICES.md`。
-- [ ] 为 BlendLib 选择并落地正式许可证，发布可供玩家安装的同版本依赖。
-  - 当前 Ancient Dragon 依赖 `blendlib >=1.0.0-rc.1+26.1.2`。
-  - 当前构建只从 `D:/BlendLib/build/local-maven` 和本地 Common JAR 解析，外部克隆无法复现。
-  - BlendLib 当前 GitHub 仓库是私有仓库，根目录只有 `LICENSE-PENDING`。
+- [x] BlendLib 已采用 Apache-2.0（Blender Add-on 独立 GPL-3.0-or-later）并发布公开依赖。
+  - 公开源码：`https://github.com/LIy-hub/BlendLib-Public`。
+  - GitHub Release：`v1.0.0-alpha.1+26.1.2`，包含玩家安装用 Fabric JAR。
+  - CurseForge：`https://www.curseforge.com/minecraft/mc-mods/blendlib`。
+  - Ancient Dragon 依赖已改为 `blendlib >=1.0.0-alpha.1+26.1.2`。
 - [x] Ancient Dragon 代码采用 MIT，媒体与派生模型资产采用 CC BY 4.0。
 - [x] 已明确允许整合包、服务器客户端包、视频直播和平台收益，并要求保留许可证与署名。
 - [x] 已移除 `fabric.mod.json` 的内部原型描述。
@@ -37,14 +38,14 @@
 - [x] README 已增加安装、依赖、客户端/服务端要求、兼容版本、世界备份和反馈入口。
 - [x] 已增加 `CHANGELOG.md`。
 - [x] 已增加 `THIRD_PARTY_NOTICES.md`，并打包进发布 JAR。
-- [ ] 准备至少 1 张 Logo、3～6 张游戏内截图，以及可选的 Boss 战演示视频；不得使用无授权音乐或素材。
+- [x] 已准备 1 张透明 Logo 和 3 张游戏内截图；未加入第三方音乐或视频素材。
 - [x] 发布渠道确定为 GitHub Releases 与 CurseForge。
 
 ## P1：可复现构建与依赖
 
-- [ ] 让全新目录只凭公开依赖即可执行 `gradlew check build`。
-- [ ] 为 BlendLib 提供公开 Maven 坐标，或在 CI 中从固定公开 tag 构建并发布到临时本地仓库；不能依赖作者机器的 `D:` 盘路径。
-- [ ] 增加 GitHub Actions 构建验证，固定 Java 25、Minecraft 26.1.2、Fabric Loader 0.19.3 与 Fabric API 版本。
+- [x] 已在独立 Gradle 用户目录中仅凭公开依赖完成 Java 编译，并在正常环境完成完整 `clean check build`。
+- [x] Gradle 从固定 BlendLib GitHub Release 获取运行 JAR，校验 SHA-256 后提取嵌套 API/Common 编译 facade，不再依赖作者机器的 `D:` 盘路径。
+- [x] 已增加 GitHub Actions 构建验证，固定 Java 25、Minecraft 26.1.2、Fabric Loader 0.19.3 与 Fabric API 版本。
 - [x] 已验证发布 JAR 不含源模型备份、本地路径、测试存档、日志或账号信息。
 - [x] 已验证 JAR 内包含正式 `fabric.mod.json`、Logo、MIT License、资产许可证和第三方署名。
 - [x] 已记录发布 JAR 的文件名、大小和 SHA-256。
@@ -60,7 +61,7 @@
 - 支持 Minecraft：当前精确声明 `26.1.2`。
 - Java：25。
 - 运行侧：当前为客户端与服务端都需要（`environment: "*"`）。
-- 必需依赖：Fabric API、BlendLib；需要各平台的项目链接/项目 ID。
+- 必需依赖：Fabric API、BlendLib；BlendLib CurseForge 项目已建立并可作为必需依赖关联。
 - 可选依赖与已知冲突：待补充。
 - 许可证：代码 MIT；媒体与派生资产 CC BY 4.0。
 - Issue/支持渠道：GitHub Issues。
