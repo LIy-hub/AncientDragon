@@ -13,11 +13,11 @@ corpse for shared progression rewards.
 
 ### Screenshots
 
-![Ancient Dragon overlooking the sacred mountain sanctum](branding/screenshots/sacred-mountain-sanctum.png)
+![Ancient Dragon overlooking the sacred mountain sanctum](branding/screenshots/sacred-mountain-sanctum.jpg)
 
 *The sacred mountain sanctum and its dormant guardian.*
 
-![Ancient Dragon in aerial combat](branding/screenshots/ancient-dragon-aerial-closeup.png)
+![Ancient Dragon in aerial combat](branding/screenshots/ancient-dragon-aerial-closeup.jpg)
 
 *The Ancient Dragon at full scale during the storm phase.*
 
