@@ -11,6 +11,9 @@ sleeps on a sacred mountain selected in a distant deep ocean. Players can discov
 open an Ancient City gateway, fight the dragon across aerial and ground phases, and harvest its
 corpse for shared progression rewards.
 
+Downloads: [GitHub Releases](https://github.com/LIy-hub/AncientDragon/releases) ·
+[CurseForge](https://www.curseforge.com/minecraft/mc-mods/ancient-dragon)
+
 ### Screenshots
 
 ![Ancient Dragon overlooking the sacred mountain sanctum](branding/screenshots/sacred-mountain-sanctum.jpg)
@@ -62,6 +65,9 @@ are preserved. See [third-party attribution](THIRD_PARTY_NOTICES.md) and the
 这是“主世界神山苏醒、群山与风暴加太阳、单次击杀后留下可挖掘尸骸”的古龙 Boss 项目。
 当前版本已经从纯模型竖切进入第一段可玩 Boss 竖切：真实 v011 高模、骨骼动画、
 Fabric 实体、BlendLib 语义动画与服务器权威战斗状态机已经连成一条链。
+
+下载：[GitHub Releases](https://github.com/LIy-hub/AncientDragon/releases) ·
+[CurseForge](https://www.curseforge.com/minecraft/mc-mods/ancient-dragon)
 
 ## 当前已完成
 
