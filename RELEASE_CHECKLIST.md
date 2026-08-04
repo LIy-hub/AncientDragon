@@ -1,6 +1,6 @@
 # Ancient Dragon 发布就绪清单
 
-状态：**源码、公开依赖与发布素材已就绪；二进制首发仅剩最终平台提交与实机回归确认**（2026-08-04 审计）。
+状态：**GitHub 与 CurseForge 二进制首发均已提交；当前仅等待 CurseForge 审核并保留实机回归项**（2026-08-04 审计）。
 
 本文只记录发布门槛，不授予任何代码或素材许可。所有勾选项都应有可复核证据。
 
@@ -10,7 +10,7 @@
 - [x] 本机离线执行 `gradlew check build` 成功；47 个测试套件、190 个测试全部通过，古龙资源校验通过。
 - [x] 当前运行 JAR 为 `ancient-dragon-0.1.0-alpha.1.jar`，大小 8,219,168 字节，SHA-256 为
   `D552D1BACD2B510CDEADD88A0D9A7148A7C99829B81683019ADA260C33C28262`。
-- [x] 已筛选 3 张正式截图；最大单文件约 16.2 MiB，未触及 GitHub 的 100 MiB 单文件上限。
+- [x] 已筛选并压缩 3 张正式截图；仓库内最大单文件约 2.18 MiB，未触及 GitHub 的 100 MiB 单文件上限。
 - [x] 发布 JAR 未发现 Blender 源文件、日志、测试存档、`tmp`、`art` 或 Snowbrush 数据包条目。
 
 ## P0：公开仓库或上传模组前必须解决
@@ -50,7 +50,7 @@
 - [x] 已验证 JAR 内包含正式 `fabric.mod.json`、Logo、MIT License、资产许可证和第三方署名。
 - [x] 已记录发布 JAR 的文件名、大小和 SHA-256。
 
-## 平台发布资料（需要作者补充）
+## 平台发布资料（已落实）
 
 - 项目名：`Ancient Dragon`；中文名：`远古巨龙`。
 - 一句话英文 Summary：已写入 `CURSEFORGE_DESCRIPTION.md`。
@@ -61,12 +61,15 @@
 - 支持 Minecraft：当前精确声明 `26.1.2`。
 - Java：25。
 - 运行侧：当前为客户端与服务端都需要（`environment: "*"`）。
-- 必需依赖：Fabric API、BlendLib；BlendLib CurseForge 项目已建立并可作为必需依赖关联。
+- 必需依赖：Fabric API、BlendLib。Fabric API 已设为 CurseForge 默认必需依赖；BlendLib 项目仍处于新项目审核状态，暂不能在关系搜索器中选中，已在说明与模组元数据中明确要求安装。
 - 可选依赖与已知冲突：待补充。
 - 许可证：代码 MIT；媒体与派生资产 CC BY 4.0。
 - Issue/支持渠道：GitHub Issues。
 - 允许整合包收录与服务器客户端包分发；分发时须保留许可证与署名。
 - 允许 GitHub/CurseForge 发布及平台收益。
+- GitHub Release：`https://github.com/LIy-hub/AncientDragon/releases/tag/v0.1.0-alpha.1`。
+- CurseForge 项目：ID `1638465`，`https://www.curseforge.com/minecraft/mc-mods/ancient-dragon`。
+- CurseForge 首发文件：ID `8573068`，Alpha；已上传并进入文件处理/新项目审核队列。
 
 ## 首发验收
 
@@ -76,4 +79,5 @@
 - [ ] 新世界与已有世界各完成一次神山定位、生成、古龙苏醒、战斗、死亡、尸骸采集验证。
 - [ ] 发布前备份测试世界，并验证升级与移除模组后的行为已在说明中写清。
 - [x] 发布 JAR 的 `fabric.mod.json` 已包含正式版本、依赖、许可证、图标和 GitHub 链接。
-- [ ] 创建 Git tag 与同名 Release，上传同一 SHA-256 的 JAR。
+- [x] 已创建 Git tag `v0.1.0-alpha.1` 与同名 GitHub Prerelease，并上传同一 SHA-256 的 JAR 和 `SHA256SUMS`。
+- [x] 已创建 CurseForge 项目并提交同一首发 JAR；平台当前正在处理文件并审核新项目。
