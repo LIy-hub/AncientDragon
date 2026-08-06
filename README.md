@@ -142,7 +142,7 @@ cd D:\AncientDragon
 输出模组：
 
 ```text
-D:\AncientDragon\build\libs\ancient-dragon-0.1.0-alpha.1.jar
+D:\AncientDragon\build\libs\ancient-dragon-0.1.0-alpha.2.jar
 ```
 
 运行时还必须安装同版本

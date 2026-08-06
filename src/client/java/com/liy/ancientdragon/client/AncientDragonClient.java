@@ -3,14 +3,16 @@ package com.liy.ancientdragon.client;
 import com.liy.ancientdragon.animation.AncientDragonAnimations;
 import com.liy.ancientdragon.client.atmosphere.AncientDragonAtmosphereController;
 import com.liy.ancientdragon.client.pose.AncientDragonPoseSystem;
-import com.liy.ancientdragon.client.screen.SunheartAltarClientNetworking;
+import com.liy.ancientdragon.client.screen.SunheartAltarScreen;
 import com.liy.ancientdragon.entity.AncientDragonEntities;
 import com.liy.ancientdragon.entity.AncientDragonEntity;
 import com.liy.ancientdragon.entity.AncientDragonScale;
+import com.liy.ancientdragon.inventory.AncientDragonMenus;
 import com.liy.blendlib.api.BlendModelKey;
 import com.liy.blendlib.fabric.client.entity.BlendEntityRenderer;
 import com.liy.blendlib.fabric.client.entity.BlendEntityRenderers;
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 
@@ -23,7 +25,7 @@ public final class AncientDragonClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         AncientDragonAtmosphereController.initialize();
-        SunheartAltarClientNetworking.initialize();
+        MenuScreens.register(AncientDragonMenus.SUNHEART_ALTAR, SunheartAltarScreen::new);
         POSE.registerLifecycleHooks();
         BlendEntityRenderers.register(
                 AncientDragonEntities.ANCIENT_DRAGON,

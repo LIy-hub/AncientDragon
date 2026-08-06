@@ -2,6 +2,33 @@
 
 All notable changes to Ancient Dragon are documented here.
 
+## 0.1.0-alpha.2 - 2026-08-07
+
+Sunheart Altar interface and forging update.
+
+### Changed
+
+- Rebuilt the Sunheart Altar around a server-authoritative vanilla container menu with dedicated
+  target, material, and result slots.
+- Added live recipe validation, exact material-count feedback, bilingual error messages, and an
+  equipment or held-item result preview.
+- Added normal-click and shift-click result handling while preserving the forged target's custom
+  name, enchantments, durability, repair cost, and other component data.
+- Replaced the altar's custom open/forge networking payloads with the registered menu flow.
+- Updated the altar item description and bilingual interface copy for the slot-based workflow.
+
+### Compatibility
+
+- Minecraft: `26.1.2`
+- Fabric Loader: `0.19.3` or newer
+- Java: `25` or newer
+- Required: Fabric API and BlendLib `1.0.0-alpha.1+26.1.2` or newer compatible release
+- Installation side: client and server
+
+### Notice
+
+- This remains an alpha release. Back up important worlds before installation or upgrade.
+
 ## 0.1.0-alpha.1 - 2026-08-04
 
 Initial public alpha.
