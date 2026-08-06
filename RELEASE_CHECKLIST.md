@@ -1,6 +1,6 @@
 # Ancient Dragon 发布就绪清单
 
-状态：**`0.1.0-alpha.2` 源码、测试与发布候选 JAR 已就绪；等待 GitHub 与 CurseForge 平台上传**（2026-08-07 审计）。
+状态：**`0.1.0-alpha.2` 已发布到 GitHub，并提交到 CurseForge 文件处理队列；保留实机回归项**（2026-08-07 审计）。
 
 本文只记录发布门槛，不授予任何代码或素材许可。所有勾选项都应有可复核证据。
 
@@ -61,15 +61,16 @@
 - 支持 Minecraft：当前精确声明 `26.1.2`。
 - Java：25。
 - 运行侧：当前为客户端与服务端都需要（`environment: "*"`）。
-- 必需依赖：Fabric API、BlendLib。Fabric API 已设为 CurseForge 默认必需依赖；BlendLib 项目仍处于新项目审核状态，暂不能在关系搜索器中选中，已在说明与模组元数据中明确要求安装。
+- 必需依赖：Fabric API、BlendLib。Fabric API 已设为 CurseForge 默认必需依赖；`0.1.0-alpha.2` 文件已将 BlendLib 项目 `1638315` 关联为必需依赖。
 - 可选依赖与已知冲突：待补充。
 - 许可证：代码 MIT；媒体与派生资产 CC BY 4.0。
 - Issue/支持渠道：GitHub Issues。
 - 允许整合包收录与服务器客户端包分发；分发时须保留许可证与署名。
 - 允许 GitHub/CurseForge 发布及平台收益。
-- GitHub Release：`https://github.com/LIy-hub/AncientDragon/releases/tag/v0.1.0-alpha.1`。
+- GitHub Release：`https://github.com/LIy-hub/AncientDragon/releases/tag/v0.1.0-alpha.2`。
 - CurseForge 项目：ID `1638465`，`https://www.curseforge.com/minecraft/mc-mods/ancient-dragon`。
-- CurseForge 首发文件：ID `8573068`，Alpha；已上传并进入文件处理/新项目审核队列。
+- CurseForge `0.1.0-alpha.1` 文件：ID `8573068`，Alpha，Approved。
+- CurseForge `0.1.0-alpha.2` 文件：ID `8590057`，Alpha，已上传并进入 Baking 文件处理队列。
 
 ## 首发验收
 
@@ -82,4 +83,4 @@
 - [x] 已创建 Git tag `v0.1.0-alpha.1` 与同名 GitHub Prerelease，并上传同一 SHA-256 的 JAR 和 `SHA256SUMS`。
 - [x] 已创建 CurseForge 项目并提交同一首发 JAR；平台当前正在处理文件并审核新项目。
 - [x] `0.1.0-alpha.2` 发布候选已通过完整构建与 221 项测试，JAR 元数据和 SHA-256 已复核。
-- [ ] 创建 `v0.1.0-alpha.2` GitHub Prerelease，并向 CurseForge 提交对应 Alpha 文件。
+- [x] 已创建 `v0.1.0-alpha.2` GitHub Prerelease，并向 CurseForge 提交对应 Alpha 文件 `8590057`。
