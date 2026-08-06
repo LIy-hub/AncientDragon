@@ -70,7 +70,9 @@ public final class AncientDragonItems {
             Rarity.EPIC,
             1,
             true,
-            properties -> new BlockItem(AncientDragonBlocks.SUNHEART_ALTAR, properties));
+            properties -> new BlockItem(
+                    AncientDragonBlocks.SUNHEART_ALTAR,
+                    properties.useBlockDescriptionPrefix()));
     public static final Item SKY_WING = register(
             "sky_wing",
             Rarity.EPIC,

@@ -1,15 +1,15 @@
 # Ancient Dragon 发布就绪清单
 
-状态：**GitHub 与 CurseForge 二进制首发均已提交；当前仅等待 CurseForge 审核并保留实机回归项**（2026-08-04 审计）。
+状态：**`0.1.0-alpha.2` 源码、测试与发布候选 JAR 已就绪；等待 GitHub 与 CurseForge 平台上传**（2026-08-07 审计）。
 
 本文只记录发布门槛，不授予任何代码或素材许可。所有勾选项都应有可复核证据。
 
 ## 本次审计结果
 
 - [x] 已创建 `LIy-hub/AncientDragon` 并绑定本地 `origin`。
-- [x] 本机离线执行 `gradlew check build` 成功；47 个测试套件、190 个测试全部通过，古龙资源校验通过。
-- [x] 当前运行 JAR 为 `ancient-dragon-0.1.0-alpha.1.jar`，大小 8,219,168 字节，SHA-256 为
-  `D552D1BACD2B510CDEADD88A0D9A7148A7C99829B81683019ADA260C33C28262`。
+- [x] 本机执行 `gradlew clean check build` 成功；47 个测试套件、221 个测试全部通过，古龙资源校验通过。
+- [x] 当前运行 JAR 为 `ancient-dragon-0.1.0-alpha.2.jar`，大小 8,216,635 字节，SHA-256 为
+  `8E0609B69009DE7DE0AA18DAE9FC7D47C953807E946D76BE688FC0C96BBFFCD6`。
 - [x] 已筛选并压缩 3 张正式截图；仓库内最大单文件约 2.18 MiB，未触及 GitHub 的 100 MiB 单文件上限。
 - [x] 发布 JAR 未发现 Blender 源文件、日志、测试存档、`tmp`、`art` 或 Snowbrush 数据包条目。
 
@@ -27,7 +27,7 @@
 - [x] Ancient Dragon 代码采用 MIT，媒体与派生模型资产采用 CC BY 4.0。
 - [x] 已明确允许整合包、服务器客户端包、视频直播和平台收益，并要求保留许可证与署名。
 - [x] 已移除 `fabric.mod.json` 的内部原型描述。
-- [x] 版本已改为 `0.1.0-alpha.1`，并新增 `CHANGELOG.md`。
+- [x] 版本已递增为 `0.1.0-alpha.2`，并更新 `CHANGELOG.md`。
 
 ## P1：远端仓库资料
 
@@ -81,3 +81,5 @@
 - [x] 发布 JAR 的 `fabric.mod.json` 已包含正式版本、依赖、许可证、图标和 GitHub 链接。
 - [x] 已创建 Git tag `v0.1.0-alpha.1` 与同名 GitHub Prerelease，并上传同一 SHA-256 的 JAR 和 `SHA256SUMS`。
 - [x] 已创建 CurseForge 项目并提交同一首发 JAR；平台当前正在处理文件并审核新项目。
+- [x] `0.1.0-alpha.2` 发布候选已通过完整构建与 221 项测试，JAR 元数据和 SHA-256 已复核。
+- [ ] 创建 `v0.1.0-alpha.2` GitHub Prerelease，并向 CurseForge 提交对应 Alpha 文件。
