@@ -45,7 +45,7 @@ jobs:
         shell: pwsh
         run: >-
           .\gradlew.bat -p versions/${{ matrix.family }}
-          -Pminecraft_version=${{ matrix.minecraft }}
+          "-Pminecraft_version=${{ matrix.minecraft }}"
           "-Dorg.gradle.java.installations.paths=$env:JAVA_HOME_21_X64,$env:JAVA_HOME_25_X64"
           --no-daemon --max-workers=1 build verifyRuntimeJar --stacktrace --console=plain
       - uses: actions/upload-artifact@v4
