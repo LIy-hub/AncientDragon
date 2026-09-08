@@ -1,0 +1,216 @@
+plugins { id 'net.fabricmc.fabric-loom-remap' version '1.16.2' }
+
+def targets = [
+    '1.21.1':'0.116.17+1.21.1', '1.21.2':'0.106.1+1.21.2',
+    '1.21.3':'0.114.1+1.21.3', '1.21.4':'0.119.4+1.21.4',
+    '1.21.5':'0.128.2+1.21.5', '1.21.6':'0.128.2+1.21.6',
+    '1.21.7':'0.129.0+1.21.7', '1.21.8':'0.136.1+1.21.8'
+]
+def hashes = [
+    '1.21.1':'8c45f73ece19a33ee5d7d322544d2701c51e44a689a448acd9d294a8b3d867c6',
+    '1.21.2':'b4f759b2f6690461c697c53e6356e458fb8add823fd843d432ee4b7e55b8057c',
+    '1.21.3':'9cc5611b8526974f3cf3c67d61ef753d9c86102a6c22a54cdd017049b645c6be',
+    '1.21.4':'8dd6f4d6113e0fb8425c0f63f1a201adf87562e73592314ec0fbd33399cae6bb',
+    '1.21.5':'92cd6c64a6e90b8c44aef655ece58b05afc4172ff53715a760d74f3c81d857f9',
+    '1.21.6':'99e7cdb12f057b844de4252a313398201076db1ea583da8214285be72fa32c8c',
+    '1.21.7':'7816988cbcc66a64774f8c0c509c58f2724f386e9cfbb27dd532eaa078635f34',
+    '1.21.8':'ccb4c5bf4a132c5a33f6d5a5ee39586cf4ad7d4f5f2b69c8a6b5c3233575319b'
+]
+def mc = providers.gradleProperty('minecraft_version').getOrElse('1.21.8')
+if (!targets.containsKey(mc)) throw new GradleException("Unsupported legacy target: $mc")
+def upstream = file('../..')
+def blendVersion = "1.0.0-beta.2+$mc"
+group = 'com.liy.ancientdragon'
+version = "0.1.0-beta.1+$mc"
+base { archivesName = 'ancient-dragon' }
+layout.buildDirectory = file("build/$mc")
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://maven.fabricmc.net/'; content { includeGroupByRegex 'net\\.fabricmc(\\..*)?' } }
+    ivy {
+        name = 'blendLibPublicRelease'
+        url = 'https://github.com/LIy-hub/BlendLib-Public/releases/download/v1.0.0-beta.2'
+        patternLayout { artifact '[artifact]-[revision].[ext]' }
+        metadataSources { artifact() }
+        content { includeModule 'com.liy.blendlib', 'blendlib-fabric' }
+    }
+}
+// Optional transport caches contain unmodified public artifacts. A clean checkout resolves
+// directly from the public repositories above; no local installation is a build input.
+def transport = file('build/public-releases')
+if (new File(transport, "blendlib-fabric-${blendVersion}.jar").exists()) {
+    repositories.exclusiveContent {
+        forRepository { repositories.ivy {
+            url = transport
+            patternLayout { artifact '[artifact]-[revision].[ext]' }
+            metadataSources { artifact() }
+        } }
+        filter { includeModule 'com.liy.blendlib', 'blendlib-fabric' }
+    }
+}
+def fabricReceipt = file('build/fabric-maven/receipt.json')
+if (fabricReceipt.exists() && new groovy.json.JsonSlurper().parse(fabricReceipt).coordinates
+        .contains("net.fabricmc.fabric-api:fabric-api:${targets[mc]}".toString())) {
+    repositories.exclusiveContent {
+        forRepository { repositories.maven { url = file('build/fabric-maven') } }
+        filter { includeGroup 'net.fabricmc.fabric-api' }
+    }
+}
+if (file("build/fabric-maven/net/fabricmc/intermediary/$mc/intermediary-$mc-v2.jar").exists()) {
+    repositories.exclusiveContent {
+        forRepository { repositories.maven { url = file('build/fabric-maven') } }
+        filter { includeModule 'net.fabricmc', 'intermediary' }
+    }
+}
+java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
+loom {
+    splitEnvironmentSourceSets()
+    mods { ancient_dragon { sourceSet sourceSets.main; sourceSet sourceSets.client } }
+}
+configurations { blendLibDistribution { canBeConsumed = false; canBeResolved = true; transitive = false } }
+dependencies {
+    minecraft "com.mojang:minecraft:$mc"
+    mappings loom.officialMojangMappings()
+    modImplementation 'net.fabricmc:fabric-loader:0.19.3'
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${targets[mc]}"
+    modImplementation "com.liy.blendlib:blendlib-fabric:$blendVersion"
+    blendLibDistribution "com.liy.blendlib:blendlib-fabric:$blendVersion"
+    testImplementation platform('org.junit:junit-bom:5.12.2')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+def verifyBlendLib = tasks.register('verifyBlendLib') {
+    inputs.files(configurations.blendLibDistribution)
+    inputs.property('sha256', hashes[mc])
+    doLast {
+        def artifact = configurations.blendLibDistribution.singleFile
+        def actual = java.security.MessageDigest.getInstance('SHA-256').digest(artifact.bytes).encodeHex().toString()
+        assert actual == hashes[mc]: "Public BlendLib artifact SHA-256 mismatch: $actual"
+        logger.lifecycle("Verified public BlendLib $blendVersion SHA-256 $actual")
+    }
+}
+def generated = layout.buildDirectory.dir('generated/sources')
+def prepareSources = tasks.register('prepareSources') {
+    inputs.files(['main','client','test'].collect { new File(upstream, "src/$it/java") }, file('transforms.gradle'), file('postprocess.gradle'), file('1.21.1.gradle'), file('overrides'), file('src/test'))
+    inputs.property('minecraft', mc)
+    outputs.dir(generated)
+    doLast {
+        delete(generated)
+        ['main','client','test'].each { env ->
+            def root = new File(upstream, "src/$env/java")
+            fileTree(root).matching { include '**/*.java' }.each { source ->
+                def relative = root.toPath().relativize(source.toPath()).toString().replace('\\','/')
+                def target = new File(generated.get().asFile, "$env/$relative")
+                target.parentFile.mkdirs()
+                def text = source.getText('UTF-8').replace('\r\n','\n')
+                    .replace('net.minecraft.resources.Identifier','net.minecraft.resources.ResourceLocation')
+                    .replaceAll('\\bIdentifier\\b','ResourceLocation').replace('.identifier()', '.location()')
+                    .replace('ServerLevelEvents','ServerWorldEvents').replace('END_LEVEL_TICK','END_WORLD_TICK')
+                    .replace('PayloadTypeRegistry.clientboundPlay()', 'PayloadTypeRegistry.playS2C()')
+                    .replace('PayloadTypeRegistry.serverboundPlay()', 'PayloadTypeRegistry.playC2S()')
+                target.setText(text,'UTF-8')
+            }
+        }
+        project.ext.legacyGeneratedRoot = generated.get().asFile
+        project.ext.legacyMinecraft = mc
+        if (file('transforms.gradle').exists()) apply from: 'transforms.gradle'
+        def variants = ['shared']
+        if (mc in ['1.21.1','1.21.2','1.21.3','1.21.4','1.21.5']) variants += 'pre-1.21.6'
+        if (mc in ['1.21.1','1.21.2','1.21.3','1.21.4']) variants += 'pre-1.21.5'
+        if (mc in ['1.21.1','1.21.2','1.21.3']) variants += 'pre-1.21.4'
+        variants += mc
+        variants.each { variant ->
+            if (file("overrides/$variant").exists()) copy { from "overrides/$variant"; into generated }
+            if (file("src/test/$variant/java").exists()) copy { from "src/test/$variant/java"; into generated.map { it.dir('test') } }
+        }
+        if (file('postprocess.gradle').exists()) apply from: 'postprocess.gradle'
+        if (mc == '1.21.1' && file('1.21.1.gradle').exists()) apply from: '1.21.1.gradle'
+    }
+}
+sourceSets {
+    main { java.setSrcDirs([generated.map { it.dir('main') }]); resources.setSrcDirs([new File(upstream,'src/main/resources'),file('resources')]) }
+    client { java.setSrcDirs([generated.map { it.dir('client') }]); resources.setSrcDirs([new File(upstream,'src/client/resources')]) }
+    test { java.setSrcDirs([generated.map { it.dir('test') }]); resources.setSrcDirs([new File(upstream,'src/test/resources')]) }
+}
+if (mc in ['1.21.1','1.21.2','1.21.3','1.21.4']) sourceSets.main.resources.srcDir('resources-pre-1.21.5')
+if (mc in ['1.21.1','1.21.2','1.21.3']) sourceSets.main.resources.srcDir('resources-pre-1.21.4')
+if (mc == '1.21.1') sourceSets.main.resources.srcDir('resources-1.21.1')
+tasks.withType(JavaCompile).configureEach {
+    dependsOn prepareSources, verifyBlendLib
+    options.encoding = 'UTF-8'; options.release = 21
+    options.compilerArgs += ['-Xmaxerrs', '500']
+}
+tasks.named('test') { useJUnitPlatform(); workingDir upstream }
+tasks.named('sourcesJar') { dependsOn prepareSources }
+apply from: 'resource-transforms.gradle'
+tasks.withType(ProcessResources).configureEach {
+    inputs.file(file('resource-transforms.gradle'))
+    inputs.property('minecraft',mc); inputs.property('version',version)
+    filesMatching('fabric.mod.json') { filter { line -> line.replace('${version}',version.toString()) } }
+    filesMatching('ancient_dragon.mixins.json') { filter { line -> line.replace('JAVA_25','JAVA_21') } }
+    doLast {
+        fileTree(destinationDir).matching { include '**/*.json' }.each { resource ->
+            def relative = destinationDir.toPath().relativize(resource.toPath()).toString().replace('\\','/')
+            resource.setText(project.ext.transformLegacyResource(relative, resource.getText('UTF-8'), mc), 'UTF-8')
+        }
+        def metadataFile = new File(destinationDir,'fabric.mod.json')
+        if (metadataFile.exists()) {
+            def metadata = new groovy.json.JsonSlurper().parse(metadataFile)
+            metadata.depends.minecraft = mc
+            metadata.depends.java = '>=21'
+            metadata.depends.blendlib = ">=$blendVersion".toString()
+            metadata.depends['fabric-api'] = targets[mc]
+            metadata.mixins += 'ancient_dragon.legacy.mixins.json'
+            metadataFile.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(metadata)), 'UTF-8')
+        }
+        if (mc in ['1.21.2','1.21.3']) {
+            copy { from new File(destinationDir,'assets/ancient_dragon/equipment'); into new File(destinationDir,'assets/ancient_dragon/models/equipment') }
+        }
+        if (mc == '1.21.1') {
+            ['humanoid':'1', 'humanoid_leggings':'2'].each { layer, index ->
+                copy { from new File(destinationDir,"assets/ancient_dragon/textures/entity/equipment/$layer/mountainforged.png"); into new File(destinationDir,'assets/ancient_dragon/textures/models/armor'); rename { "mountainforged_layer_${index}.png" } }
+            }
+        }
+    }
+}
+tasks.withType(Jar).configureEach {
+    from(new File(upstream,'LICENSE')) { into 'META-INF'; rename { 'LICENSE-ancient-dragon.txt' } }
+    from(new File(upstream,'ASSET_LICENSE.md')) { into 'META-INF' }
+    from(new File(upstream,'THIRD_PARTY_NOTICES.md')) { into 'META-INF' }
+    manifest.attributes('AncientDragon-Minecraft-Target':mc, 'Implementation-Version':version)
+}
+tasks.register('verifyRuntimeJar') {
+    dependsOn tasks.named('remapJar')
+    doLast {
+        def artifact = tasks.named('remapJar').get().archiveFile.get().asFile
+        def zip = new java.util.zip.ZipFile(artifact)
+        try {
+            def metadata = new groovy.json.JsonSlurper().parseText(zip.getInputStream(zip.getEntry('fabric.mod.json')).getText('UTF-8'))
+            assert metadata.id == 'ancient_dragon'; assert metadata.version == version.toString()
+            assert metadata.depends.minecraft == mc; assert metadata.depends.java == '>=21'
+            assert metadata.depends.blendlib == ">=$blendVersion".toString()
+            def entries = zip.entries().toList()
+            assert entries.any { it.name == 'com/liy/ancientdragon/AncientDragonMod.class' }
+            assert entries.any { it.name == 'com/liy/ancientdragon/client/AncientDragonClient.class' }
+            assert !entries.any { it.name.startsWith('com/liy/blendlib/') || it.name.endsWith('.java') || it.name.endsWith('.log') }
+            entries.findAll { it.name.endsWith('.class') }.each { entry ->
+                def bytes = zip.getInputStream(entry).bytes
+                assert ((bytes[6] & 255) << 8 | (bytes[7] & 255)) <= 65: "Non-Java-21 class: ${entry.name}"
+            }
+            def originals = fileTree(new File(upstream,'src/main/resources')).files
+            originals.findAll { !(it.name in ['fabric.mod.json','ancient_dragon.mixins.json']) }.each { source ->
+                def relative = new File(upstream,'src/main/resources').toPath().relativize(source.toPath()).toString().replace('\\','/')
+                assert zip.getEntry(relative) != null: "Missing original resource: $relative"
+                def expected = source.name.endsWith('.json') ? project.ext.transformLegacyResource(relative, source.getText('UTF-8'), mc).getBytes('UTF-8') : source.bytes
+                assert java.util.Arrays.equals(expected, zip.getInputStream(zip.getEntry(relative)).bytes): "Unexpected authored resource change: $relative"
+            }
+            def hash = java.security.MessageDigest.getInstance('SHA-256').digest(artifact.bytes).encodeHex().toString()
+            def report = [minecraft:mc,version:version.toString(),sha256:hash,blendlibSha256:hashes[mc],classCount:entries.count { it.name.endsWith('.class') },resourcesVerified:originals.size()-2]
+            new File(layout.buildDirectory.get().asFile,'jar-verification.json').setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(report)),'UTF-8')
+            logger.lifecycle("Verified $artifact.name SHA-256 $hash")
+        } finally { zip.close() }
+    }
+}
+tasks.named('check') { dependsOn tasks.named('verifyRuntimeJar') }
+apply from: 'verify-assets.gradle'

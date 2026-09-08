@@ -1,0 +1,108 @@
+def root = project.ext.legacyGeneratedRoot
+def mc = project.ext.legacyMinecraft
+def edit = { String suffix, Closure change ->
+    fileTree(root).matching { include "**/$suffix" }.each { f -> f.setText(change(f.getText('UTF-8')), 'UTF-8') }
+}
+if (mc in ['1.21.1','1.21.2','1.21.3']) {
+    edit('AncientDragonPartEntity.java') { it.replace('protected AABB makeBoundingBox(Vec3 position) {', 'protected AABB makeBoundingBox() {\n        Vec3 position = position();') }
+    edit('SacredMountainSculkAtmosphere.java') { it.replace('player, particleType(kind), false, false,', 'player, particleType(kind), false,') }
+    edit('AncientDragonItems.java') { it
+        .replace('import net.minecraft.world.item.equipment.EquipmentAsset;', '')
+        .replace('import net.minecraft.world.item.equipment.EquipmentAssets;', '')
+        .replaceAll(/ResourceKey<EquipmentAsset> (\w+) = ResourceKey.create\(\s*EquipmentAssets.ROOT_ID,\s*(ResourceLocation.fromNamespaceAndPath\([^;]+)\);/, 'ResourceLocation $1 = $2;')
+        .replace('.setAsset(', '.setModel(')
+    }
+    edit('SacredMountainSculkAtmosphere.java') { it.replace('ParticleTypes.PALE_OAK_LEAVES', 'com.liy.ancientdragon.compat.LegacyLeafParticles.PALE_OAK_LEAVES') }
+    edit('AncientDragonMod.java') { it.replace('LegacyParticles.initialize();', 'LegacyParticles.initialize();\n        com.liy.ancientdragon.compat.LegacyLeafParticles.initialize();') }
+    edit('AncientDragonClient.java') { it.replace('LegacyClientParticles.initialize();', 'LegacyClientParticles.initialize();\n        com.liy.ancientdragon.compat.LegacyLeafClientParticles.initialize();') }
+}
+if (mc in ['1.21.1','1.21.2','1.21.3','1.21.4']) {
+    ['SacredMountainStructurePiece.java','SacredMountainPlacementService.java','SacredMountainStructureAssetTest.java'].each { name -> edit(name) { it.replace(', serialized, false).blockState()', ', com.liy.ancientdragon.compat.LegacyBlockPalette.resolve(serialized), false).blockState()') } }
+    edit('AncientCityGatewayBlock.java') { it.replace('import net.minecraft.world.entity.InsideBlockEffectApplier;', '').replace('Entity entity,\n            InsideBlockEffectApplier effects', 'Entity entity') }
+    edit('SunheartAltarMenu.java') { it.replace('result.onCraftedBy(player, result.getCount())','result.onCraftedBy(player.level(), player, result.getCount())') }
+    ['AncientDragonCorpseRewardService':'deliverPendingRewards', 'DragonChronicleService':'deliverPendingBooks'].each { type, method ->
+        edit(type + '.java') { it.replace("ServerPlayerEvents.JOIN.register(${type}::${method});", "net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> ${type}.${method}(handler.player));") }
+    }
+    edit('AncientDragonItems.java') { it
+        .replace('DataComponents.UNBREAKABLE, Unit.INSTANCE', 'DataComponents.UNBREAKABLE, new net.minecraft.world.item.component.Unbreakable(true)')
+        .replace('.setEquipOnInteract(true)', '.setSwappable(true)')
+        .replace('new Item(properties.sword(DRAGONBONE_NETHERITE, 8.0F, -2.4F))', 'new net.minecraft.world.item.SwordItem(DRAGONBONE_NETHERITE, 8.0F, -2.4F, properties)')
+        .replace('new Item(properties.pickaxe(DRAGONBONE_NETHERITE, 6.0F, -2.8F))', 'new net.minecraft.world.item.PickaxeItem(DRAGONBONE_NETHERITE, 6.0F, -2.8F, properties)')
+        .replace('properties\n                .humanoidArmor(ArmorMaterials.NETHERITE, armorType)', 'ArmorMaterials.NETHERITE.humanoidProperties(properties, armorType)')
+        .replace('ArmorMaterials.NETHERITE.createAttributes(armorType)', 'com.liy.ancientdragon.compat.LegacyArmorAttributes.netherite(armorType)')
+    }
+    edit('SacredMountainStructurePiece.java') { it.replace('tag.getIntOr(', 'new com.liy.ancientdragon.compat.LegacyValueInput(tag).getIntOr(') }
+    edit('AncientCityPortalFrameTest.java') { it
+        .replace('root.getListOrEmpty("palette")', 'root.getList("palette", net.minecraft.nbt.Tag.TAG_COMPOUND)')
+        .replace('root.getListOrEmpty("blocks")', 'root.getList("blocks", net.minecraft.nbt.Tag.TAG_COMPOUND)')
+        .replace('.getCompoundOrEmpty(index)', '.getCompound(index)')
+        .replace('palette.getCompound(index).getStringOr("Name", "")', 'new com.liy.ancientdragon.compat.LegacyValueInput(palette.getCompound(index)).getStringOr("Name", "")')
+        .replace('block.getIntOr(', 'new com.liy.ancientdragon.compat.LegacyValueInput(block).getIntOr(')
+        .replace('block.getListOrEmpty("pos")', 'block.getList("pos", net.minecraft.nbt.Tag.TAG_INT)')
+        .replaceAll(/position.getIntOr\(([0-2]), Integer.MIN_VALUE\)/, '(position.size() > $1 ? position.getInt($1) : Integer.MIN_VALUE)')
+    }
+    edit('SacredMountainSculkAtmosphere.java') { it.replace('ParticleTypes.FIREFLY', 'com.liy.ancientdragon.compat.LegacyExtraParticles.FIREFLY') }
+    edit('AncientDragonMod.java') { it.replace('LegacyParticles.initialize();', 'LegacyParticles.initialize();\n        com.liy.ancientdragon.compat.LegacyExtraParticles.initialize();') }
+    edit('AncientDragonClient.java') { it.replace('LegacyClientParticles.initialize();', 'LegacyClientParticles.initialize();\n        com.liy.ancientdragon.compat.LegacyExtraClientParticles.initialize();') }
+    fileTree(root).matching { include '**/*.java' }.each { f ->
+        def text = f.getText('UTF-8')
+        if (text.contains('new SavedDataType<>(')) {
+            text = text.replace('net.minecraft.world.level.saveddata.SavedDataType', 'com.liy.ancientdragon.compat.LegacySavedDataType')
+                .replaceAll(/\bSavedDataType\b/, 'LegacySavedDataType')
+                .replace('extends SavedData {', '''extends SavedData {
+    @Override
+    public net.minecraft.nbt.CompoundTag save(net.minecraft.nbt.CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
+        return TYPE.save(this, registries);
+    }
+''')
+                .replace('.computeIfAbsent(TYPE)', '.computeIfAbsent(TYPE.factory(), TYPE.id())')
+            f.setText(text, 'UTF-8')
+        }
+    }
+}
+if (mc in ['1.21.1','1.21.2','1.21.3','1.21.4','1.21.5']) {
+    ['AncientDragonEntity.java','AncientDragonPartEntity.java'].each { name -> edit(name) { text ->
+        text.replace('net.minecraft.world.level.storage.ValueInput','com.liy.ancientdragon.compat.LegacyValueInput')
+            .replace('net.minecraft.world.level.storage.ValueOutput','com.liy.ancientdragon.compat.LegacyValueOutput')
+            .replaceAll(/\bValueInput\b/,'LegacyValueInput').replaceAll(/\bValueOutput\b/,'LegacyValueOutput')
+            .replace('readAdditionalSaveData(LegacyValueInput input) {','readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {\n        LegacyValueInput input = new LegacyValueInput(tag);')
+            .replace('addAdditionalSaveData(LegacyValueOutput output) {','addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag) {\n        LegacyValueOutput output = new LegacyValueOutput(tag);')
+            .replace('super.readAdditionalSaveData(input);', 'super.readAdditionalSaveData(tag);')
+            .replace('super.addAdditionalSaveData(output);', 'super.addAdditionalSaveData(tag);')
+            .replace('protected void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag)', 'public void readAdditionalSaveData(net.minecraft.nbt.CompoundTag tag)')
+            .replace('protected void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag)', 'public void addAdditionalSaveData(net.minecraft.nbt.CompoundTag tag)')
+            .replace('tool.hurtAndBreak(1, serverPlayer, hand)', 'tool.hurtAndBreak(1, serverPlayer, net.minecraft.world.entity.LivingEntity.getSlotForHand(hand))')
+            .replaceAll(/(?s)public boolean canBeCollidedWith\(Entity entity\) \{.*?\n    \}/, name == 'AncientDragonEntity.java'
+                ? 'public boolean canBeCollidedWith() { return blocksPlayerCollision(); }'
+                : 'public boolean canBeCollidedWith() { return entityData.get(DATA_BLOCKS_PLAYERS); }')
+    } }
+    ['AncientDragonCorpseRewardService.java','DragonChronicleService.java'].each { name -> edit(name) { it.replace('player.level()', 'player.serverLevel()') } }
+    edit('SunheartAltarScreen.java') { text ->
+        text = text.replace('import net.minecraft.client.renderer.RenderPipelines;', 'import net.minecraft.client.renderer.RenderType;')
+            .replace('import net.minecraft.client.renderer.entity.state.ArmorStandRenderState;', 'import net.minecraft.world.entity.decoration.ArmorStand;\nimport net.minecraft.client.gui.screens.inventory.InventoryScreen;')
+            .replace('private final ArmorStandRenderState armorStandPreview = new ArmorStandRenderState();', 'private ArmorStand armorStandPreview;')
+            .replaceAll(/(?m)^        armorStandPreview\.(entityType|showBasePlate|showArms|xRot|bodyRot) = .*;\n/, '')
+            .replace('protected void subInit() {', '''protected void subInit() {
+        armorStandPreview = new ArmorStand(minecraft.level, 0, 0, 0);
+        armorStandPreview.setNoBasePlate(true);
+        armorStandPreview.setShowArms(true);
+        armorStandPreview.yBodyRot = 210.0F;
+        armorStandPreview.setXRot(25.0F);
+        armorStandPreview.setYHeadRot(210.0F);''')
+            .replaceAll(/(?s)graphics.submitEntityRenderState\(.*?topPos \+ 80\);/, '''InventoryScreen.renderEntityInInventory(graphics, leftPos + 141.0F, topPos + 75.0F, 25.0F,
+                ARMOR_STAND_TRANSLATION, ARMOR_STAND_ANGLE, null, armorStandPreview);''')
+            .replace('RenderPipelines.GUI_TEXTURED', 'RenderType::guiTextured')
+            .replace('setTooltipForNextFrame','renderTooltip')
+            .replaceAll(/(?s)    private void updateArmorStandPreview\(ItemStack stack\) \{.*\n    \}\n\}/, '''    private void updateArmorStandPreview(ItemStack stack) {
+        if (armorStandPreview == null) return;
+        for (EquipmentSlot slot : EquipmentSlot.values()) armorStandPreview.setItemSlot(slot, ItemStack.EMPTY);
+        if (!stack.isEmpty()) {
+            Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
+            EquipmentSlot slot = equippable == null ? EquipmentSlot.OFFHAND : equippable.slot();
+            armorStandPreview.setItemSlot(slot, stack.copy());
+        }
+    }
+}''')
+        return text
+    }
+}

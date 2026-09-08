@@ -1,0 +1,80 @@
+// Version-specific source adaptations. All upstream sources remain inputs to this build.
+def root = project.ext.legacyGeneratedRoot
+def mc = project.ext.legacyMinecraft
+def edit = { String suffix, Closure change ->
+    def matches = fileTree(root).matching { include "**/$suffix" }.files
+    if (matches.empty) throw new GradleException("Missing source for adaptation: $suffix")
+    matches.each { f -> f.setText(change(f.getText('UTF-8')), 'UTF-8') }
+}
+fileTree(root).matching { include '**/*.java' }.each { f ->
+    def text = f.getText('UTF-8')
+        .replace('net.minecraft.advancements.criterion.', 'net.minecraft.advancements.critereon.')
+        .replace('ContainerInput', 'ClickType')
+        .replace('net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab', 'net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup')
+        .replace('FabricCreativeModeTab.', 'FabricItemGroup.')
+        .replace('net.minecraft.world.level.saveddata.WeatherData', 'net.minecraft.world.level.storage.ServerLevelData')
+        .replace('WeatherData weather = level.getWeatherData()', 'ServerLevelData weather = (ServerLevelData) level.getLevelData()')
+        .replace('ChunkPos.containing(', 'new ChunkPos(').replace('ChunkPos.pack(', 'ChunkPos.asLong(')
+        .replace('.pack()', '.toLong()').replace('ChunkPos::x', 'p -> p.x').replace('ChunkPos::z', 'p -> p.z')
+        .replace('getGameProfile().name()', 'getGameProfile().getName()')
+        .replace('interact(Player player, InteractionHand hand, Vec3 location)', 'interactAt(Player player, Vec3 location, InteractionHand hand)')
+        .replace('.noCollision()', '.noCollission()')
+        .replace('(level, chunk, newlyGenerated) ->', '(level, chunk) ->')
+        .replace('import net.minecraft.server.permissions.Permissions;\n', '')
+        .replace('source.permissions().hasPermission(Permissions.COMMANDS_ADMIN)', 'source.hasPermission(2)')
+    // Only ChunkPos variables; authored tile-coordinate records retain x()/z().
+    if (f.path.contains('worldgen')) {
+        ['candidate','selected','canonicalStart','sectorStart','startPosition','destination','canonical','chunk','roostChunk','sector'].each { name ->
+            text = text.replace("${name}.x()", "${name}.x").replace("${name}.z()", "${name}.z")
+        }
+        if (f.name == 'SacredMountainBuildService.java') text = text.replace('position.x()', 'position.x').replace('position.z()', 'position.z')
+        if (f.name == 'SacredMountainAuthoringDataTest.java') text = text.replace('getFirst().x()', 'getFirst().x').replace('getFirst().z()', 'getFirst().z')
+    }
+    if (text.contains('new SavedDataType<>(')) {
+        text = text.replaceAll(/(new SavedDataType<>\(\s*)ResourceLocation.fromNamespaceAndPath\([^,]+,\s*"([^"]+)"\)/, '$1"$2"')
+    }
+    text = text.replaceAll(/(new ServerBossEvent\(\s*)UUID.randomUUID\(\),\s*/, '$1')
+    // sendSystemMessage moved to ServerPlayer; preserve ordinary-player call sites and chat display.
+    text = text.replaceAll(/player.sendSystemMessage\(([\s\S]*?)\);/) { all, args ->
+        'player.displayClientMessage(' + args + (args ==~ /(?s).*,\s*(true|false)/ ? '' : ', false') + ');'
+    }
+    f.setText(text, 'UTF-8')
+}
+edit('AncientCityGatewayBlock.java') { it.replace('InsideBlockEffectApplier effects,\n            boolean intersects', 'InsideBlockEffectApplier effects') }
+edit('SacredMountainEnvironmentService.java') { it
+    .replace('ServerEntityEvents.ALLOW_LOAD.register(SacredMountainEnvironmentService::allowEntityLoad);', '''ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
+            if (!allowEntityLoad(entity, level, null, false)) entity.discard();
+        });''')
+}
+edit('AncientDragonItems.java') { it
+    .replace('new Item(dragonboneSpearProperties(properties))', 'new com.liy.ancientdragon.compat.LegacySpearItem(dragonboneSpearProperties(properties).attributes(com.liy.ancientdragon.compat.LegacySpearMaterials.withReach(dragonboneSpearAttributes())))')
+    .replace('.spear(DRAGONBONE_NETHERITE, 1.15F, 1.2F, 0.4F, 2.5F, 9.0F, 5.5F, 5.1F, 8.75F, 4.6F)', '''.durability(DRAGONBONE_NETHERITE.durability())
+                .repairable(DRAGONBONE_NETHERITE.repairItems())
+                .enchantable(DRAGONBONE_NETHERITE.enchantmentValue())''')
+    .replace('CREATIVE_TAB_ITEMS.forEach(output::accept)', '{ CREATIVE_TAB_ITEMS.forEach(output::accept); com.liy.ancientdragon.compat.LegacySpearMaterials.addToTab(output); }')
+    .replace('public static void initialize() {', 'public static void initialize() {\n        com.liy.ancientdragon.compat.LegacySpearMaterials.initialize();')
+}
+edit('SunheartAltarRite.java') { it.replace('minecraft("netherite_spear")', 'ancientDragon("netherite_spear")') }
+edit('SunheartAltarRiteTest.java') { it.replace('"minecraft:netherite_spear"','"ancient_dragon:netherite_spear"') }
+edit('SunheartAltarMenuLogicTest.java') { it.replaceAll(/(?s)        var holder = BuiltInRegistries.ITEM.get\(BuiltInRegistries.ITEM.getKey\(item\)\).orElseThrow\(\);.*?holder.bindComponents\(components.build\(\)\);/, '''        // Older Minecraft binds component defaults in Item construction during Bootstrap.
+        assertEquals(maxStackSize, item.getDefaultInstance().getMaxStackSize());
+        assertEquals(maxDamage, item.getDefaultInstance().getMaxDamage());''') }
+edit('SacredMountainSculkAtmosphere.java') { it.replace('ParticleTypes.COPPER_FIRE_FLAME', 'com.liy.ancientdragon.compat.LegacyParticles.COPPER_FIRE_FLAME') }
+edit('AncientDragonMod.java') { it.replace('DragonAtmosphereNetworking.initialize();', 'com.liy.ancientdragon.compat.LegacyParticles.initialize();\n        DragonAtmosphereNetworking.initialize();') }
+edit('AncientDragonClient.java') { it.replace('public void onInitializeClient() {', 'public void onInitializeClient() {\n        com.liy.ancientdragon.compat.LegacyClientParticles.initialize();') }
+edit('CameraMixin.java') { it
+    .replace('@Inject(method = "update",', '@Inject(method = "setup",')
+    .replace('DeltaTracker deltaTracker, CallbackInfo callback', 'net.minecraft.world.level.BlockGetter level, net.minecraft.world.entity.Entity entity, boolean detached, boolean reverse, float partialTick, CallbackInfo callback')
+}
+edit('SunheartAltarScreen.java') { it
+    .replace('GuiGraphicsExtractor','GuiGraphics')
+    .replace('extractRenderState','render')
+    .replace('public void extractBackground(GuiGraphics graphics, int mouseX, int mouseY, float deltaTicks)', 'protected void renderBg(GuiGraphics graphics, float deltaTicks, int mouseX, int mouseY)')
+    .replace('super.extractBackground(graphics, mouseX, mouseY, deltaTicks)', 'super.renderBg(graphics, deltaTicks, mouseX, mouseY)')
+    .replace('extractErrorIcon','renderErrorIcon')
+    .replace('graphics.fakeItem(', 'graphics.renderFakeItem(')
+    .replace('graphics.entity(', 'graphics.submitEntityRenderState(')
+    .replace('armorStandPreview.leftHandItemStack = ItemStack.EMPTY;','')
+    .replace('armorStandPreview.leftHandItemStack = stack.copy();','')
+    .replace('armorStandPreview.leftHandItemState', 'armorStandPreview.leftHandItem')
+}

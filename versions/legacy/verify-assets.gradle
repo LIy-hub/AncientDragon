@@ -1,0 +1,44 @@
+// Same authored bundle invariants enforced by the root build, in the standalone legacy entrypoint.
+tasks.register('verifyDragonAssets') {
+    def resources = file('../../src/main/resources/assets/ancient_dragon')
+    inputs.dir(resources)
+    doLast {
+        def descriptor = new groovy.json.JsonSlurper().parse(new File(resources,'blend_models/entity/ancient_dragon.json'))
+        assert descriptor.units_per_block == 0.0625
+        def descriptorText = new File(resources,'blend_models/entity/ancient_dragon.json').getText('UTF-8')
+        ['combat_idle','fly_cruise','bite_heavy','death_landmark'].each { assert descriptorText.contains("ancient_dragon:$it") }
+        ['body','eyes','teeth','tongue'].each { assert new File(resources,"textures/blendlib/entity_ancient_dragon__${it}.png").length() > 0 }
+        def rig = new groovy.json.JsonSlurper().parse(new File(resources,'collision/ancient_dragon_collision_rig.json'))
+        assert rig.format_version == 2; assert rig.units_to_blocks == 16.0
+        assert rig.part_order.size() == 18 && rig.part_order.first() == 'head' && rig.part_order.last() == 'tail_tip'
+        assert rig.bone_order.size() >= 40 && rig.bone_parents.size() == rig.bone_order.size()
+        assert rig.part_bones.size() == 18 && rig.part_offsets.size() == 18
+        ['Dormant_Hold','Awaken_Intro','Takeoff','Fly_Cruise_Loop','Fly_Descend','Land','Combat_Idle','Combat_Stand',
+         'Ground_Stalk','Bite_Heavy','Wing_Slam','Roar_Storm','Solar_Breath','Hit_React','Dive_Strike',
+         'Aerial_Tail_Sweep','Aerial_Storm_Burst','Aerial_Solar_Breath','Death_Landmark','Corpse_Static'].each {
+            assert rig.clips.containsKey("DRG_$it".toString())
+        }
+        rig.clips.values().each { clip ->
+            assert clip.local_trs.size() == clip.duration_ticks + 1
+            assert clip.local_trs.every { it.size() == rig.bone_order.size() * 10 }
+        }
+        def bytes = new File(resources,'models3d/entity/ancient_dragon.glb').bytes
+        def glb = java.nio.ByteBuffer.wrap(bytes).order(java.nio.ByteOrder.LITTLE_ENDIAN)
+        assert glb.remaining() >= 20 && glb.getInt() == 0x46546c67 && glb.getInt() == 2 && glb.getInt() == bytes.length
+        def gltf = null
+        while (glb.remaining() >= 8) {
+            int length = glb.getInt(); int type = glb.getInt()
+            assert length >= 0 && length <= glb.remaining()
+            byte[] chunk = new byte[length]; glb.get(chunk)
+            if (type == 0x4e4f534a) gltf = new groovy.json.JsonSlurper().parseText(new String(chunk,'UTF-8').trim())
+        }
+        assert gltf != null
+        ['DRG_Combat_Idle':20,'DRG_Bite_Heavy':18,'DRG_Fly_Cruise_Loop':25,'DRG_Fly_Loop':25,'DRG_Death_Landmark':35].each { clip, minimum ->
+            def animation = gltf.animations.find { it.name == clip }; assert animation != null
+            assert animation.channels.count { channel ->
+                channel.target.path == 'rotation' && gltf.accessors[animation.samplers[channel.sampler].output].count > 2
+            } >= minimum
+        }
+    }
+}
+tasks.named('check') { dependsOn tasks.named('verifyDragonAssets') }

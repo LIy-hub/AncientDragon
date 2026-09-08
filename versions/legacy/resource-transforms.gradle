@@ -1,0 +1,29 @@
+ext.transformLegacyResource = { String path, String text, String mc ->
+    def parse = { new groovy.json.JsonSlurper().parseText(text) }
+    def write = { value -> groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(value)) }
+    if (mc == '1.21.1' && path.startsWith('data/ancient_dragon/recipe/')) {
+        def json = parse()
+        def ingredient = { value -> value instanceof String ? (value.startsWith('#') ? [tag:value.substring(1)] : [item:value]) : value }
+        if (json.key instanceof Map) json.key = json.key.collectEntries { key, value -> [(key):ingredient(value)] }
+        ['addition','base','template'].each { key -> if (json.containsKey(key)) json[key] = ingredient(json[key]) }
+        return write(json)
+    }
+    if (path == 'ancient_dragon.legacy.mixins.json' && mc in ['1.21.1','1.21.2','1.21.3','1.21.4','1.21.5']) {
+        def json = parse()
+        if (!json.mixins.contains('LegacyCollisionFilterMixin')) json.mixins += 'LegacyCollisionFilterMixin'
+        if (mc == '1.21.1') json.client = ['LegacyElytraLayerMixin','LegacyCapeLayerMixin']
+        return write(json)
+    }
+    if (path.startsWith('assets/ancient_dragon/equipment/')) {
+        def json = parse()
+        if (json.layers?.containsKey('humanoid_baby')) { json.layers.remove('humanoid_baby'); return write(json) }
+    }
+    if (path == 'assets/ancient_dragon/lang/en_us.json' || path == 'assets/ancient_dragon/lang/zh_cn.json') {
+        def json = parse()
+        boolean chinese = path.endsWith('zh_cn.json')
+        json['item.ancient_dragon.diamond_spear'] = chinese ? '钻石长矛' : 'Diamond Spear'
+        json['item.ancient_dragon.netherite_spear'] = chinese ? '下界合金长矛' : 'Netherite Spear'
+        return write(json)
+    }
+    return text
+}

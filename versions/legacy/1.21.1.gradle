@@ -1,0 +1,101 @@
+def root = project.ext.legacyGeneratedRoot
+def edit = { String suffix, Closure change ->
+    fileTree(root).matching { include "**/$suffix" }.each { f -> f.setText(change(f.getText('UTF-8')), 'UTF-8') }
+}
+fileTree(root).matching { include '**/*.java' }.each { f ->
+    def text = f.getText('UTF-8')
+        .replace('net.minecraft.world.item.ToolMaterial', 'com.liy.ancientdragon.compat.LegacyToolMaterial')
+        .replaceAll(/\bToolMaterial\b/, 'LegacyToolMaterial')
+        .replace('net.minecraft.world.item.equipment.ArmorType', 'net.minecraft.world.item.ArmorItem.Type')
+        .replaceAll(/\bArmorType\b/, 'Type')
+        .replace('net.minecraft.world.item.equipment.ArmorMaterials', 'net.minecraft.world.item.ArmorMaterials')
+        .replace('net.minecraft.world.item.ItemUseAnimation', 'net.minecraft.world.item.UseAnim')
+        .replaceAll(/\bItemUseAnimation\b/, 'UseAnim')
+        .replaceAll(/\.setId\(ResourceKey.create\(BuiltInRegistries.ITEM.key\(\), id\)\)/, '')
+        .replaceAll(/\.setId\(ResourceKey.create\(Registries.BLOCK, (\w+)\)\)/, '')
+        .replace('EntitySpawnReason', 'MobSpawnType')
+        .replace('TeleportTransition', 'DimensionTransition')
+        .replace('.getMinY()', '.getMinBuildHeight()').replace('.getMaxY()', '.getMaxBuildHeight()')
+        .replace('.markUnsaved()', '.setUnsaved(true)')
+        .replace('InteractionResult.SUCCESS_SERVER', 'InteractionResult.CONSUME')
+        .replaceAll(/EntityType.LIGHTNING_BOLT.create\((\w+), MobSpawnType.\w+\)/, 'EntityType.LIGHTNING_BOLT.create($1)')
+        .replace('.getValue(AncientDragonWorldgen.SACRED_MOUNTAIN_KEY)', '.get(AncientDragonWorldgen.SACRED_MOUNTAIN_KEY).map(net.minecraft.core.Holder::value).orElse(null)')
+        .replace('BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK,', 'BlockStateParser.parseForBlock(BuiltInRegistries.BLOCK.asLookup(),')
+    f.setText(text, 'UTF-8')
+}
+edit('AncientDragonItems.java') { text ->
+    text = text.replace('import net.minecraft.world.item.equipment.Equippable;', '')
+        .replaceAll(/(?s)    private static final ResourceLocation \w+_EQUIPMENT_ASSET = .*?;\n/, '')
+        .replaceAll(/(?s)    private static Equippable mountainforgedEquippable\(Type armorType\) \{.*?\n    \}\n/, '')
+        .replaceAll(/(?s)\.component\(\s*DataComponents.EQUIPPABLE,\s*Equippable.builder\(EquipmentSlot.CHEST\).*?\.build\(\)\)/, '')
+        .replace('.component(DataComponents.GLIDER, Unit.INSTANCE)', '')
+        .replace('new Item(properties\n                    .durability(432)', 'new com.liy.ancientdragon.compat.LegacySkyWingItem(properties\n                    .durability(432)')
+        .replace('new Item(mountainforgedSkyWingProperties(properties))', 'new com.liy.ancientdragon.compat.LegacyWingedArmorItem(mountainforgedSkyWingProperties(properties))')
+        .replaceAll(/new Item\(reinforcedArmorProperties\(properties, Type.(\w+)\)\)/, 'new net.minecraft.world.item.ArmorItem(com.liy.ancientdragon.compat.LegacyArmorMaterial.MOUNTAINFORGED, Type.$1, reinforcedArmorProperties(properties, Type.$1))')
+        .replace('ArmorMaterials.NETHERITE.humanoidProperties(properties, armorType)', 'properties')
+        .replace('ArmorMaterials.NETHERITE.durability()', '37')
+        .replace('.component(DataComponents.EQUIPPABLE, mountainforgedEquippable(armorType))', '')
+        .replace('.repairable(DRAGONBONE_NETHERITE.repairItems())', '')
+        .replace('.enchantable(DRAGONBONE_NETHERITE.enchantmentValue())', '')
+        .replace('.useBlockDescriptionPrefix()', '')
+        .replace('LegacySpearMaterials.withReach(dragonboneSpearAttributes()))))', 'LegacySpearMaterials.withReach(dragonboneSpearAttributes())), DRAGONBONE_NETHERITE))')
+    ['SwordItem':'8.0F, -2.4F', 'AxeItem':'10.0F, -3.0F', 'PickaxeItem':'6.0F, -2.8F', 'ShovelItem':'6.5F, -3.0F', 'HoeItem':'1.0F, 0.0F'].each { type, stats ->
+        def owner = type == 'SwordItem' ? 'net.minecraft.world.item.SwordItem' : 'net.minecraft.world.item.DiggerItem'
+        def nativeStats = type == 'SwordItem' ? stats.replace('8.0F', '8') : stats
+        text = text.replace("${type}(DRAGONBONE_NETHERITE, $stats, properties)", "${type}(DRAGONBONE_NETHERITE, properties.attributes(${owner}.createAttributes(DRAGONBONE_NETHERITE, $nativeStats)))")
+    }
+    return text
+}
+edit('AncientDragonMod.java') { it.replace('AncientDragonItems.initialize();', 'AncientDragonItems.initialize();\n        if (Boolean.getBoolean("ancientdragon.verifyLegacyRelics")) com.liy.ancientdragon.compat.LegacyRelicContract.verify();') }
+edit('LegacySpearMaterials.java') { it.replace('.repairable(material.repairItems())', '').replace('.enchantable(material.enchantmentValue())', '').replace('new LegacySpearItem(properties)', 'new LegacySpearItem(properties, material)') }
+edit('LegacyArmorAttributes.java') { it.replace('item.getDefaultInstance().getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS, ItemAttributeModifiers.EMPTY)', 'item.getDefaultAttributeModifiers()') }
+edit('LegacySpearItem.java') { it
+    .replace('public LegacySpearItem(Properties properties) { super(properties); }', '''private final LegacyToolMaterial material;
+    public LegacySpearItem(Properties properties, LegacyToolMaterial material) { super(properties); this.material = material; }
+    @Override public int getEnchantmentValue() { return material.enchantmentValue(); }
+    @Override public boolean isValidRepairItem(ItemStack stack, ItemStack ingredient) { return ingredient.is(material.repairItems()) || super.isValidRepairItem(stack, ingredient); }''')
+    .replace('public InteractionResult use(', 'public net.minecraft.world.InteractionResultHolder<ItemStack> use(')
+    .replace('return InteractionResult.CONSUME;', 'return net.minecraft.world.InteractionResultHolder.consume(player.getItemInHand(hand));')
+    .replace('target.hurtServer(server, source, damage)', 'target.hurt(source, damage)')
+}
+edit('StormHornItem.java') { it
+    .replace('public InteractionResult use(', 'public net.minecraft.world.InteractionResultHolder<ItemStack> use(')
+    .replace('isOnCooldown(stack)', 'isOnCooldown(this)').replace('addCooldown(stack,', 'addCooldown(this,')
+    .replace('return InteractionResult.FAIL;', 'return net.minecraft.world.InteractionResultHolder.fail(stack);')
+    .replace('return InteractionResult.SUCCESS;', 'return net.minecraft.world.InteractionResultHolder.success(stack);')
+    .replace('return InteractionResult.SUCCESS_SERVER;', 'return net.minecraft.world.InteractionResultHolder.success(stack);')
+    .replace('return InteractionResult.CONSUME;', 'return net.minecraft.world.InteractionResultHolder.consume(stack);')
+}
+edit('AncientDragonEntities.java') { it
+    .replaceAll(/EntityType.Builder.of\((\w+)::new, MobCategory.MISC\)/, 'net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder.<$1>create(MobCategory.MISC, $1::new)')
+    .replace('.sized(GAMEPLAY_WIDTH, GAMEPLAY_HEIGHT)', '.dimensions(net.minecraft.world.entity.EntityDimensions.scalable(GAMEPLAY_WIDTH, GAMEPLAY_HEIGHT))')
+    .replace('.sized(AncientDragonScale.blocks(1.0F), AncientDragonScale.blocks(1.0F))', '.dimensions(net.minecraft.world.entity.EntityDimensions.scalable(AncientDragonScale.blocks(1.0F), AncientDragonScale.blocks(1.0F)))')
+    .replace('.noSave()', '.disableSaving()').replace('.noSummon()', '.disableSummon()')
+    .replace('.clientTrackingRange(', '.trackRangeChunks(').replace('.updateInterval(', '.trackedUpdateRate(')
+    .replaceAll(/\.build\(ResourceKey.create\(Registries.ENTITY_TYPE, (\w+)\)\)/, '.build()')
+}
+['AncientDragonEntity.java','AncientDragonPartEntity.java'].each { name -> edit(name) { text ->
+    text.replace('    @Override\n    public boolean hurtServer(', '''    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        return level() instanceof ServerLevel server && hurtServer(server, source, amount);
+    }
+    public boolean hurtServer(''')
+        .replace('super.hurtServer(serverLevel, damageSource, adjustedAmount)', 'super.hurt(damageSource, adjustedAmount)')
+        .replace('player.hurtServer(serverLevel, ', 'player.hurt(')
+        .replace('isInvulnerableToBase(source)', 'isInvulnerableTo(source)')
+        .replace('setOldPosAndRot(position(), getYRot(), getXRot())', 'setOldPosAndRot()')
+} }
+edit('SunheartAltarMenu.java') { it.replace('inventory, access, SLOT_DEFINITION)', 'inventory, access)')
+    .replace('public final class SunheartAltarMenu extends ItemCombinerMenu {', '''public final class SunheartAltarMenu extends ItemCombinerMenu {
+    @Override protected ItemCombinerMenuSlotDefinition createInputSlotDefinitions() { return SLOT_DEFINITION; }''')
+}
+edit('SunheartAltarBlock.java') { text ->
+    text.replace('protected InteractionResult useItemOn(', 'protected net.minecraft.world.ItemInteractionResult useItemOn(')
+        .replaceFirst('return level instanceof ServerLevel \\? InteractionResult.CONSUME : InteractionResult.SUCCESS;', 'return net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide());')
+}
+edit('SunheartAltarScreen.java') { it
+    .replace('import net.minecraft.world.item.equipment.Equippable;', 'import net.minecraft.world.item.Equipable;')
+    .replace('Equippable equippable = stack.get(DataComponents.EQUIPPABLE);', 'Equipable equippable = Equipable.get(stack);')
+    .replace('equippable.slot()', 'equippable.getEquipmentSlot()')
+    .replaceAll(/RenderType::guiTextured,\s*/, '')
+}
