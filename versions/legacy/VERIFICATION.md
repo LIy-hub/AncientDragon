@@ -20,7 +20,7 @@ All JUnit suites have zero failures/errors. Counts include the original 221 test
 ### 1.21.1
 
 - Runtime: `a49281922592ed044613f54e1a93ce28a6c661de6f1d9a6e1829870b4cb65936`
-- Sources: `de024b8b34d9e5c3f16226b50199b8780bcf2e591bd8324e637fca9f52bb8615`
+- Sources: `2d8ce3e4915dd90812a97e7a6a6f39a7ef717bf288f7a98c3f3d1333f211b47d`
 - Public BlendLib: `8c45f73ece19a33ee5d7d322544d2701c51e44a689a448acd9d294a8b3d867c6`
 - Classes: 237; original production sources preserved: 96; source-JAR Java files: 119; authored resources verified: 1468.
 - Build log: `build/build-1.21.1-r12.log`.
@@ -30,7 +30,7 @@ All JUnit suites have zero failures/errors. Counts include the original 221 test
 ### 1.21.2
 
 - Runtime: `f005b547de14a615affebf7a368f6c9484dbd30baa94c4aff826d77af716d4f9`
-- Sources: `df6a26a920a2f1626353fe1846d86cc383790b130ceedc71f5789bcff505d80e`
+- Sources: `09fd3265ab924067662440f4d5d0b91c9c7f914d983090476534ba0ffada1497`
 - Public BlendLib: `b4f759b2f6690461c697c53e6356e458fb8add823fd843d432ee4b7e55b8057c`
 - Classes: 230; original production sources preserved: 96; source-JAR Java files: 112; authored resources verified: 1468.
 - Build log: `build/build-1.21.2-r6.log`.
@@ -40,7 +40,7 @@ All JUnit suites have zero failures/errors. Counts include the original 221 test
 ### 1.21.3
 
 - Runtime: `1094695eeac4a19254d0a486226c75706c71af53068f0eee4d3a6a32a5fa7902`
-- Sources: `24f3b916695ae9366dcc69141d4a5f878e598d37086d3f0c5e50332b8da8c5a7`
+- Sources: `8ab7c0b3a85e406f6fffb0410c37baa03a0f16c120d4ec7e652e64928a50f3b5`
 - Public BlendLib: `9cc5611b8526974f3cf3c67d61ef753d9c86102a6c22a54cdd017049b645c6be`
 - Classes: 230; original production sources preserved: 96; source-JAR Java files: 112; authored resources verified: 1468.
 - Build log: `build/build-1.21.3-r6.log`.
@@ -50,7 +50,7 @@ All JUnit suites have zero failures/errors. Counts include the original 221 test
 ### 1.21.4
 
 - Runtime: `deec84aa014168bf1fdc5ef57a057d58647ea05a20db33a80ebc5a086745c84e`
-- Sources: `6defe96b28895d1e8d6129056e7dd39efcb59c131f35c63af7a1a696810ff725`
+- Sources: `e662cfa89e42ee2c8912cc15df8f877c021bd4c233f126359edfe0070cbd30f7`
 - Public BlendLib: `8dd6f4d6113e0fb8425c0f63f1a201adf87562e73592314ec0fbd33399cae6bb`
 - Classes: 227; original production sources preserved: 96; source-JAR Java files: 110; authored resources verified: 1468.
 - Build log: `build/build-1.21.4-r5.log`.
@@ -60,7 +60,7 @@ All JUnit suites have zero failures/errors. Counts include the original 221 test
 ### 1.21.5
 
 - Runtime: `bae88d9bd0c75f6699709a15b0c056bb69552ea19abba6fb29d058b91f6a25df`
-- Sources: `d0adbd6cc9aa652d8b889e23b5ed90875e1f89cd626dfdba7a96e426950d3f4a`
+- Sources: `b757a7f0b776a9cab1b9f1ea2ded2db504353017d43cf2f6aac01a352813c7d7`
 - Public BlendLib: `92cd6c64a6e90b8c44aef655ece58b05afc4172ff53715a760d74f3c81d857f9`
 - Classes: 221; original production sources preserved: 96; source-JAR Java files: 105; authored resources verified: 1468.
 - Build log: `build/build-1.21.5-final.log`.
@@ -70,7 +70,7 @@ All JUnit suites have zero failures/errors. Counts include the original 221 test
 ### 1.21.6
 
 - Runtime: `4760289b498cd3d42a1ba9cc7e4f32c14ac16689a6a2ee2129cd3eb2959d9e55`
-- Sources: `3b689a1db8d0967af12d58e36f264970c470d550dac9690be67ef19c87cb749d`
+- Sources: `59c083c910809eb8c278345bbd083ed7bacc55776ddf3cd18a7f6f25ae7ce84f`
 - Public BlendLib: `99e7cdb12f057b844de4252a313398201076db1ea583da8214285be72fa32c8c`
 - Classes: 217; original production sources preserved: 96; source-JAR Java files: 102; authored resources verified: 1468.
 - Build log: `build/build-1.21.6-final.log`.
@@ -80,7 +80,7 @@ All JUnit suites have zero failures/errors. Counts include the original 221 test
 ### 1.21.7
 
 - Runtime: `324f650ded7d3883c74dbf9034a1be780ce2950d86769f791ad2ebf39395c7af`
-- Sources: `28d415c15172cb1b6966e9170175e07693c9bb70fc14a29efd1eb6c727589721`
+- Sources: `84c70db191eed5f6faf36140023ad5139a12b48fa14e1a6d7541a6b42f49e66e`
 - Public BlendLib: `7816988cbcc66a64774f8c0c509c58f2724f386e9cfbb27dd532eaa078635f34`
 - Classes: 217; original production sources preserved: 96; source-JAR Java files: 102; authored resources verified: 1468.
 - Build log: `build/build-1.21.7-final.log`.
@@ -90,7 +90,7 @@ All JUnit suites have zero failures/errors. Counts include the original 221 test
 ### 1.21.8
 
 - Runtime: `4099a39aeab2f70e27186aabb11c548acd8558f1d07b72dc421c9726c690083d`
-- Sources: `74234627478172c005ae2b336d5a00f5b21fb7d70086ca18fdc23701888c23b6`
+- Sources: `47361df6f39e6f9a1d47b1630a96619d0fc63370175e08788f2df87c0563fc4a`
 - Public BlendLib: `ccb4c5bf4a132c5a33f6d5a5ee39586cf4ad7d4f5f2b69c8a6b5c3233575319b`
 - Classes: 217; original production sources preserved: 96; source-JAR Java files: 102; authored resources verified: 1468.
 - Build log: `build/build-1.21.8-final.log`.
@@ -109,3 +109,7 @@ All JUnit suites have zero failures/errors. Counts include the original 221 test
 ## Reproduce
 
 Use the commands in [README.md](README.md). Each final build executed `build check --max-workers=1 --no-daemon` against its exact target. The current generated-source pipeline includes all original and additional tests. Source generation preserves the original root tree. The final packaged server command uses JDK 21, `-Xms128m -Xmx1G -Dancientdragon.verifyLegacyRelics=true -jar fabric-server.jar nogui` in a fresh loopback-only directory; see `smoke_server.py` for its required explicit inputs. Earlier successful targets ran without the 1.21.1-specific verification flag, which has no handler on those targets.
+
+## Integrated source archives
+
+The eight source archives were regenerated from integrated source commit `3d991ca` to update the raw resource template from the previous Alpha dependency to `>=1.0.0-beta.2 <1.1.0`. Only `prepareSources`, `sourcesJar`, and `remapSourcesJar` ran. Java contents are unchanged after line-ending normalization; no runtime artifact was replaced. The source hashes above identify the final release source archives. Original frozen runtime receipts remain authoritative for startup checks.

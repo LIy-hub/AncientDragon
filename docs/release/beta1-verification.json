@@ -1,0 +1,919 @@
+{
+  "schema_version": 1,
+  "mod": "Ancient Dragon",
+  "release": "0.1.0-beta.1",
+  "release_type": "Beta",
+  "loader": "Fabric",
+  "fabric_loader_minimum": "0.19.3",
+  "verified_source_commit": "080cfc2656bc26f8ca6b7caa317ca321479badfc",
+  "checked_at_utc": "2026-09-08T07:28:34.895467+00:00",
+  "github_release": "https://github.com/LIy-hub/AncientDragon/releases/tag/v0.1.0-beta.1",
+  "github_prerelease": true,
+  "github_matrix": {
+    "url": "https://github.com/LIy-hub/AncientDragon/actions/runs/34198186718",
+    "conclusion": "success",
+    "jobs": 15
+  },
+  "test_executions": 3404,
+  "packaged_client_targets": 15,
+  "packaged_server_targets": 15,
+  "curseforge_approved_targets": 13,
+  "acceptance_limits": [
+    "No in-game visual acceptance",
+    "No multiplayer combat acceptance",
+    "No GPU performance acceptance",
+    "No cross-version world downgrade acceptance"
+  ],
+  "artifact_notes": [
+    "Runtime hashes identify the exact frozen JARs used in packaged startup checks.",
+    "Legacy source archives were regenerated from integrated code to update the raw BlendLib dependency template; Java contents and runtime artifacts are unchanged.",
+    "A fresh integrated 1.21.1 build passed 236 tests and produced identical class bytes; line endings in license and collision JSON changed its ZIP hash. Byte-for-byte rebuild reproducibility is not claimed."
+  ],
+  "targets": [
+    {
+      "minecraft": "1.21.1",
+      "version": "0.1.0-beta.1+1.21.1",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.1.jar",
+          "sha256": "a49281922592ed044613f54e1a93ce28a6c661de6f1d9a6e1829870b4cb65936",
+          "bytes": 8228112
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.1-sources.jar",
+          "sha256": "2d8ce3e4915dd90812a97e7a6a6f39a7ef717bf288f7a98c3f3d1333f211b47d",
+          "bytes": 7852016
+        }
+      ],
+      "tests": {
+        "tests": 236,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 52
+      },
+      "blendlib": "1.0.0-beta.2+1.21.1",
+      "blendlib_sha256": "8c45f73ece19a33ee5d7d322544d2701c51e44a689a448acd9d294a8b3d867c6",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "id": 8835796,
+        "status": "Under Review",
+        "cdn_sha256": "a49281922592ed044613f54e1a93ce28a6c661de6f1d9a6e1829870b4cb65936",
+        "cdn_bytes": 8228112,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835796",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "1.21.2",
+      "version": "0.1.0-beta.1+1.21.2",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.2.jar",
+          "sha256": "f005b547de14a615affebf7a368f6c9484dbd30baa94c4aff826d77af716d4f9",
+          "bytes": 8214499
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.2-sources.jar",
+          "sha256": "09fd3265ab924067662440f4d5d0b91c9c7f914d983090476534ba0ffada1497",
+          "bytes": 7845943
+        }
+      ],
+      "tests": {
+        "tests": 233,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 51
+      },
+      "blendlib": "1.0.0-beta.2+1.21.2",
+      "blendlib_sha256": "b4f759b2f6690461c697c53e6356e458fb8add823fd843d432ee4b7e55b8057c",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "status": "Under Review",
+        "id": 8835768,
+        "cdn_sha256": "f005b547de14a615affebf7a368f6c9484dbd30baa94c4aff826d77af716d4f9",
+        "cdn_bytes": 8214499,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835768",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "1.21.3",
+      "version": "0.1.0-beta.1+1.21.3",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.3.jar",
+          "sha256": "1094695eeac4a19254d0a486226c75706c71af53068f0eee4d3a6a32a5fa7902",
+          "bytes": 8214497
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.3-sources.jar",
+          "sha256": "8ab7c0b3a85e406f6fffb0410c37baa03a0f16c120d4ec7e652e64928a50f3b5",
+          "bytes": 7845944
+        }
+      ],
+      "tests": {
+        "tests": 233,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 51
+      },
+      "blendlib": "1.0.0-beta.2+1.21.3",
+      "blendlib_sha256": "9cc5611b8526974f3cf3c67d61ef753d9c86102a6c22a54cdd017049b645c6be",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "status": "Approved",
+        "id": 8835733,
+        "cdn_sha256": "1094695eeac4a19254d0a486226c75706c71af53068f0eee4d3a6a32a5fa7902",
+        "cdn_bytes": 8214497,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835733",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "1.21.4",
+      "version": "0.1.0-beta.1+1.21.4",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.4.jar",
+          "sha256": "deec84aa014168bf1fdc5ef57a057d58647ea05a20db33a80ebc5a086745c84e",
+          "bytes": 8209640
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.4-sources.jar",
+          "sha256": "e662cfa89e42ee2c8912cc15df8f877c021bd4c233f126359edfe0070cbd30f7",
+          "bytes": 7844052
+        }
+      ],
+      "tests": {
+        "tests": 233,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 51
+      },
+      "blendlib": "1.0.0-beta.2+1.21.4",
+      "blendlib_sha256": "8dd6f4d6113e0fb8425c0f63f1a201adf87562e73592314ec0fbd33399cae6bb",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "status": "Approved",
+        "id": 8835692,
+        "cdn_sha256": "deec84aa014168bf1fdc5ef57a057d58647ea05a20db33a80ebc5a086745c84e",
+        "cdn_bytes": 8209640,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835692",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "1.21.5",
+      "version": "0.1.0-beta.1+1.21.5",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.5.jar",
+          "sha256": "bae88d9bd0c75f6699709a15b0c056bb69552ea19abba6fb29d058b91f6a25df",
+          "bytes": 8201243
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.5-sources.jar",
+          "sha256": "b757a7f0b776a9cab1b9f1ea2ded2db504353017d43cf2f6aac01a352813c7d7",
+          "bytes": 7840303
+        }
+      ],
+      "tests": {
+        "tests": 229,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 49
+      },
+      "blendlib": "1.0.0-beta.2+1.21.5",
+      "blendlib_sha256": "92cd6c64a6e90b8c44aef655ece58b05afc4172ff53715a760d74f3c81d857f9",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "status": "Approved",
+        "id": 8835673,
+        "cdn_sha256": "bae88d9bd0c75f6699709a15b0c056bb69552ea19abba6fb29d058b91f6a25df",
+        "cdn_bytes": 8201243,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835673",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "1.21.6",
+      "version": "0.1.0-beta.1+1.21.6",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.6.jar",
+          "sha256": "4760289b498cd3d42a1ba9cc7e4f32c14ac16689a6a2ee2129cd3eb2959d9e55",
+          "bytes": 8197050
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.6-sources.jar",
+          "sha256": "59c083c910809eb8c278345bbd083ed7bacc55776ddf3cd18a7f6f25ae7ce84f",
+          "bytes": 7838341
+        }
+      ],
+      "tests": {
+        "tests": 227,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 48
+      },
+      "blendlib": "1.0.0-beta.2+1.21.6",
+      "blendlib_sha256": "99e7cdb12f057b844de4252a313398201076db1ea583da8214285be72fa32c8c",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "status": "Approved",
+        "id": 8835667,
+        "cdn_sha256": "4760289b498cd3d42a1ba9cc7e4f32c14ac16689a6a2ee2129cd3eb2959d9e55",
+        "cdn_bytes": 8197050,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835667",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "1.21.7",
+      "version": "0.1.0-beta.1+1.21.7",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.7.jar",
+          "sha256": "324f650ded7d3883c74dbf9034a1be780ce2950d86769f791ad2ebf39395c7af",
+          "bytes": 8197050
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.7-sources.jar",
+          "sha256": "84c70db191eed5f6faf36140023ad5139a12b48fa14e1a6d7541a6b42f49e66e",
+          "bytes": 7838341
+        }
+      ],
+      "tests": {
+        "tests": 227,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 48
+      },
+      "blendlib": "1.0.0-beta.2+1.21.7",
+      "blendlib_sha256": "7816988cbcc66a64774f8c0c509c58f2724f386e9cfbb27dd532eaa078635f34",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "id": 8835653,
+        "status": "Approved",
+        "cdn_sha256": "324f650ded7d3883c74dbf9034a1be780ce2950d86769f791ad2ebf39395c7af",
+        "cdn_bytes": 8197050,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835653",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "1.21.8",
+      "version": "0.1.0-beta.1+1.21.8",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.8.jar",
+          "sha256": "4099a39aeab2f70e27186aabb11c548acd8558f1d07b72dc421c9726c690083d",
+          "bytes": 8197048
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.8-sources.jar",
+          "sha256": "47361df6f39e6f9a1d47b1630a96619d0fc63370175e08788f2df87c0563fc4a",
+          "bytes": 7838341
+        }
+      ],
+      "tests": {
+        "tests": 227,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 48
+      },
+      "blendlib": "1.0.0-beta.2+1.21.8",
+      "blendlib_sha256": "ccb4c5bf4a132c5a33f6d5a5ee39586cf4ad7d4f5f2b69c8a6b5c3233575319b",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "id": 8835647,
+        "status": "Approved",
+        "cdn_sha256": "4099a39aeab2f70e27186aabb11c548acd8558f1d07b72dc421c9726c690083d",
+        "cdn_bytes": 8197048,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835647",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "1.21.9",
+      "version": "0.1.0-beta.1+1.21.9",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.9.jar",
+          "sha256": "ca59dd7a8a06a28f2df9122b10537b61176b9e275afd3c2b5b66b086b12d4ea6",
+          "bytes": 8195004
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.9-sources.jar",
+          "sha256": "dafdfdf024a1242bf6f0bb44c5ef04ebc1f6155c0d5ec3116f855892da0857e1",
+          "bytes": 7837395
+        }
+      ],
+      "tests": {
+        "tests": 227,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 48
+      },
+      "blendlib": "1.0.0-beta.2+1.21.9",
+      "blendlib_sha256": "565b2d9f10595789cc1f61897375f29ba7c6a312b0a96efe36ee2691f709ee7e",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "id": 8835637,
+        "status": "Approved",
+        "cdn_sha256": "ca59dd7a8a06a28f2df9122b10537b61176b9e275afd3c2b5b66b086b12d4ea6",
+        "cdn_bytes": 8195004,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835637",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "1.21.10",
+      "version": "0.1.0-beta.1+1.21.10",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.10.jar",
+          "sha256": "4725c5d1026c2f5c39bf10a363673f5042628c93470f073cb82143e8d3f0eccd",
+          "bytes": 8195013
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.10-sources.jar",
+          "sha256": "c07e116edd8810f7beebc69372903c58edbbef65d73f3f6f3fae56bfce678b2e",
+          "bytes": 7837403
+        }
+      ],
+      "tests": {
+        "tests": 227,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 48
+      },
+      "blendlib": "1.0.0-beta.2+1.21.10",
+      "blendlib_sha256": "101aacd800d0a37121f435482da84c7b9e01a8072a0a5a0a0a559de648c3d5ef",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "id": 8835628,
+        "status": "Approved",
+        "cdn_sha256": "4725c5d1026c2f5c39bf10a363673f5042628c93470f073cb82143e8d3f0eccd",
+        "cdn_bytes": 8195013,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835628",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "1.21.11",
+      "version": "0.1.0-beta.1+1.21.11",
+      "java": ">=21",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.11.jar",
+          "sha256": "cd5e5f5050e84b28b350b03841e4787a1945be379d7abee101e5befd8a28d45c",
+          "bytes": 8180510
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+1.21.11-sources.jar",
+          "sha256": "95fe76fa4580f8daeba38adf8854ad10030910529a3e5c91b985ae2407673e62",
+          "bytes": 7829050
+        }
+      ],
+      "tests": {
+        "tests": 221,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 47
+      },
+      "blendlib": "1.0.0-beta.2+1.21.11",
+      "blendlib_sha256": "9e4dafa29bb5f6cee2ce60ba45aa8c150b4ba8a36d70b3577320f46a07de49cb",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "id": 8835615,
+        "status": "Approved",
+        "cdn_sha256": "cd5e5f5050e84b28b350b03841e4787a1945be379d7abee101e5befd8a28d45c",
+        "cdn_bytes": 8180510,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835615",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "26.1",
+      "version": "0.1.0-beta.1+26.1",
+      "java": ">=25",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+26.1.jar",
+          "sha256": "07286379a284e3b79cad621add52baaef187105db196e3ae7ea910d5d8144cf6",
+          "bytes": 8216734
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+26.1-sources.jar",
+          "sha256": "68e847fe46aa6832f568cfbc3b7f8da04c289afcad0a44a13aecbae9ebabdfb9",
+          "bytes": 7804851
+        }
+      ],
+      "tests": {
+        "tests": 221,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 47
+      },
+      "blendlib": "1.0.0-beta.2+26.1",
+      "blendlib_sha256": "bbd5df63029d521bdb58a8e93ee238521c63c7c518154e5fcd727d9b4f8f45ad",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "id": 8835605,
+        "status": "Approved",
+        "cdn_sha256": "07286379a284e3b79cad621add52baaef187105db196e3ae7ea910d5d8144cf6",
+        "cdn_bytes": 8216734,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835605",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "26.1.1",
+      "version": "0.1.0-beta.1+26.1.1",
+      "java": ">=25",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+26.1.1.jar",
+          "sha256": "178aaeb4406dee28ebf0e83a5cafde0e63b89d598ffbdd96a6cf2d016f596704",
+          "bytes": 8216737
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+26.1.1-sources.jar",
+          "sha256": "17f35df91b0ef47b97dd6e70fb554c7ec32572cee7115c956c2a4584db6d46f6",
+          "bytes": 7804852
+        }
+      ],
+      "tests": {
+        "tests": 221,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 47
+      },
+      "blendlib": "1.0.0-beta.2+26.1.1",
+      "blendlib_sha256": "5f11b14b2d4b83e90a829338cb3b6b84b303314b7945f006ff75089b831beae8",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "id": 8835590,
+        "status": "Approved",
+        "cdn_sha256": "178aaeb4406dee28ebf0e83a5cafde0e63b89d598ffbdd96a6cf2d016f596704",
+        "cdn_bytes": 8216737,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835590",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "26.1.2",
+      "version": "0.1.0-beta.1+26.1.2",
+      "java": ">=25",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+26.1.2.jar",
+          "sha256": "bf097854d02ba82d3aac2393627de339753f3c8dd41b1a2a194b0c22006d73f3",
+          "bytes": 8216689
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+26.1.2-sources.jar",
+          "sha256": "4651d6dd2feef329a51ce92fcb4df77b5673f73b99f46ec027254511c162d5cb",
+          "bytes": 7804821
+        }
+      ],
+      "tests": {
+        "tests": 221,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 47
+      },
+      "blendlib": "1.0.0-beta.2+26.1.2",
+      "blendlib_sha256": "01a1cabe230da43222fe30baab23d3f31ed7f09868601c7d81cac9b82f5d83de",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 0
+      },
+      "curseforge": {
+        "id": 8835570,
+        "status": "Approved",
+        "cdn_sha256": "bf097854d02ba82d3aac2393627de339753f3c8dd41b1a2a194b0c22006d73f3",
+        "cdn_bytes": 8216689,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835570",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    },
+    {
+      "minecraft": "26.2",
+      "version": "0.1.0-beta.1+26.2",
+      "java": ">=25",
+      "artifacts": [
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+26.2.jar",
+          "sha256": "1ee631a2a57624da6f6a78403a97fd4d5201bd808a2214ef53286cd0de0a950c",
+          "bytes": 8216748
+        },
+        {
+          "name": "ancient-dragon-0.1.0-beta.1+26.2-sources.jar",
+          "sha256": "ab2a7d66594d7f7ba15b223b15c1020287abb6ec664017e3f1ff679204014b94",
+          "bytes": 7804840
+        }
+      ],
+      "tests": {
+        "tests": 221,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "suites": 47
+      },
+      "blendlib": "1.0.0-beta.2+26.2",
+      "blendlib_sha256": "e9539358a7b6567e7ce0e7e057e46aefb5ba643e58043c9fd04d11ea2c9aeab0",
+      "client": {
+        "startup": true,
+        "models": 1,
+        "missing": 0,
+        "diagnostics": 0,
+        "published": true,
+        "normal_close": true,
+        "unexpected_errors": 0
+      },
+      "server": {
+        "ready": true,
+        "stop_sent": true,
+        "exit_code": 0,
+        "unexpected_errors": 0,
+        "environment_diagnostic_count": 1
+      },
+      "curseforge": {
+        "id": 8835559,
+        "status": "Approved",
+        "cdn_sha256": "1ee631a2a57624da6f6a78403a97fd4d5201bd808a2214ef53286cd0de0a950c",
+        "cdn_bytes": 8216748,
+        "cdn_verified": true,
+        "url": "https://www.curseforge.com/minecraft/mc-mods/ancient-dragon/files/8835559",
+        "release_type": "Beta",
+        "environments": [
+          "Client",
+          "Server"
+        ],
+        "required_dependencies": [
+          "Fabric API",
+          "BlendLib"
+        ]
+      }
+    }
+  ]
+}
