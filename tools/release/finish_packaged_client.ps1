@@ -11,7 +11,7 @@ $clientProcess = Get-Process -Id $state.pid
 $windowTitle = $clientProcess.MainWindowTitle
 $consolePath = Join-Path $profilePath 'console.log'
 $logText = Get-Content -LiteralPath $consolePath -Raw
-if ($windowTitle -notmatch 'Minecraft' -or $logText -notmatch 'active_generation=1 published=true.*diagnostics=0') {
+if ($windowTitle -notmatch 'Minecraft' -or $logText -notmatch 'active_generation=1 published=true stale=false models=1 missing=0 diagnostics=0') {
     throw 'Client window and successful BlendLib resource-reload evidence are required.'
 }
 if ($logText -notmatch 'Ancient Dragon vertical slice initialized' -or $logText -notmatch 'ancient_dragon 0\.1\.0-beta\.1') {

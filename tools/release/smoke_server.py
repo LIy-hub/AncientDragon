@@ -106,8 +106,11 @@ except subprocess.TimeoutExpired:
         state["exit_code"] = process.wait(timeout=10)
 reader.join(timeout=5)
 log_text = (directory / "console.log").read_text(encoding="utf-8", errors="replace")
+state["environment_diagnostics"] = [line for line in log_text.splitlines() if "/ERROR]" in line
+    and ("Failed to request yggdrasil public key" in line
+        or "Unable to locate English counter names in registry Perflib 009" in line)]
 state["unexpected_errors"] = [line for line in log_text.splitlines()
-    if "/ERROR]" in line and "Failed to request yggdrasil public key" not in line]
+    if "/ERROR]" in line and line not in state["environment_diagnostics"]]
 state["ancient_dragon_initialized"] = "Ancient Dragon vertical slice initialized" in log_text
 state["elapsed_seconds"] = round(time.time() - started, 2)
 state["result"] = "PASS" if (
