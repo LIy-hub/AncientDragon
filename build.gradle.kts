@@ -19,10 +19,10 @@ base {
 }
 
 repositories {
-    val blendLibVersion = providers.gradleProperty("blendlib_version").get()
+    val blendLibReleaseTag = providers.gradleProperty("blendlib_release_tag").get()
     ivy {
         name = "blendLibGitHubReleases"
-        url = uri("https://github.com/LIy-hub/BlendLib-Public/releases/download/v$blendLibVersion")
+        url = uri("https://github.com/LIy-hub/BlendLib-Public/releases/download/$blendLibReleaseTag")
         patternLayout {
             artifact("[artifact]-[revision].[ext]")
         }
@@ -79,15 +79,12 @@ val blendLibDistribution = configurations.create("blendLibDistribution") {
     isTransitive = false
 }
 
-val unpackBlendLibCompileJars = tasks.register<Copy>("unpackBlendLibCompileJars") {
-    group = "build setup"
-    description = "Extracts the public BlendLib API and common facade nested in its runtime JAR."
-    val outputDirectory = layout.buildDirectory.dir("blendlib-compile")
+val verifyBlendLibDistribution = tasks.register("verifyBlendLibDistribution") {
+    group = "verification"
+    description = "Verifies the public, complete BlendLib Beta.2 runtime used for compilation and launch."
     inputs.files(blendLibDistribution)
     inputs.property("blendlib_sha256", blendLibSha256)
-    outputs.dir(outputDirectory)
-
-    from({
+    doLast {
         val distribution = blendLibDistribution.singleFile
         val digest = MessageDigest.getInstance("SHA-256")
             .digest(distribution.readBytes())
@@ -95,18 +92,7 @@ val unpackBlendLibCompileJars = tasks.register<Copy>("unpackBlendLibCompileJars"
         check(digest == blendLibSha256) {
             "BlendLib public release checksum mismatch: expected $blendLibSha256, got $digest"
         }
-        zipTree(distribution)
-    }) {
-        include("META-INF/jars/blendlib-api-*.jar")
-        include("META-INF/jars/blendlib-fabric-common-*.jar")
-        eachFile { path = name }
-        includeEmptyDirs = false
     }
-    into(outputDirectory)
-}
-
-val blendLibCompileJars = fileTree(layout.buildDirectory.dir("blendlib-compile")) {
-    include("*.jar")
 }
 
 dependencies {
@@ -115,14 +101,13 @@ dependencies {
     implementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
     implementation("com.liy.blendlib:blendlib-fabric:$blendLibVersion")
     add(blendLibDistribution.name, "com.liy.blendlib:blendlib-fabric:$blendLibVersion")
-    compileOnly(blendLibCompileJars)
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks.withType<JavaCompile>().configureEach {
-    dependsOn(unpackBlendLibCompileJars)
+    dependsOn(verifyBlendLibDistribution)
     options.encoding = "UTF-8"
     options.release.set(25)
     options.compilerArgs.add("-Xlint:all")

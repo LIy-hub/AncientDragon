@@ -2,6 +2,23 @@
 
 All notable changes to Ancient Dragon are documented here.
 
+## 0.1.0-beta.1 - 2026-09-08
+
+First public Beta, updated to the released BlendLib Beta.2 version family.
+
+- Exact-version Fabric builds for Minecraft 1.21.1–1.21.11, 26.1, 26.1.1, 26.1.2, and 26.2.
+- Public, SHA-256-pinned BlendLib dependencies for every supported Minecraft target.
+- Version-specific adapters for entity interactions, persistent world data, lifecycle events,
+  native menus, camera effects, and equipment resources; shared encounter logic and assets retained.
+- Java 21 for Minecraft 1.21.x and Java 25 for Minecraft 26.x; install the matching Fabric API,
+  BlendLib, and Ancient Dragon files on the server and every client.
+- Target builds, packaged runtime checks, and platform publication are recorded in the
+  [Beta.1 verification record](docs/release/beta1-verification.md).
+
+This remains a Beta. Startup and automated tests do not replace in-game visual or multiplayer
+acceptance. Back up worlds before upgrading; downgrading a world to an older Minecraft release
+is not supported.
+
 ## 0.1.0-alpha.2 - 2026-08-07
 
 Sunheart Altar interface and forging update.

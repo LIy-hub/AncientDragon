@@ -7,7 +7,8 @@ progression, and a harvestable corpse.
 
 ## English description
 
-Ancient Dragon adds a complete, world-unique boss encounter to Minecraft Fabric.
+Ancient Dragon Beta.1 adds a complete, world-unique boss encounter to Minecraft Fabric,
+with exact-version builds across 15 official game releases and BlendLib Beta.2 integration.
 
 Far from spawn, the Overworld seed selects one deep-ocean site for a vast sacred mountain. Reach it
 through exploration or activate the reinforced deepslate frame in an Ancient City with an Echo
@@ -24,17 +25,17 @@ Sunheart Altar, equipment, tools, and weapons.
 
 ### Requirements
 
-- Minecraft 26.1.2
+- Minecraft 1.21.1–1.21.11, 26.1, 26.1.1, 26.1.2, or 26.2
 - Fabric Loader 0.19.3+
-- Java 25+
-- Fabric API 0.154.2+26.1.2
-- [BlendLib 1.0.0-alpha.1+26.1.2](https://www.curseforge.com/minecraft/mc-mods/blendlib)
-  or a newer compatible release
+- Java 21 for Minecraft 1.21.x; Java 25 for Minecraft 26.x
+- Fabric API for your exact Minecraft version
+- [BlendLib 1.0.0-beta.2](https://www.curseforge.com/minecraft/mc-mods/blendlib),
+  choosing the file built for the same Minecraft version as Ancient Dragon
 - Required on both client and server
 
-### Important alpha notice
+### Beta notice
 
-This is an alpha release. Back up important worlds before installing or updating. Natural sacred
+This is a Beta release. Back up important worlds before installing or updating. Natural sacred
 mountain generation only occurs in previously ungenerated chunks. Operator diagnostics are
 available under `/ancientdragon`, including `/ancientdragon structure locate`.
 
@@ -50,7 +51,8 @@ Mojang or Microsoft.
 
 ## 中文说明
 
-Ancient Dragon 为 Minecraft Fabric 加入一场完整且全世界唯一的古龙 Boss 遭遇。
+Ancient Dragon Beta.1 为 Minecraft Fabric 加入一场完整且全世界唯一的古龙 Boss 遭遇，
+提供 15 个正式游戏版本的独立构建，并适配 BlendLib Beta.2。
 
 主世界种子会在远离出生点的深海中选择唯一地点生成巨型神山。玩家可以直接探索，也可以手持回响碎片，
 激活远古城市中央的强化深板岩框架。所有有效入口都会通向同一座神山和同一只古龙，不会重复生成遭遇。
@@ -64,17 +66,17 @@ Ancient Dragon 为 Minecraft Fabric 加入一场完整且全世界唯一的古�
 
 ### 安装要求
 
-- Minecraft 26.1.2
+- Minecraft 1.21.1–1.21.11、26.1、26.1.1、26.1.2 或 26.2
 - Fabric Loader 0.19.3 或更高版本
-- Java 25 或更高版本
-- Fabric API 0.154.2+26.1.2
-- [BlendLib 1.0.0-alpha.1+26.1.2](https://www.curseforge.com/minecraft/mc-mods/blendlib)
-  或更新的兼容版本
+- Minecraft 1.21.x 使用 Java 21；Minecraft 26.x 使用 Java 25
+- 对应游戏版本的 Fabric API
+- [BlendLib 1.0.0-beta.2](https://www.curseforge.com/minecraft/mc-mods/blendlib)，
+  必须与古龙模组选择相同的 Minecraft 目标版本
 - 客户端和服务端都必须安装
 
-### Alpha 提醒
+### Beta 提醒
 
-当前为 Alpha 版本。安装或升级前请备份重要世界。自然神山只会在尚未生成的区块中生成。管理员可使用
+当前为 Beta 版本。安装或升级前请备份重要世界。自然神山只会在尚未生成的区块中生成。管理员可使用
 `/ancientdragon structure locate` 查询唯一候选位置，其余调试与世界管理命令位于
 `/ancientdragon` 下。
 

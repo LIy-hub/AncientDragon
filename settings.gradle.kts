@@ -8,10 +8,10 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
-        val blendLibVersion = providers.gradleProperty("blendlib_version").get()
+        val blendLibReleaseTag = providers.gradleProperty("blendlib_release_tag").get()
         ivy {
             name = "blendLibGitHubReleases"
-            url = uri("https://github.com/LIy-hub/BlendLib-Public/releases/download/v$blendLibVersion")
+            url = uri("https://github.com/LIy-hub/BlendLib-Public/releases/download/$blendLibReleaseTag")
             patternLayout {
                 artifact("[artifact]-[revision].[ext]")
             }

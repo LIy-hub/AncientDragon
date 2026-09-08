@@ -4,7 +4,8 @@
 
 **English** | [中文说明](#中文说明)
 
-> Public alpha for Minecraft `26.1.2`. Back up important worlds before installing or upgrading.
+> Public Beta `0.1.0-beta.1`, with exact-version Fabric builds for Minecraft `1.21.1–1.21.11`,
+> `26.1`, `26.1.1`, `26.1.2`, and `26.2`. Back up important worlds before installing or upgrading.
 
 Ancient Dragon is a Fabric boss mod built around one world-unique encounter. A colossal dragon
 sleeps on a sacred mountain selected in a distant deep ocean. Players can discover the mountain,
@@ -40,12 +41,12 @@ Downloads: [GitHub Releases](https://github.com/LIy-hub/AncientDragon/releases) 
 
 ### Requirements and installation
 
-- Minecraft `26.1.2`
+- Minecraft `1.21.1–1.21.11`, `26.1`, `26.1.1`, `26.1.2`, or `26.2`; choose the matching JAR
 - Fabric Loader `0.19.3` or newer
-- Java `25` or newer
-- Fabric API `0.154.2+26.1.2`
-- [BlendLib `1.0.0-alpha.1+26.1.2`](https://github.com/LIy-hub/BlendLib-Public/releases/tag/v1.0.0-alpha.1%2B26.1.2)
-  or a newer compatible release
+- Java `21` for Minecraft `1.21.x`; Java `25` for Minecraft `26.x`
+- Fabric API for the selected Minecraft version
+- [BlendLib `1.0.0-beta.2`](https://github.com/LIy-hub/BlendLib-Public/releases/tag/v1.0.0-beta.2),
+  using its exact same Minecraft target
 - Ancient Dragon must be installed on both the server and every connecting client.
 
 Install Fabric Loader, then place Fabric API, BlendLib, and the Ancient Dragon JAR in the `mods`
@@ -71,8 +72,10 @@ Fabric 实体、BlendLib 语义动画与服务器权威战斗状态机已经连�
 
 ## 当前已完成
 
-- Minecraft `26.1.2` / Fabric Loader `0.19.3` / Fabric API `0.154.2+26.1.2`。
-- [BlendLib `1.0.0-alpha.1+26.1.2`](https://github.com/LIy-hub/BlendLib-Public/releases/tag/v1.0.0-alpha.1%2B26.1.2)
+- Beta.1 提供 Minecraft `1.21.1–1.21.11`、`26.1`、`26.1.1`、`26.1.2`、`26.2` 的独立 Fabric 构建。
+- Fabric Loader `0.19.3` 或更高；Fabric API、古龙与 BlendLib 必须选择相同游戏版本。
+- `1.21.x` 使用 Java 21，`26.x` 使用 Java 25。
+- [BlendLib `1.0.0-beta.2`](https://github.com/LIy-hub/BlendLib-Public/releases/tag/v1.0.0-beta.2)
   必需依赖；Gradle 会从固定的公开 GitHub Release 下载并校验运行库。
 - 10 个蒙皮网格、100 个导出节点、28 个基础动作、4 张外置 Base Color PNG。
 - 从同一 GLB 骨架离线烘焙的格式 v2、逐 tick 局部 TRS 碰撞资源：服务端执行完整 FK，头、
@@ -131,7 +134,7 @@ Fabric 实体、BlendLib 语义动画与服务器权威战斗状态机已经连�
 ## 构建
 
 构建不依赖作者电脑上的 `D:\BlendLib`。Gradle 会从 BlendLib-Public 的固定 Release 下载
-运行库、核对 SHA-256，并从中提取编译所需的 API/Common facade。然后执行：
+完整运行库并核对 SHA-256。根项目构建目标为 `26.1.2`：
 
 ```powershell
 $env:JAVA_HOME='C:\Program Files\Java\latest\jdk-25'
@@ -142,11 +145,22 @@ cd D:\AncientDragon
 输出模组：
 
 ```text
-D:\AncientDragon\build\libs\ancient-dragon-0.1.0-alpha.2.jar
+D:\AncientDragon\build\libs\ancient-dragon-0.1.0-beta.1+26.1.2.jar
 ```
 
 运行时还必须安装同版本
-[BlendLib Fabric JAR](https://github.com/LIy-hub/BlendLib-Public/releases/download/v1.0.0-alpha.1%2B26.1.2/blendlib-fabric-1.0.0-alpha.1%2B26.1.2.jar)。
+[BlendLib Fabric JAR](https://github.com/LIy-hub/BlendLib-Public/releases/tag/v1.0.0-beta.2)。
+
+所有版本的构建入口和逐项验证记录见 [Beta.1 多版本记录](docs/release/beta1-verification.md)。
+在仓库根目录执行，`1.21.1–1.21.8` 使用 `versions/legacy`，其他目标使用 `versions/modern`：
+
+```powershell
+.\gradlew.bat -p versions/modern -Pminecraft_version=1.21.11 build verifyRuntimeJar
+.\gradlew.bat -p versions/legacy -Pminecraft_version=1.21.1 build verifyRuntimeJar
+```
+
+Gradle 使用 Java 25 启动；构建 `1.21.x` 时还需安装 Java 21 工具链。
+每个目标输出在 `versions/<family>/build/<Minecraft>/libs/`。
 
 ## 本地观察模型
 
