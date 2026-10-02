@@ -251,6 +251,10 @@ fun portJava(text: String, name: String): String {
             .replace("biomeSource.getNoiseBiome(", "biomeResolver.getNoiseBiome(")
             .replace(",\n                    randomState.sampler()", "")
             .replace(",\n                        randomState.sampler()", "")
+        if (name == "AncientCityPortalFrameTest.java") {
+            // Mojang 26.3 stores block-state palettes with lower-case id/properties fields.
+            result = result.replace("getStringOr(\"Name\", \"\")", "getStringOr(\"id\", \"\")")
+        }
         if (name in setOf("EternalSoulFireBlock.java", "AncientCityGatewayBlock.java")) {
             result = result.replace(Regex("    @Override\\s+public MapCodec<[^>]+> codec\\(\\) \\{[^}]*}\\s*"), "")
                 .replace(Regex("    public static final MapCodec<AncientCityGatewayBlock> CODEC = [^;]+;\\n"), "")
