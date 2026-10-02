@@ -77,6 +77,11 @@ dependencies {
     add(implementationName, "net.fabricmc.fabric-api:fabric-api:$fabricVersion")
     add(implementationName, "com.liy.blendlib:blendlib-fabric:$blendLibVersion")
     add(blendLibDistribution.name, "com.liy.blendlib:blendlib-fabric:$blendLibVersion")
+    if (minecraftVersion == "26.3") {
+        // A composite Java API variant exposes main classes only; client APIs live in the verified full JAR.
+        add("clientImplementation", files(blendLibDistribution))
+    }
+    if (minecraftVersion == "26.3") testImplementation("net.fabricmc:fabric-loader-junit:0.19.5")
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -331,6 +336,10 @@ val preparePortResources = tasks.register("preparePortResources") {
     }
 }
 sourceSets["main"].resources.setSrcDirs(listOf(layout.buildDirectory.dir("generated/resources")))
+if (minecraftVersion == "26.3") {
+    sourceSets["test"].compileClasspath += sourceSets["client"].output + configurations["clientCompileClasspath"]
+    sourceSets["test"].runtimeClasspath += sourceSets["client"].output + configurations["clientRuntimeClasspath"]
+}
 tasks.test { useJUnitPlatform(); workingDir = repository }
 tasks.withType<JavaCompile>().configureEach {
     dependsOn(preparePortSources, verifyBlendLibDistribution)
