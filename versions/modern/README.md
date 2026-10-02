@@ -1,7 +1,7 @@
 # Ancient Dragon modern Fabric targets
 
 This independent Gradle build covers Minecraft 1.21.9, 1.21.10, 1.21.11, 26.1,
-26.1.1, 26.1.2, and 26.2. Run from the repository root:
+26.1.1, 26.1.2, 26.2, and 26.3. Run from the repository root:
 
 ```text
 ./gradlew -p versions/modern -Pminecraft_version=1.21.11 build verifyRuntimeJar
@@ -9,7 +9,10 @@ This independent Gradle build covers Minecraft 1.21.9, 1.21.10, 1.21.11, 26.1,
 
 Gradle runs with Java 25; 1.21.x compilation and runtime use Java 21. Public BlendLib
 Beta.2 artifacts are pinned by Minecraft target and SHA-256 in `build.gradle.kts`.
-No author checkout or local Maven publication is required.
+Targets through 26.2 require no author checkout or local Maven publication.
+The 26.3 target instead builds the public BlendLib Beta.3 source at the exact revision in
+`blendlib-source.properties`; this avoids depending on a nonexistent released 26.3 binary.
+See [the reproducible 26.3 build](../../docs/release/minecraft-26.3.md).
 
 The build generates all shared gameplay, client, and test sources from the root `src/`
 tree. Adapters preserve the encounter, corpse harvesting, gateway, persistence, menu,

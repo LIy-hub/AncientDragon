@@ -6,6 +6,16 @@
 
 A colossal dragon sleeps on a mountain far out at sea. Ancient Dragon adds this encounter to the Overworld: find the mountain, wake its guardian, and fight through the mountain, storm, and solar phases. There is one mountain and one dragon per world, and its defeat is permanent.
 
+### Minecraft 26.3 source port
+
+The `mc/26.3` branch builds Ancient Dragon `0.1.0-beta.1+26.3` with Fabric Loader 0.19.5,
+Fabric API 0.161.0+26.3, Java 25 and **BlendLib 1.0.0-beta.3+26.3**.
+See the [26.3 build instructions, changelog and evidence](docs/release/minecraft-26.3.md).
+This source update does not create a GitHub Release or CurseForge upload.
+
+`mc/26.3` 分支使用 Java 25、Loader 0.19.5、Fabric API 0.161.0+26.3 与 BlendLib Beta.3 的 26.3 专用包。
+构建方法及验证边界见上述记录；未新增 GitHub Release 或 CurseForge 上传。
+
 ### Reaching the mountain
 
 Explore the distant ocean, or take an Echo Shard to an Ancient City. Use it on the reinforced deepslate frame at the city's center to open a gateway. Every gateway leads to the same mountain.
