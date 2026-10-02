@@ -242,8 +242,10 @@ fun portJava(text: String, name: String): String {
             .replace("import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement;", "import net.minecraft.world.level.levelgen.structure.placement.AbstractSpreadingStructurePlacement;")
             .replace("extends StructurePlacement {", "extends AbstractSpreadingStructurePlacement {")
             .replace("public StructurePlacementType<?> type()", "public MapCodec<SacredMountainPlacement> codec()")
-            .replace("int quartY = QuartPos.fromBlock(seaLevel);", "int quartY = QuartPos.fromBlock(seaLevel);\n        var climateSampler = randomState.createClimateSampler(net.minecraft.world.level.levelgen.densityfunction.SamplerContext.EMPTY_UNCACHED);")
-            .replace("randomState.sampler()", "climateSampler")
+            .replace("int quartY = QuartPos.fromBlock(seaLevel);", "int quartY = QuartPos.fromBlock(seaLevel);\n        var biomeResolver = biomeSource.createUncachedResolver(randomState);")
+            .replace("biomeSource.getNoiseBiome(", "biomeResolver.getNoiseBiome(")
+            .replace(",\n                    randomState.sampler()", "")
+            .replace(",\n                        randomState.sampler()", "")
         if (name in setOf("EternalSoulFireBlock.java", "AncientCityGatewayBlock.java")) {
             result = result.replace(Regex("    @Override\\s+public MapCodec<[^>]+> codec\\(\\) \\{[^}]*}\\s*"), "")
                 .replace(Regex("    public static final MapCodec<AncientCityGatewayBlock> CODEC = [^;]+;\\n"), "")
