@@ -11,6 +11,8 @@
 - Give the visible victory advancement root its required vanilla End background
   in the 26.3 resource overlay. The bootstrap test decodes it with Minecraft's
   registry-aware advancement codec and reproduces the missing-background failure.
+- Release the 26.3 fix as `0.1.0-beta.2+26.3` and require the shader-corrected
+  `1.0.0-beta.4+26.3` BlendLib source/distribution.
 
 ## Reproducible source build
 
@@ -18,7 +20,7 @@ From a checkout of this repository's `mc/26.3` branch with JDK 25:
 
 ```sh
 git clone https://github.com/LIy-hub/BlendLib-Public.git ../BlendLib-Public
-git -C ../BlendLib-Public checkout 5c5354c42876e769c5e4915005ec3341502d0ef0
+git -C ../BlendLib-Public checkout 33099d05784b1ea6467635833052c4ef06bcb8d9
 bash gradlew -p versions/modern -Pminecraft_version=26.3 --no-daemon build verifyRuntimeJar
 ```
 
@@ -27,8 +29,8 @@ The build checks its exact Git revision from `versions/modern/blendlib-source.pr
 
 The two runtime mods must be installed together, on both client and server:
 
-- `ancient-dragon-0.1.0-beta.1+26.3.jar`
-- `blendlib-fabric-1.0.0-beta.3+26.3.jar`
+- `ancient-dragon-0.1.0-beta.2+26.3.jar`
+- `blendlib-fabric-1.0.0-beta.4+26.3.jar`
 
 They also require Fabric API 0.161.0+26.3 and Loader 0.19.5 or newer. No private BlendLib source, local Maven publication or new GitHub Release is needed.
 

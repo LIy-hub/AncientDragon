@@ -23,7 +23,7 @@ val (fabricVersion, blendLibSha256) = targets[minecraftVersion] ?: error("Unsupp
 val javaVersion = if (minecraftVersion.startsWith("1.21.")) 21 else 25
 val obfuscated = javaVersion == 21
 val needsSpears = minecraftVersion in setOf("1.21.9", "1.21.10")
-val blendLibVersion = if (minecraftVersion == "26.3") "1.0.0-beta.3+26.3" else "1.0.0-beta.2+$minecraftVersion"
+val blendLibVersion = if (minecraftVersion == "26.3") "1.0.0-beta.4+26.3" else "1.0.0-beta.2+$minecraftVersion"
 val repository = rootDir.resolve("../..").canonicalFile
 apply(plugin = if (obfuscated) "net.fabricmc.fabric-loom-remap" else "net.fabricmc.fabric-loom")
 repositories.withType<org.gradle.api.artifacts.repositories.MavenArtifactRepository>().configureEach {
@@ -44,7 +44,7 @@ repositories {
     mavenCentral()
 }
 group = "com.liy.ancientdragon"
-version = "0.1.0-beta.1+$minecraftVersion"
+version = "0.1.0-beta.${if (minecraftVersion == "26.3") 2 else 1}+$minecraftVersion"
 base.archivesName.set("ancient-dragon")
 layout.buildDirectory.set(layout.projectDirectory.dir("build/$minecraftVersion"))
 java {
@@ -358,7 +358,7 @@ tasks.withType<ProcessResources>().configureEach {
         expand("version" to project.version)
         filter { line -> line.replace("\"26.1.2\"", "\"$minecraftVersion\"")
             .replace("\"java\": \">=25\"", "\"java\": \">=$javaVersion\"")
-            .let { if (minecraftVersion == "26.3") it.replace(">=0.19.3", ">=0.19.5").replace("\"fabric-api\": \"*\"", "\"fabric-api\": \">=$fabricVersion\"").replace(">=1.0.0-beta.2 <1.1.0", ">=1.0.0-beta.3 <1.1.0") else it } }
+            .let { if (minecraftVersion == "26.3") it.replace(">=0.19.3", ">=0.19.5").replace("\"fabric-api\": \"*\"", "\"fabric-api\": \">=$fabricVersion\"").replace(">=1.0.0-beta.2 <1.1.0", ">=1.0.0-beta.4 <1.1.0") else it } }
     }
     filesMatching("ancient_dragon.mixins.json") {
         filter { line -> line.replace("JAVA_25", "JAVA_$javaVersion") }
@@ -383,7 +383,7 @@ val verifyRuntimeJar = tasks.register("verifyRuntimeJar") {
             check(metadata["id"] == "ancient_dragon" && metadata["version"] == project.version.toString())
             val depends = metadata["depends"] as Map<*, *>
             check(depends["minecraft"] == minecraftVersion && depends["java"] == ">=$javaVersion")
-            check(depends["blendlib"] == if (minecraftVersion == "26.3") ">=1.0.0-beta.3 <1.1.0" else ">=1.0.0-beta.2 <1.1.0")
+            check(depends["blendlib"] == if (minecraftVersion == "26.3") ">=1.0.0-beta.4 <1.1.0" else ">=1.0.0-beta.2 <1.1.0")
             val entries = jar.entries().asSequence().map { it.name }.toSet()
             val sourceClasses = repository.resolve("src/main/java").walkTopDown().filter { it.isFile && it.extension == "java" }.toList() +
                 repository.resolve("src/client/java").walkTopDown().filter { it.isFile && it.extension == "java" }.toList()
