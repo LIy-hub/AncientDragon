@@ -15,6 +15,19 @@ class Minecraft263BootstrapTest {
         SharedConstants.tryDetectVersion();
         Bootstrap.bootStrap();
         new AncientDragonMod().onInitialize();
+        try (var input = getClass().getResourceAsStream("/data/ancient_dragon/advancement/defeat_ancient_dragon.json")) {
+            assertNotNull(input);
+            var json = com.google.gson.JsonParser.parseReader(new java.io.InputStreamReader(input, java.nio.charset.StandardCharsets.UTF_8));
+            var lookups = net.minecraft.core.HolderLookup.Provider.create(
+                    net.minecraft.core.registries.BuiltInRegistries.REGISTRY.stream()
+                            .map(registry -> (net.minecraft.core.HolderLookup.RegistryLookup<?>) registry));
+            var ops = net.minecraft.resources.RegistryOps.create(com.mojang.serialization.JsonOps.INSTANCE, lookups);
+            assertDoesNotThrow(() -> net.minecraft.advancements.Advancement.CODEC.parse(ops, json).getOrThrow());
+            var missingBackground = json.deepCopy();
+            missingBackground.getAsJsonObject().getAsJsonObject("display").remove("background");
+            assertTrue(net.minecraft.advancements.Advancement.CODEC.parse(ops, missingBackground).error().isPresent(),
+                    "A visible root without a background must reproduce the registry-loading failure");
+        }
         try (var input = getClass().getResourceAsStream("/data/ancient_dragon/worldgen/structure_set/sacred_mountain.json")) {
             assertNotNull(input);
             var json = com.google.gson.JsonParser.parseReader(new java.io.InputStreamReader(input, java.nio.charset.StandardCharsets.UTF_8));

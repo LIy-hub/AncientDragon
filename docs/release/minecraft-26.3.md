@@ -8,6 +8,9 @@
 - Port Sacred Mountain placement to the spreading-placement implementation, direct codec registry and the new biome resolver, retaining deterministic candidates and ocean-clearance rules.
 - Remove obsolete block codecs and adapt the official city-template test to the 26.3 lower-case block-state palette IDs.
 - Build against the complete public BlendLib 26.3 JAR from a pinned source revision, including its client APIs. Older versions continue using their checksum-pinned Beta.2 releases.
+- Give the visible victory advancement root its required vanilla End background
+  in the 26.3 resource overlay. The bootstrap test decodes it with Minecraft's
+  registry-aware advancement codec and reproduces the missing-background failure.
 
 ## Reproducible source build
 
@@ -42,6 +45,11 @@ Code checkpoint: `7a2d43ad951773606cf3b883ff40e26edc50ce7c`.
 - The three official 26.3 city-centre templates still satisfy the exact 55-block gateway-frame contract; no assertions were weakened.
 
 Runtime JAR SHA-256: `dbbafead779ed0b50dbc715af58abe8ad242f8fdd30c3cc2cd4a65cb2fd9411b`.
+
+The 2026-10-04 advancement background fix passes the focused local build and
+packaged-JAR checks. Its bootstrap test validates the shipped victory advancement
+with the native 26.3 codec; the CI links and hash above refer to the original
+release before this resource fix.
 
 ## Verification limits
 
