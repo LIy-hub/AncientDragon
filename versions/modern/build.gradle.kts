@@ -332,6 +332,14 @@ val preparePortResources = tasks.register("preparePortResources") {
                     json["item.ancient_dragon.diamond_spear"] = if (chinese) "钻石长矛" else "Diamond Spear"
                     json["item.ancient_dragon.netherite_spear"] = if (chinese) "下界合金长矛" else "Netherite Spear"
                     target.writeText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json)) + "\n")
+                } else if (minecraftVersion == "26.3" && relative == "data/ancient_dragon/advancement/defeat_ancient_dragon.json") {
+                    // 26.3 rejects visible advancement roots without a background. Keep older targets unchanged.
+                    @Suppress("UNCHECKED_CAST")
+                    val json = JsonSlurper().parse(original) as MutableMap<String, Any?>
+                    @Suppress("UNCHECKED_CAST")
+                    val display = json["display"] as MutableMap<String, Any?>
+                    display["background"] = "minecraft:gui/advancements/backgrounds/stone"
+                    target.writeText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json)) + "\n")
                 } else {
                     original.copyTo(target, overwrite = true)
                 }
@@ -394,6 +402,12 @@ val verifyRuntimeJar = tasks.register("verifyRuntimeJar") {
             }
             for (path in listOf("assets/ancient_dragon/models3d/entity/ancient_dragon.glb", "assets/ancient_dragon/collision/ancient_dragon_collision_rig.json", "assets/ancient_dragon/blend_models/entity/ancient_dragon.json", "META-INF/ASSET_LICENSE.md", "META-INF/THIRD_PARTY_NOTICES.md")) {
                 check(path in entries) { "Missing runtime asset $path" }
+            }
+            if (minecraftVersion == "26.3") {
+                val advancement = JsonSlurper().parse(jar.getInputStream(jar.getEntry("data/ancient_dragon/advancement/defeat_ancient_dragon.json"))) as Map<*, *>
+                check((advancement["display"] as Map<*, *>)["background"] == "minecraft:gui/advancements/backgrounds/stone") {
+                    "Packaged visible advancement root must declare its 26.3 background"
+                }
             }
             check(entries.none { it.endsWith(".log") || it.endsWith(".blend") || it.startsWith("run/") || it.startsWith("art/") })
         }
