@@ -395,6 +395,14 @@ val verifyRuntimeJar = tasks.register("verifyRuntimeJar") {
             for (path in listOf("assets/ancient_dragon/models3d/entity/ancient_dragon.glb", "assets/ancient_dragon/collision/ancient_dragon_collision_rig.json", "assets/ancient_dragon/blend_models/entity/ancient_dragon.json", "META-INF/ASSET_LICENSE.md", "META-INF/THIRD_PARTY_NOTICES.md")) {
                 check(path in entries) { "Missing runtime asset $path" }
             }
+            if (minecraftVersion == "26.3") {
+                val path = "data/ancient_dragon/advancement/defeat_ancient_dragon.json"
+                val entry = checkNotNull(jar.getEntry(path)) { "Missing runtime advancement $path" }
+                val advancement = jar.getInputStream(entry).use { JsonSlurper().parse(it) } as Map<*, *>
+                check((advancement["display"] as Map<*, *>)["background"] == "minecraft:gui/advancements/backgrounds/end") {
+                    "Packaged visible advancement root must retain the released End background"
+                }
+            }
             check(entries.none { it.endsWith(".log") || it.endsWith(".blend") || it.startsWith("run/") || it.startsWith("art/") })
         }
     }
