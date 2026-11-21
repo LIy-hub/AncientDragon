@@ -1,7 +1,9 @@
 package com.liy.ancientdragon.compat;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 
 /** Writes every upstream encounter field to the same named compound/list layout used by ValueOutput. */
 public final class LegacyValueOutput {
@@ -11,6 +13,14 @@ public final class LegacyValueOutput {
     public void putInt(String key, int value) { tag.putInt(key, value); }
     public void putLong(String key, long value) { tag.putLong(key, value); }
     public void putDouble(String key, double value) { tag.putDouble(key, value); }
+    public <T> void store(String key, Codec<T> codec, T value) {
+        tag.put(key, codec.encodeStart(NbtOps.INSTANCE, value).getOrThrow());
+    }
+    public LegacyValueOutput child(String key) {
+        CompoundTag child = new CompoundTag();
+        tag.put(key, child);
+        return new LegacyValueOutput(child);
+    }
     public ValueOutputList childrenList(String key) {
         ListTag children = new ListTag();
         tag.put(key, children);

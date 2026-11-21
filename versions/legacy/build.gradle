@@ -21,7 +21,7 @@ if (!targets.containsKey(mc)) throw new GradleException("Unsupported legacy targ
 def upstream = file('../..')
 def blendVersion = "1.0.0-beta.2+$mc"
 group = 'com.liy.ancientdragon'
-version = "0.1.0-beta.1+$mc"
+version = "0.1.0-beta.2+$mc"
 base { archivesName = 'ancient-dragon' }
 layout.buildDirectory = file("build/$mc")
 

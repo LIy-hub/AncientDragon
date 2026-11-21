@@ -71,7 +71,8 @@ edit('AncientDragonEntities.java') { it
     .replace('.sized(GAMEPLAY_WIDTH, GAMEPLAY_HEIGHT)', '.dimensions(net.minecraft.world.entity.EntityDimensions.scalable(GAMEPLAY_WIDTH, GAMEPLAY_HEIGHT))')
     .replace('.sized(AncientDragonScale.blocks(1.0F), AncientDragonScale.blocks(1.0F))', '.dimensions(net.minecraft.world.entity.EntityDimensions.scalable(AncientDragonScale.blocks(1.0F), AncientDragonScale.blocks(1.0F)))')
     .replace('.noSave()', '.disableSaving()').replace('.noSummon()', '.disableSummon()')
-    .replace('.clientTrackingRange(', '.trackRangeChunks(').replace('.updateInterval(', '.trackedUpdateRate(')
+    .replace('.clientTrackingRange(CLIENT_TRACKING_RANGE)', '.trackRangeChunks(CLIENT_TRACKING_RANGE)')
+    .replace('.updateInterval(', '.trackedUpdateRate(')
     .replaceAll(/\.build\(ResourceKey.create\(Registries.ENTITY_TYPE, (\w+)\)\)/, '.build()')
 }
 ['AncientDragonEntity.java','AncientDragonPartEntity.java'].each { name -> edit(name) { text ->
@@ -99,3 +100,11 @@ edit('SunheartAltarScreen.java') { it
     .replace('equippable.slot()', 'equippable.getEquipmentSlot()')
     .replaceAll(/RenderType::guiTextured,\s*/, '')
 }
+
+edit('AncientDragonEggBlock.java') { it
+    .replace('protected InteractionResult useItemOn(', 'protected net.minecraft.world.ItemInteractionResult useItemOn(')
+    .replace('Player player, InteractionHand hand, BlockHitResult hit) {\n        return interactWithEgg(state, level, pos, player);', '''Player player, InteractionHand hand, BlockHitResult hit) {
+        interactWithEgg(state, level, pos, player);
+        return net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide());''')
+}
+edit('AncientDragonHatchling.java') { it.replace('causeFallDamage(double distance', 'causeFallDamage(float distance') }

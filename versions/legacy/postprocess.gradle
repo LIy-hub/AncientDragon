@@ -61,7 +61,7 @@ if (mc in ['1.21.1','1.21.2','1.21.3','1.21.4']) {
     }
 }
 if (mc in ['1.21.1','1.21.2','1.21.3','1.21.4','1.21.5']) {
-    ['AncientDragonEntity.java','AncientDragonPartEntity.java'].each { name -> edit(name) { text ->
+    ['AncientDragonEntity.java','AncientDragonPartEntity.java','AncientDragonHatchling.java'].each { name -> edit(name) { text ->
         text.replace('net.minecraft.world.level.storage.ValueInput','com.liy.ancientdragon.compat.LegacyValueInput')
             .replace('net.minecraft.world.level.storage.ValueOutput','com.liy.ancientdragon.compat.LegacyValueOutput')
             .replaceAll(/\bValueInput\b/,'LegacyValueInput').replaceAll(/\bValueOutput\b/,'LegacyValueOutput')
@@ -76,6 +76,25 @@ if (mc in ['1.21.1','1.21.2','1.21.3','1.21.4','1.21.5']) {
                 ? 'public boolean canBeCollidedWith() { return blocksPlayerCollision(); }'
                 : 'public boolean canBeCollidedWith() { return entityData.get(DATA_BLOCKS_PLAYERS); }')
     } }
+    ['AncientDragonEggBlockEntity.java', 'HatchlingDiet.java'].each { name -> edit(name) { text -> text
+        .replace('net.minecraft.world.level.storage.ValueInput', 'com.liy.ancientdragon.compat.LegacyValueInput')
+        .replace('net.minecraft.world.level.storage.ValueOutput', 'com.liy.ancientdragon.compat.LegacyValueOutput')
+        .replaceAll(/\bValueInput\b/, 'LegacyValueInput').replaceAll(/\bValueOutput\b/, 'LegacyValueOutput')
+        .replace('loadAdditional(LegacyValueInput input) {', 'loadAdditional(net.minecraft.nbt.CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {\n        LegacyValueInput input = new LegacyValueInput(tag);')
+        .replace('saveAdditional(LegacyValueOutput output) {', 'saveAdditional(net.minecraft.nbt.CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {\n        LegacyValueOutput output = new LegacyValueOutput(tag);')
+        .replace('super.loadAdditional(input);', 'super.loadAdditional(tag, registries);')
+        .replace('super.saveAdditional(output);', 'super.saveAdditional(tag, registries);')
+    } }
+    edit('HatchlingDietTest.java') { it
+        .replace('import net.minecraft.core.RegistryAccess;', 'import net.minecraft.nbt.CompoundTag;')
+        .replace('import net.minecraft.util.ProblemReporter;\n', '')
+        .replace('net.minecraft.world.level.storage.TagValueInput', 'com.liy.ancientdragon.compat.LegacyValueInput')
+        .replace('net.minecraft.world.level.storage.TagValueOutput', 'com.liy.ancientdragon.compat.LegacyValueOutput')
+        .replace('var source = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);', 'var sourceTag = new CompoundTag();\n        var source = new LegacyValueOutput(sourceTag);')
+        .replace('TagValueInput.create(ProblemReporter.DISCARDING, RegistryAccess.EMPTY, source.buildResult())', 'new LegacyValueInput(sourceTag)')
+        .replace('var output = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);', 'var outputTag = new CompoundTag();\n        var output = new LegacyValueOutput(outputTag);')
+        .replace('TagValueInput.create(ProblemReporter.DISCARDING, RegistryAccess.EMPTY, output.buildResult())', 'new LegacyValueInput(outputTag)')
+    }
     ['AncientDragonCorpseRewardService.java','DragonChronicleService.java'].each { name -> edit(name) { it.replace('player.level()', 'player.serverLevel()') } }
     edit('SunheartAltarScreen.java') { text ->
         text = text.replace('import net.minecraft.client.renderer.RenderPipelines;', 'import net.minecraft.client.renderer.RenderType;')
@@ -105,4 +124,53 @@ if (mc in ['1.21.1','1.21.2','1.21.3','1.21.4','1.21.5']) {
 }''')
         return text
     }
+}
+
+// Before 1.21.9, BlendLib submits through native immediate render methods.
+edit('AncientDragonEggRenderer.java') { text ->
+    def cameraParameter = mc in ['1.21.1', '1.21.2', '1.21.3', '1.21.4'] ? '' : ', Vec3 camera'
+    def cameraArgument = cameraParameter.isEmpty() ? '' : ', camera'
+    text
+        .replace('import net.minecraft.client.renderer.SubmitNodeCollector;', 'import net.minecraft.client.renderer.MultiBufferSource;')
+        .replace('import net.minecraft.client.renderer.feature.ModelFeatureRenderer.CrumblingOverlay;\n', '')
+        .replace('import net.minecraft.client.renderer.state.level.CameraRenderState;\n', '')
+        .replace('import com.liy.blendlib.fabric.client.blockentity.BlendBlockEntityRenderState;\n', '')
+        .replace('BlockEntityRenderer<AncientDragonEggBlockEntity, BlendBlockEntityRenderState>', 'BlockEntityRenderer<AncientDragonEggBlockEntity>')
+        .replaceAll(/(?s)    @Override\n    public BlendBlockEntityRenderState createRenderState\(\).*\n\}/, """    @Override
+    public void render(AncientDragonEggBlockEntity egg, float partialTick, PoseStack pose,
+                       MultiBufferSource buffers, int light, int overlay${cameraParameter}) {
+        var renderer = egg.getBlockState().getValue(AncientDragonEggBlock.CRACKED) ? cracked : intact;
+        renderer.render(egg, partialTick, pose, buffers, light, overlay${cameraArgument});
+    }
+}""")
+        .replace(cameraParameter.isEmpty() ? 'import net.minecraft.world.phys.Vec3;\n' : '', '')
+}
+edit('AncientDragonHatchlingRenderer.java') { text ->
+    text = text
+        .replace('import net.minecraft.client.renderer.SubmitNodeCollector;', 'import net.minecraft.client.renderer.MultiBufferSource;')
+        .replace('import net.minecraft.client.renderer.state.level.CameraRenderState;\n', '')
+    if (mc == '1.21.1') {
+        return text
+            .replace('import com.liy.blendlib.fabric.client.entity.BlendEntityRenderState;\n', '')
+            .replace('import net.minecraft.util.Mth;', 'import net.minecraft.resources.ResourceLocation;\nimport net.minecraft.util.Mth;')
+            .replace('EntityRenderer<AncientDragonHatchling, BlendEntityRenderState>', 'EntityRenderer<AncientDragonHatchling>')
+            .replaceAll(/(?s)    @Override\n    public BlendEntityRenderState createRenderState\(\).*?(?=    private static BlendEntityRotation rotation)/, '''    @Override
+    public ResourceLocation getTextureLocation(AncientDragonHatchling hatchling) {
+        return variants.get(hatchling.getVariant()).getTextureLocation(hatchling);
+    }
+
+    @Override
+    public void render(AncientDragonHatchling hatchling, float yaw, float partialTick,
+                       PoseStack pose, MultiBufferSource buffers, int light) {
+        variants.get(hatchling.getVariant()).render(hatchling, yaw, partialTick, pose, buffers, light);
+    }
+
+''')
+    }
+    return text.replaceAll(/(?s)    @Override\n    public void submit\(.*?(?=    private static BlendEntityRotation rotation)/, '''    @Override
+    public void render(BlendEntityRenderState state, PoseStack pose, MultiBufferSource buffers, int light) {
+        variants.get(HatchlingVariant.AZURE).render(state, pose, buffers, light);
+    }
+
+''')
 }
