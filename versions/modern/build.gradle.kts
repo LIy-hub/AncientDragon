@@ -45,7 +45,7 @@ repositories {
     mavenCentral()
 }
 group = "com.liy.ancientdragon"
-version = if (minecraftVersion == "26.3") "0.1.0-beta.3-hatchling.3+26.3" else "0.1.0-beta.1+$minecraftVersion"
+version = if (minecraftVersion == "26.3") "0.1.0-beta.3+26.3" else "0.1.0-beta.1+$minecraftVersion"
 base.archivesName.set("ancient-dragon")
 layout.buildDirectory.set(layout.projectDirectory.dir("build/$minecraftVersion"))
 java {
@@ -376,7 +376,13 @@ tasks.withType<ProcessResources>().configureEach {
         expand("version" to project.version)
         filter { line -> line.replace("\"26.1.2\"", "\"$minecraftVersion\"")
             .replace("\"java\": \">=25\"", "\"java\": \">=$javaVersion\"")
-            .let { if (minecraftVersion == "26.3") it.replace(">=0.19.3", ">=0.19.5").replace("\"fabric-api\": \"*\"", "\"fabric-api\": \">=$fabricVersion\"").replace(">=1.0.0-beta.2 <1.1.0", ">=1.0.0-beta.4 <1.1.0") else it } }
+            .let {
+                if (minecraftVersion != "26.3") it else it
+                    .replace(">=0.19.3", ">=0.19.5")
+                    .replace("\"fabric-api\": \"*\"", "\"fabric-api\": \">=$fabricVersion\"")
+                    .replace(">=1.0.0-beta.2 <1.1.0", ">=1.0.0-beta.4 <1.1.0")
+                    .replace("\"ancient_dragon.mixins.json\"", "\"ancient_dragon.mixins.json\", {\"config\":\"ancient_dragon.blendlib_26_3.mixins.json\",\"environment\":\"client\"}")
+            } }
     }
     filesMatching("ancient_dragon.mixins.json") {
         filter { line -> line.replace("JAVA_25", "JAVA_$javaVersion") }
@@ -403,6 +409,14 @@ val verifyRuntimeJar = tasks.register("verifyRuntimeJar") {
             check(depends["minecraft"] == minecraftVersion && depends["java"] == ">=$javaVersion")
             check(depends["blendlib"] == if (minecraftVersion == "26.3") ">=1.0.0-beta.4 <1.1.0" else ">=1.0.0-beta.2 <1.1.0")
             val entries = jar.entries().asSequence().map { it.name }.toSet()
+            if (minecraftVersion == "26.3") {
+                check("ancient_dragon.blendlib_26_3.mixins.json" in entries)
+                check("com/liy/ancientdragon/mixin/blendlib/BlendLib26_3MixinPlugin.class" in entries)
+                val mixins = metadata["mixins"] as List<*>
+                check(mixins.any {
+                    it is Map<*, *> && it["config"] == "ancient_dragon.blendlib_26_3.mixins.json" && it["environment"] == "client"
+                })
+            }
             val sourceClasses = repository.resolve("src/main/java").walkTopDown().filter { it.isFile && it.extension == "java" }.toList() +
                 repository.resolve("src/client/java").walkTopDown().filter { it.isFile && it.extension == "java" }.toList()
             for (source in sourceClasses) {

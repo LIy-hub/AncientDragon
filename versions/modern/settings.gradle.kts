@@ -21,14 +21,6 @@ if (providers.gradleProperty("minecraft_version").orNull == "26.3") {
     val expected = java.util.Properties().apply { file("blendlib-source.properties").inputStream().use { load(it) } }.getProperty("revision")
     val actual = providers.exec { commandLine("git", "-C", blendLibSource.absolutePath, "rev-parse", "HEAD") }.standardOutput.asText.get().trim()
     check(actual == expected) { "BlendLib source must be at $expected, found $actual" }
-    val lifecyclePatch = file("patches/blendlib-26.3-animation-lifecycle.patch")
-    val lifecyclePatchApplied = providers.exec {
-        commandLine("git", "-C", blendLibSource.absolutePath, "apply", "--reverse", "--check", lifecyclePatch.absolutePath)
-        isIgnoreExitValue = true
-    }.result.get().exitValue == 0
-    check(lifecyclePatchApplied) {
-        "Apply ${lifecyclePatch.absolutePath} to the pinned BlendLib checkout with git apply before building the 26.3 preview."
-    }
     includeBuild(blendLibSource.resolve("versions/modern")) {
         dependencySubstitution {
             substitute(module("com.liy.blendlib:blendlib-fabric")).using(project(":"))

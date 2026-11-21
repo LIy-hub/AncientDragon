@@ -21,16 +21,15 @@ From a checkout of this repository's `mc/26.3` branch with JDK 25:
 ```sh
 git clone https://github.com/LIy-hub/BlendLib-Public.git ../BlendLib-Public
 git -C ../BlendLib-Public checkout 33099d05784b1ea6467635833052c4ef06bcb8d9
-git -C ../BlendLib-Public apply "$PWD/versions/modern/patches/blendlib-26.3-animation-lifecycle.patch"
 bash gradlew -p versions/modern -Pminecraft_version=26.3 --no-daemon build verifyRuntimeJar
 ```
 
 The library repository may be elsewhere by passing `-Pblendlib_source=/absolute/path/to/BlendLib-Public`.
-The build checks its exact Git revision from `versions/modern/blendlib-source.properties`, builds it as a composite dependency, checks the resulting mod ID/version/Minecraft target, and prints its SHA-256. The hatchling flight preview also applies the included lifecycle patch to the pinned checkout. It serializes animation extraction and cache teardown so leaving a world after rendering hatchlings is safe.
+The build checks its exact Git revision from `versions/modern/blendlib-source.properties`, builds it as a composite dependency, checks the resulting mod ID/version/Minecraft target, and prints its SHA-256. Beta.3 includes a client-only compatibility fix for the published BlendLib Beta.4 on 26.3. It serializes animation extraction and cache teardown on the same runtime monitor, addressing a crash when quitting a world with rendered hatchlings. Install the standard BlendLib distribution.
 
 The two runtime mods must be installed together, on both client and server:
 
-- `ancient-dragon-0.1.0-beta.2+26.3.jar`
+- `ancient-dragon-0.1.0-beta.3+26.3.jar`
 - `blendlib-fabric-1.0.0-beta.4+26.3.jar`
 
 They also require Fabric API 0.161.0+26.3 and Loader 0.19.5 or newer. No private BlendLib source, local Maven publication or new GitHub Release is needed.
