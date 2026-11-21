@@ -20,7 +20,7 @@ class HatchlingAssetTest {
         var hatchling = load("entity/hatchling");
 
         assertEquals(1.0, hatchling.unitsPerBlock());
-        assertEquals(3, hatchling.clips().size());
+        assertEquals(4, hatchling.clips().size());
         assertNotNull(hatchling.skeleton());
         assertEquals(1, egg.primitives().size());
         assertEquals(1, cracked.primitives().size());

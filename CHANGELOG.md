@@ -2,6 +2,14 @@
 
 All notable changes to Ancient Dragon are documented here.
 
+## 0.1.0-beta.3-hatchling.2 (Minecraft 26.3 preview)
+
+- Tame hatchlings take off on their own when there is room, bank and glide around their owner,
+  and land after a circuit. The stay command calls them down. Ordinary following takes over when
+  the owner moves away.
+- Resting hatchlings occasionally look around and greet a returning owner.
+- Hatchlings have 20 health, 2 armor, a flying speed of 0.36, and recover 4 health from a fish.
+
 ## 0.1.0-beta.3-hatchling (Minecraft 26.3 preview)
 
 - A dragon egg rests on a shelf beside the Sacred Mountain roost. Once the dragon falls, a victory

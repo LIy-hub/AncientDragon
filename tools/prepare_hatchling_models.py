@@ -118,6 +118,9 @@ def main():
             "ancient_dragon:hatchling_flight": {
                 "clip": "Hatchling_Fly_Loop", "loop": True, "speed": 1.0, "blend_seconds": 0.15,
             },
+            "ancient_dragon:hatchling_glide": {
+                "clip": "Hatchling_Glide", "loop": True, "speed": 1.0, "blend_seconds": 0.28,
+            },
             "ancient_dragon:hatchling_greet": {
                 "clip": "Hatchling_Greet", "loop": False, "speed": 1.0, "blend_seconds": 0.15,
                 "next": "ancient_dragon:hatchling_perch",

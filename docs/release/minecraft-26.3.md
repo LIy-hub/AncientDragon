@@ -21,11 +21,12 @@ From a checkout of this repository's `mc/26.3` branch with JDK 25:
 ```sh
 git clone https://github.com/LIy-hub/BlendLib-Public.git ../BlendLib-Public
 git -C ../BlendLib-Public checkout 33099d05784b1ea6467635833052c4ef06bcb8d9
+git -C ../BlendLib-Public apply "$PWD/versions/modern/patches/blendlib-26.3-animation-lifecycle.patch"
 bash gradlew -p versions/modern -Pminecraft_version=26.3 --no-daemon build verifyRuntimeJar
 ```
 
 The library repository may be elsewhere by passing `-Pblendlib_source=/absolute/path/to/BlendLib-Public`.
-The build checks its exact Git revision from `versions/modern/blendlib-source.properties`, builds it as a composite dependency, checks the resulting mod ID/version/Minecraft target, and prints its SHA-256.
+The build checks its exact Git revision from `versions/modern/blendlib-source.properties`, builds it as a composite dependency, checks the resulting mod ID/version/Minecraft target, and prints its SHA-256. The hatchling flight preview also applies the included lifecycle patch to the pinned checkout. It serializes animation extraction and cache teardown so leaving a world after rendering hatchlings is safe.
 
 The two runtime mods must be installed together, on both client and server:
 

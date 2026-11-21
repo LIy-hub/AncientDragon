@@ -45,7 +45,7 @@ repositories {
     mavenCentral()
 }
 group = "com.liy.ancientdragon"
-version = if (minecraftVersion == "26.3") "0.1.0-beta.3-hatchling+26.3" else "0.1.0-beta.1+$minecraftVersion"
+version = if (minecraftVersion == "26.3") "0.1.0-beta.3-hatchling.2+26.3" else "0.1.0-beta.1+$minecraftVersion"
 base.archivesName.set("ancient-dragon")
 layout.buildDirectory.set(layout.projectDirectory.dir("build/$minecraftVersion"))
 java {

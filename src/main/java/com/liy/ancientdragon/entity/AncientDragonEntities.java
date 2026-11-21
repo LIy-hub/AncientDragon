@@ -58,10 +58,11 @@ public final class AncientDragonEntities {
 
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(HATCHLING, Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 16.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.24D)
-                .add(Attributes.FLYING_SPEED, 0.30D)
-                .add(Attributes.FOLLOW_RANGE, 24.0D));
+                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.ARMOR, 2.0D)
+                .add(Attributes.MOVEMENT_SPEED, 0.26D)
+                .add(Attributes.FLYING_SPEED, 0.36D)
+                .add(Attributes.FOLLOW_RANGE, 28.0D));
         FabricDefaultAttributeRegistry.register(ANCIENT_DRAGON, Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 600.0D)
                 .add(Attributes.ARMOR, 16.0D)

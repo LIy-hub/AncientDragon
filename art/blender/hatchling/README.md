@@ -7,13 +7,14 @@
 | 幼龙 | [ancient_dragon_hatchling.blend](ancient_dragon_hatchling.blend) | [蒙皮 GLB](ancient_dragon_hatchling.glb) |
 | 龙蛋 | [ancient_dragon_egg.blend](ancient_dragon_egg.blend) | [完整 GLB](ancient_dragon_egg.glb) · [临孵 GLB](ancient_dragon_egg_cracked.glb) · [32×32 背包图标](ancient_dragon_egg_item.png) |
 
-两份 Blender 源文件均已打包纹理。龙蛋的两个状态可以从顶部场景列表切换。幼龙选中骨架后，可以在动作编辑器切换三个动作。
+两份 Blender 源文件均已打包纹理。龙蛋的两个状态可以从顶部场景列表切换。幼龙选中骨架后，可以在动作编辑器切换四个动作。
 
 | 幼龙动作 | 时长 | 内容 |
 | --- | --- | --- |
 | `Hatchling_Perch_Idle` | 3.2 秒 | 收翼、呼吸、轻晃尾巴，可循环 |
 | `Hatchling_Greet` | 2.8 秒 | 抬头转向、短暂注视，再回到起始姿态 |
 | `Hatchling_Fly_Loop` | 0.8 秒 | 双翼拍动、轻微起伏，可循环，水平位移由实体控制 |
+| `Hatchling_Glide` | 2 秒 | 展翼滑翔，翼尖和尾巴随气流轻摆，可循环 |
 
 按 1 模型单位约等于 1 个方块制作。龙蛋高约 0.70，底部落在原点平面。幼龙站姿高约 0.86，这个飞行预览姿态的翼展约 3.0。Blender 中 +Z 向上，幼龙朝 −Y。导出的 GLB 使用 +Y 向上，幼龙朝 +Z。接入时需要按幼龙资产的尺度校准渲染和碰撞。幼龙 GLB 使用单个骨架、每顶点最多四个骨骼权重和内嵌贴图。运行时使用 `python tools/prepare_hatchling_models.py` 生成的外置贴图和严格 BlendLib 描述。重新导出美术 GLB 后运行此命令同步游戏资源。
 
