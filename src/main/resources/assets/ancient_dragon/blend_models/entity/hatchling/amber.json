@@ -1,0 +1,63 @@
+{
+  "format_version": 1,
+  "profile": "blendlib:skinned_v1",
+  "mesh": "ancient_dragon:models3d/entity/hatchling.glb",
+  "units_per_block": 1.0,
+  "materials": {
+    "body": {
+      "base_color": "ancient_dragon:textures/blendlib/hatchling_amber_body.png",
+      "mode": "cutout",
+      "emissive": false,
+      "double_sided": true,
+      "cutout_threshold": 0.1
+    },
+    "eyes": {
+      "base_color": "ancient_dragon:textures/blendlib/entity_hatchling__1.png",
+      "mode": "opaque",
+      "emissive": false,
+      "double_sided": false
+    },
+    "eyelid": {
+      "base_color": "ancient_dragon:textures/blendlib/hatchling_amber_eyelid.png",
+      "mode": "opaque",
+      "emissive": false,
+      "double_sided": false
+    },
+    "horn_nubs": {
+      "base_color": "ancient_dragon:textures/blendlib/entity_hatchling__2.png",
+      "mode": "opaque",
+      "emissive": false,
+      "double_sided": false
+    }
+  },
+  "animation": {
+    "initial_state": "ancient_dragon:hatchling_perch",
+    "states": {
+      "ancient_dragon:hatchling_perch": {
+        "clip": "Hatchling_Perch_Idle",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.15
+      },
+      "ancient_dragon:hatchling_flight": {
+        "clip": "Hatchling_Fly_Loop",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.15
+      },
+      "ancient_dragon:hatchling_glide": {
+        "clip": "Hatchling_Glide",
+        "loop": true,
+        "speed": 1.0,
+        "blend_seconds": 0.28
+      },
+      "ancient_dragon:hatchling_greet": {
+        "clip": "Hatchling_Greet",
+        "loop": false,
+        "speed": 1.0,
+        "blend_seconds": 0.15,
+        "next": "ancient_dragon:hatchling_perch"
+      }
+    }
+  }
+}

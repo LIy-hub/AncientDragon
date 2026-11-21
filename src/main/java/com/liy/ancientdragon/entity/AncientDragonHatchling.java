@@ -3,9 +3,15 @@ package com.liy.ancientdragon.entity;
 import com.liy.blendlib.api.BlendAnimationKey;
 import com.liy.blendlib.fabric.common.animation.BlendAnimations;
 import java.util.UUID;
+import net.minecraft.core.Holder;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -15,6 +21,9 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
@@ -25,7 +34,6 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -37,6 +45,11 @@ public final class AncientDragonHatchling extends TamableAnimal {
     public static final BlendAnimationKey GLIDE = BlendAnimationKey.parse("ancient_dragon:hatchling_glide");
     public static final BlendAnimationKey GREET = BlendAnimationKey.parse("ancient_dragon:hatchling_greet");
 
+    private static final EntityDataAccessor<Integer> DATA_VARIANT =
+            SynchedEntityData.defineId(AncientDragonHatchling.class, EntityDataSerializers.INT);
+    private static final Identifier DIET_BONUS = Identifier.fromNamespaceAndPath("ancient_dragon", "hatchling_diet");
+
+    private final HatchlingDiet diet = new HatchlingDiet();
     private UUID keeper;
     private BlendAnimationKey animation;
     private boolean ownerWasNear;
@@ -54,6 +67,16 @@ public final class AncientDragonHatchling extends TamableAnimal {
 
     public void setKeeper(UUID keeper) {
         this.keeper = keeper;
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_VARIANT, HatchlingVariant.AZURE.ordinal());
+    }
+
+    public HatchlingVariant getVariant() {
+        return HatchlingVariant.fromNetworkId(entityData.get(DATA_VARIANT));
     }
 
     @Override
@@ -86,7 +109,8 @@ public final class AncientDragonHatchling extends TamableAnimal {
 
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.is(Items.COD) || stack.is(Items.SALMON);
+        HatchlingVariant food = HatchlingVariant.forFood(stack);
+        return food != null && (isTame() || food.canTame());
     }
 
     @Override
@@ -102,41 +126,86 @@ public final class AncientDragonHatchling extends TamableAnimal {
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack held = player.getItemInHand(hand);
-        boolean food = isFood(held);
-        if (!isTame() && food) {
+        HatchlingVariant food = HatchlingVariant.forFood(held);
+        if (food != null) {
             if (level() instanceof ServerLevel level) {
-                if (keeper != null && !keeper.equals(player.getUUID())) {
-                    tell(player, "reserved");
-                } else {
-                    held.consume(1, player);
-                    tame(player);
-                    setHealth(getMaxHealth());
-                    setOrderedToSit(false);
-                    freeFlight.scheduleFirstFlight();
-                    level.broadcastEntityEvent(this, (byte) 7);
-                    tell(player, "bonded");
-                }
+                feed(level, player, held, food);
             }
             return InteractionResult.SUCCESS;
         }
-        if (isTame() && isOwnedBy(player)) {
-            if (food && getHealth() < getMaxHealth()) {
-                if (level() instanceof ServerLevel) {
-                    held.consume(1, player);
-                    heal(4.0F);
-                }
-                return InteractionResult.SUCCESS;
+        if (held.isEmpty() && isTame() && isOwnedBy(player)) {
+            if (level() instanceof ServerLevel) {
+                setOrderedToSit(!isOrderedToSit());
+                getNavigation().stop();
+                tell(player, isOrderedToSit() ? "stay" : "follow");
             }
-            if (held.isEmpty()) {
-                if (level() instanceof ServerLevel) {
-                    setOrderedToSit(!isOrderedToSit());
-                    getNavigation().stop();
-                    tell(player, isOrderedToSit() ? "stay" : "follow");
-                }
-                return InteractionResult.SUCCESS;
-            }
+            return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
+    }
+
+    private void feed(ServerLevel level, Player player, ItemStack held, HatchlingVariant food) {
+        if (!isTame()) {
+            if (keeper != null && !keeper.equals(player.getUUID())) {
+                tell(player, "reserved");
+                return;
+            }
+            if (!food.canTame()) {
+                tell(player, "need_fish");
+                return;
+            }
+
+            eatPortion(player, held, food);
+            tame(player);
+            setHealth(getMaxHealth());
+            setOrderedToSit(false);
+            freeFlight.scheduleFirstFlight();
+            level.broadcastEntityEvent(this, (byte) 7);
+            tell(player, "bonded");
+        } else {
+            if (!isOwnedBy(player)) {
+                tell(player, "only_owner");
+                return;
+            }
+
+            eatPortion(player, held, food);
+            // Lowering max health can leave current health above the new cap.
+            setHealth(getHealth());
+            heal(food.healing());
+        }
+        if (player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.sendSystemMessage(Component.translatable("message.ancient_dragon.hatchling.diet",
+                    Component.translatable("variant.ancient_dragon.hatchling." + getVariant().id()),
+                    diet.enchantedApples(), diet.total()), true);
+        }
+    }
+
+    private void eatPortion(Player player, ItemStack held, HatchlingVariant food) {
+        held.consume(1, player);
+        diet.record(food);
+        HatchlingVariant variant = diet.variant();
+        if (variant != getVariant()) {
+            applyDiet(variant);
+        }
+    }
+
+    private void applyDiet(HatchlingVariant variant) {
+        HatchlingVariant.Stats base = HatchlingVariant.AZURE.stats();
+        HatchlingVariant.Stats stats = variant.stats();
+        setDietBonus(Attributes.MAX_HEALTH, stats.maxHealth() - base.maxHealth());
+        setDietBonus(Attributes.ARMOR, stats.armor() - base.armor());
+        setDietBonus(Attributes.MOVEMENT_SPEED, stats.groundSpeed() - base.groundSpeed());
+        setDietBonus(Attributes.FLYING_SPEED, stats.flightSpeed() - base.flightSpeed());
+        entityData.set(DATA_VARIANT, variant.ordinal());
+    }
+
+    private void setDietBonus(Holder<Attribute> attribute, double bonus) {
+        var instance = getAttribute(attribute);
+        if (bonus == 0.0) {
+            instance.removeModifier(DIET_BONUS);
+        } else {
+            instance.addOrUpdateTransientModifier(new AttributeModifier(DIET_BONUS, bonus, AttributeModifier.Operation.ADD_VALUE));
+        }
     }
 
     private static void tell(Player player, String message) {
@@ -210,6 +279,7 @@ public final class AncientDragonHatchling extends TamableAnimal {
     @Override
     protected void addAdditionalSaveData(ValueOutput output) {
         super.addAdditionalSaveData(output);
+        diet.save(output);
         if (keeper != null) {
             output.store("Keeper", UUIDUtil.CODEC, keeper);
         }
@@ -217,6 +287,11 @@ public final class AncientDragonHatchling extends TamableAnimal {
 
     @Override
     protected void readAdditionalSaveData(ValueInput input) {
+        diet.load(input);
+        if (level() instanceof ServerLevel) {
+            // Vanilla clamps saved Health to max health while reading the entity.
+            applyDiet(diet.variant());
+        }
         super.readAdditionalSaveData(input);
         keeper = input.read("Keeper", UUIDUtil.CODEC).orElse(null);
     }

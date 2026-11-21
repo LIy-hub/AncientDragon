@@ -108,5 +108,14 @@
   "message.ancient_dragon.hatchling.reserved": "幼龙在等放置龙蛋的玩家。",
   "message.ancient_dragon.hatchling.bonded": "幼龙已经信任你。空手右击可切换跟随或停留。",
   "message.ancient_dragon.hatchling.stay": "幼龙会留在这里。",
-  "message.ancient_dragon.hatchling.follow": "幼龙会跟随你。"
+  "message.ancient_dragon.hatchling.follow": "幼龙会跟随你。",
+  "message.ancient_dragon.hatchling.need_fish": "先用生鳕鱼或生鲑鱼驯服幼龙。",
+  "message.ancient_dragon.hatchling.only_owner": "幼龙只接受主人喂的食物。",
+  "message.ancient_dragon.hatchling.diet": "%s · 附魔金苹果 %s/%s",
+  "variant.ancient_dragon.hatchling.azure": "青蓝幼龙",
+  "variant.ancient_dragon.hatchling.scarlet": "赤红幼龙",
+  "variant.ancient_dragon.hatchling.verdant": "翠绿幼龙",
+  "variant.ancient_dragon.hatchling.violet": "暮紫幼龙",
+  "variant.ancient_dragon.hatchling.amber": "琥珀幼龙",
+  "variant.ancient_dragon.hatchling.prismatic": "七彩幼龙"
 }

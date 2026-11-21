@@ -45,7 +45,7 @@ repositories {
     mavenCentral()
 }
 group = "com.liy.ancientdragon"
-version = if (minecraftVersion == "26.3") "0.1.0-beta.3-hatchling.2+26.3" else "0.1.0-beta.1+$minecraftVersion"
+version = if (minecraftVersion == "26.3") "0.1.0-beta.3-hatchling.3+26.3" else "0.1.0-beta.1+$minecraftVersion"
 base.archivesName.set("ancient-dragon")
 layout.buildDirectory.set(layout.projectDirectory.dir("build/$minecraftVersion"))
 java {
@@ -264,6 +264,11 @@ fun portJava(text: String, name: String): String {
             .replace("biomeSource.getNoiseBiome(", "biomeResolver.getNoiseBiome(")
             .replace(",\n                    randomState.sampler()", "")
             .replace(",\n                        randomState.sampler()", "")
+        if (name == "AncientDragonHatchlingRenderer.java") {
+            result = result
+                .replace("Frustum frustum, double x, double y, double z)", "Frustum frustum, double x, double y, double z, float partialTick)")
+                .replace("shouldRender(entity, frustum, x, y, z)", "shouldRender(entity, frustum, x, y, z, partialTick)")
+        }
         if (name == "AncientCityPortalFrameTest.java") {
             // Mojang 26.3 stores block-state palettes with lower-case id/properties fields.
             result = result.replace("getStringOr(\"Name\", \"\")", "getStringOr(\"id\", \"\")")

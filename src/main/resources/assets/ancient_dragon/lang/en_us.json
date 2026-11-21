@@ -107,5 +107,14 @@
   "message.ancient_dragon.hatchling.reserved": "The hatchling is waiting for the player who placed its egg.",
   "message.ancient_dragon.hatchling.bonded": "The hatchling trusts you. Use it with an empty hand to switch between following and staying.",
   "message.ancient_dragon.hatchling.stay": "The hatchling will stay here.",
-  "message.ancient_dragon.hatchling.follow": "The hatchling will follow you."
+  "message.ancient_dragon.hatchling.follow": "The hatchling will follow you.",
+  "message.ancient_dragon.hatchling.need_fish": "Tame the hatchling with raw cod or salmon first.",
+  "message.ancient_dragon.hatchling.only_owner": "The hatchling only accepts food from its owner.",
+  "message.ancient_dragon.hatchling.diet": "%s · Enchanted golden apples: %s/%s",
+  "variant.ancient_dragon.hatchling.azure": "Azure Hatchling",
+  "variant.ancient_dragon.hatchling.scarlet": "Scarlet Hatchling",
+  "variant.ancient_dragon.hatchling.verdant": "Verdant Hatchling",
+  "variant.ancient_dragon.hatchling.violet": "Violet Hatchling",
+  "variant.ancient_dragon.hatchling.amber": "Amber Hatchling",
+  "variant.ancient_dragon.hatchling.prismatic": "Prismatic Hatchling"
 }

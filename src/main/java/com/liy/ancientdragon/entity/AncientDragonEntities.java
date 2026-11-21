@@ -57,11 +57,12 @@ public final class AncientDragonEntities {
     }
 
     public static void initialize() {
+        var hatchling = HatchlingVariant.AZURE.stats();
         FabricDefaultAttributeRegistry.register(HATCHLING, Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
-                .add(Attributes.ARMOR, 2.0D)
-                .add(Attributes.MOVEMENT_SPEED, 0.26D)
-                .add(Attributes.FLYING_SPEED, 0.36D)
+                .add(Attributes.MAX_HEALTH, hatchling.maxHealth())
+                .add(Attributes.ARMOR, hatchling.armor())
+                .add(Attributes.MOVEMENT_SPEED, hatchling.groundSpeed())
+                .add(Attributes.FLYING_SPEED, hatchling.flightSpeed())
                 .add(Attributes.FOLLOW_RANGE, 28.0D));
         FabricDefaultAttributeRegistry.register(ANCIENT_DRAGON, Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 600.0D)
