@@ -65,6 +65,8 @@ public final class AncientDragonItems {
     public static final Item ANCIENT_BONE = register("ancient_bone", Rarity.UNCOMMON, 64, false);
     public static final Item ANCIENT_DRAGON_HEART =
             register("ancient_dragon_heart", Rarity.EPIC, 1, true);
+    public static final Item DRAGON_EGG = register("dragon_egg", Rarity.EPIC, 1, true,
+            properties -> new BlockItem(AncientDragonBlocks.DRAGON_EGG, properties.useBlockDescriptionPrefix()));
     public static final Item SUNHEART_ALTAR = register(
             "sunheart_altar",
             Rarity.EPIC,
@@ -159,6 +161,7 @@ public final class AncientDragonItems {
             "storm_horn", Rarity.EPIC, 1, true, StormHornItem::new);
 
     static final List<Item> CREATIVE_TAB_ITEMS = List.of(
+            DRAGON_EGG,
             ANCIENT_SCALE,
             ANCIENT_HORN,
             ANCIENT_WING_MEMBRANE,

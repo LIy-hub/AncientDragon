@@ -221,6 +221,7 @@ public final class SacredMountainPlacementService {
                         AncientDragonEncounterData.get(level).bindPlacement(
                                 job.placementId(), job.dimension(), job.dragonUuid().orElseThrow());
                         synchronizeEncounterStage(level, job.dragonUuid().orElseThrow());
+                        ensureNest(level, job);
                     } catch (RuntimeException exception) {
                         notifyAll(server, "Sacred Mountain encounter binding mismatch: " + exception.getMessage());
                     }
@@ -411,6 +412,7 @@ public final class SacredMountainPlacementService {
                 UUID dragonUuid = spawnOrAdoptDragon(level, job);
                 AncientDragonEncounterData.get(level).bindPlacement(job.placementId(), job.dimension(), dragonUuid);
                 data.complete(dragonUuid);
+                ensureNest(level, job);
                 notifyAll(server, "Sacred Mountain placement complete: id=" + job.placementId()
                         + " dragon=" + dragonUuid
                         + " dragon_rest=" + format(job.dragonRest()) + " yaw=" + job.dragonYaw());
@@ -419,6 +421,11 @@ public final class SacredMountainPlacementService {
             return;
         }
         reportProgress(server, data, coordinates.size());
+    }
+
+    private static void ensureNest(ServerLevel level, Job job) {
+        SacredMountainDragonNest.ensureEgg(level,
+                SacredMountainDragonNest.position(job.anchor(), job.quarterTurns()), job.placementId());
     }
 
     private static Tile tile(SacredMountainStructureAsset asset, TileCoordinate coordinate, int tileIndex) {

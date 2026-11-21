@@ -60,12 +60,14 @@ public final class SacredMountainNaturalDragonSpawner {
                 if (!(rawPiece instanceof SacredMountainStructurePiece piece)) {
                     continue;
                 }
-                BlockPosAndChunk roost = new BlockPosAndChunk(piece.dragonRest());
-                if (!loadedChunk.equals(roost.chunk())) {
-                    continue;
+                var nest = SacredMountainDragonNest.position(piece.canonicalAnchor(), piece.quarterTurns());
+                if (loadedChunk.equals(ChunkPos.containing(piece.dragonRest()))) {
+                    ensureNaturalDragon(level, piece);
+                    return;
                 }
-                ensureNaturalDragon(level, piece);
-                return;
+                if (loadedChunk.equals(ChunkPos.containing(nest))) {
+                    SacredMountainDragonNest.ensureEgg(level, nest, piece.naturalPlacementId());
+                }
             }
         }
     }
@@ -93,12 +95,14 @@ public final class SacredMountainNaturalDragonSpawner {
             }
             AncientDragonSpawnService.configureBoundDragon(
                     level, existing.orElseThrow().dragonUuid(), rest, piece.quarterTurns());
+            ensureNest(level, piece, placementId);
             return true;
         }
         try {
             UUID dragonUuid = AncientDragonSpawnService.spawnOrAdopt(
                     level, rest, piece.dragonYaw(), piece.quarterTurns());
             data.bindPlacement(placementId, level.dimension().identifier().toString(), dragonUuid);
+            ensureNest(level, piece, placementId);
             LOGGER.log(System.Logger.Level.INFO,
                     "Bound natural Sacred Mountain {0} to Ancient Dragon {1} at {2}",
                     placementId, dragonUuid, rest);
@@ -110,10 +114,9 @@ public final class SacredMountainNaturalDragonSpawner {
         }
     }
 
-    private record BlockPosAndChunk(net.minecraft.core.BlockPos position, ChunkPos chunk) {
-        BlockPosAndChunk(net.minecraft.core.BlockPos position) {
-            this(position, ChunkPos.containing(position));
-        }
+    private static void ensureNest(ServerLevel level, SacredMountainStructurePiece piece, String placementId) {
+        SacredMountainDragonNest.ensureEgg(level,
+                SacredMountainDragonNest.position(piece.canonicalAnchor(), piece.quarterTurns()), placementId);
     }
 
     private record PendingCheck(ResourceKey<Level> dimension, ChunkPos chunk) {

@@ -2,6 +2,17 @@
 
 All notable changes to Ancient Dragon are documented here.
 
+## 0.1.0-beta.2
+
+- Recover the only Sacred Mountain egg after defeating the Ancient Dragon. Placed eggs incubate
+  on solid ground and remember their keeper and incubation progress. Existing Sacred Mountain
+  encounters can receive the nest when its area is loaded.
+- The keeper can tame a hatchling with fish. Empty-hand interaction switches between following
+  and staying. Following hatchlings can take off, circle, glide and land on their own.
+- Diet determines a hatchling's color, health, armor and speed. An enchanted golden apple
+  share strictly greater than one half selects the strongest prismatic form.
+- Use the Fabric Loader, Fabric API and BlendLib builds that match your Minecraft version.
+
 ## 0.1.0-beta.1 - 2026-09-08
 
 First public Beta, updated to the released BlendLib Beta.2 version family.

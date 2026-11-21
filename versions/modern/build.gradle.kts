@@ -43,7 +43,7 @@ repositories {
     mavenCentral()
 }
 group = "com.liy.ancientdragon"
-version = "0.1.0-beta.1+$minecraftVersion"
+version = "0.1.0-beta.2+$minecraftVersion"
 base.archivesName.set("ancient-dragon")
 layout.buildDirectory.set(layout.projectDirectory.dir("build/$minecraftVersion"))
 java {
@@ -108,7 +108,6 @@ fun portJava(text: String, name: String): String {
             .replace("FabricCreativeModeTab.", "FabricItemGroup.")
             .replace("ContainerInput", "ClickType")
             .replace("GuiGraphicsExtractor", "GuiGraphics")
-            .replace("extractRenderState(", "render(")
             .replace("extractErrorIcon(", "renderErrorIcon(")
             .replace("extractBackground(GuiGraphics graphics, int mouseX, int mouseY, float deltaTicks)", "renderBg(GuiGraphics graphics, float deltaTicks, int mouseX, int mouseY)")
             .replace("super.extractBackground(graphics, mouseX, mouseY, deltaTicks)", "super.renderBg(graphics, deltaTicks, mouseX, mouseY)")
@@ -130,6 +129,11 @@ fun portJava(text: String, name: String): String {
                     }
                 });
             """.trimIndent())
+        if (name == "SunheartAltarScreen.java") {
+            result = result.replace("extractRenderState(", "render(")
+        }
+        result = result.replace("net.minecraft.client.renderer.state.level.CameraRenderState",
+            "net.minecraft.client.renderer.state.CameraRenderState")
         for (match in Regex("\\bChunkPos\\s+(\\w+)").findAll(text)) {
             val variable = match.groupValues[1]
             result = result.replace("$variable.x()", "$variable.x")
@@ -300,7 +304,8 @@ tasks.withType<ProcessResources>().configureEach {
     filesMatching("fabric.mod.json") {
         expand("version" to project.version)
         filter { line -> line.replace("\"26.1.2\"", "\"$minecraftVersion\"")
-            .replace("\"java\": \">=25\"", "\"java\": \">=$javaVersion\"") }
+            .replace("\"java\": \">=25\"", "\"java\": \">=$javaVersion\"")
+            .replace("\"fabric-api\": \"*\"", "\"fabric-api\": \">=$fabricVersion\"") }
     }
     filesMatching("ancient_dragon.mixins.json") {
         filter { line -> line.replace("JAVA_25", "JAVA_$javaVersion") }
@@ -325,6 +330,7 @@ val verifyRuntimeJar = tasks.register("verifyRuntimeJar") {
             check(metadata["id"] == "ancient_dragon" && metadata["version"] == project.version.toString())
             val depends = metadata["depends"] as Map<*, *>
             check(depends["minecraft"] == minecraftVersion && depends["java"] == ">=$javaVersion")
+            check(depends["fabric-api"] == ">=$fabricVersion")
             check(depends["blendlib"] == ">=1.0.0-beta.2 <1.1.0")
             val entries = jar.entries().asSequence().map { it.name }.toSet()
             val sourceClasses = repository.resolve("src/main/java").walkTopDown().filter { it.isFile && it.extension == "java" }.toList() +

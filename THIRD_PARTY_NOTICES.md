@@ -13,7 +13,8 @@ source repository and distributed mod JARs. No original creator endorses this mo
 - Upstream license statement: attribution is required; commercial use is allowed.
 - Changes in Ancient Dragon: the model was adapted for the BlendLib runtime, reorganized into a
   game export collection, constrained to real-time skin-weight limits, rescaled, exported to GLB,
-  mapped to semantic animations, and paired with a separately baked collision rig.
+  mapped to semantic animations, and paired with a separately baked collision rig. The hatchling
+  adapts the proportions and rig and adds new eyes, eyelids, horns and companion animations.
 
 ## Realistic Dragon Textures
 
@@ -26,7 +27,8 @@ source repository and distributed mod JARs. No original creator endorses this mo
 - Upstream license statement: attribution is required; commercial use is allowed.
 - Changes in Ancient Dragon: textures were renamed and repacked for namespaced BlendLib material
   slots, the eye presentation was adjusted for the encounter, and the files were integrated into
-  the mod resource pipeline.
+  the mod resource pipeline. The hatchling recolors the body texture and adds original eye and
+  horn textures.
 
 ## Ancient Dragon project assets
 

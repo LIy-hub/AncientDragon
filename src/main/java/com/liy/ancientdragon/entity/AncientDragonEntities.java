@@ -44,10 +44,26 @@ public final class AncientDragonEntities {
                     .updateInterval(1)
                     .build(ResourceKey.create(Registries.ENTITY_TYPE, ANCIENT_DRAGON_PART_ID)));
 
+    public static final Identifier HATCHLING_ID =
+            Identifier.fromNamespaceAndPath(AncientDragonMod.MOD_ID, "hatchling");
+    public static final EntityType<AncientDragonHatchling> HATCHLING = Registry.register(
+            BuiltInRegistries.ENTITY_TYPE, HATCHLING_ID,
+            EntityType.Builder.of(AncientDragonHatchling::new, MobCategory.CREATURE)
+                    .sized(0.65F, 0.88F)
+                    .clientTrackingRange(10)
+                    .build(ResourceKey.create(Registries.ENTITY_TYPE, HATCHLING_ID)));
+
     private AncientDragonEntities() {
     }
 
     public static void initialize() {
+        var hatchling = HatchlingVariant.AZURE.stats();
+        FabricDefaultAttributeRegistry.register(HATCHLING, Mob.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, hatchling.maxHealth())
+                .add(Attributes.ARMOR, hatchling.armor())
+                .add(Attributes.MOVEMENT_SPEED, hatchling.groundSpeed())
+                .add(Attributes.FLYING_SPEED, hatchling.flightSpeed())
+                .add(Attributes.FOLLOW_RANGE, 28.0D));
         FabricDefaultAttributeRegistry.register(ANCIENT_DRAGON, Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 600.0D)
                 .add(Attributes.ARMOR, 16.0D)

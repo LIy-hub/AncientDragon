@@ -1,6 +1,7 @@
 package com.liy.ancientdragon.client;
 
 import com.liy.ancientdragon.animation.AncientDragonAnimations;
+import com.liy.ancientdragon.block.AncientDragonBlocks;
 import com.liy.ancientdragon.client.atmosphere.AncientDragonAtmosphereController;
 import com.liy.ancientdragon.client.pose.AncientDragonPoseSystem;
 import com.liy.ancientdragon.client.screen.SunheartAltarScreen;
@@ -12,6 +13,7 @@ import com.liy.blendlib.api.BlendModelKey;
 import com.liy.blendlib.fabric.client.entity.BlendEntityRenderer;
 import com.liy.blendlib.fabric.client.entity.BlendEntityRenderers;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.entity.NoopRenderer;
@@ -36,5 +38,7 @@ public final class AncientDragonClient implements ClientModInitializer {
                         .shadowRadius(AncientDragonScale.blocks(5.0F))
                         .build());
         EntityRendererRegistry.register(AncientDragonEntities.ANCIENT_DRAGON_PART, NoopRenderer::new);
+        BlendEntityRenderers.register(AncientDragonEntities.HATCHLING, AncientDragonHatchlingRenderer::new);
+        BlockEntityRendererRegistry.register(AncientDragonBlocks.DRAGON_EGG_ENTITY, AncientDragonEggRenderer::new);
     }
 }

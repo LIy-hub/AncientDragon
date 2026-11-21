@@ -15,7 +15,8 @@ import net.minecraft.world.level.saveddata.SavedDataType;
 /** Idempotent world record for the one placed Sacred Mountain encounter. */
 public final class AncientDragonEncounterData extends SavedData {
     public static final Codec<AncientDragonEncounterData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Encounter.CODEC.optionalFieldOf("encounter").forGetter(data -> data.encounter)
+            Encounter.CODEC.optionalFieldOf("encounter").forGetter(data -> data.encounter),
+            Codec.BOOL.optionalFieldOf("egg_claimed", false).forGetter(AncientDragonEncounterData::eggClaimed)
     ).apply(instance, AncientDragonEncounterData::new));
 
     public static final SavedDataType<AncientDragonEncounterData> TYPE = new SavedDataType<>(
@@ -25,13 +26,34 @@ public final class AncientDragonEncounterData extends SavedData {
             DataFixTypes.SAVED_DATA_COMMAND_STORAGE);
 
     private Optional<Encounter> encounter;
+    private boolean eggClaimed;
 
     public AncientDragonEncounterData() {
-        this(Optional.empty());
+        this(Optional.empty(), false);
     }
 
-    private AncientDragonEncounterData(Optional<Encounter> encounter) {
+    private AncientDragonEncounterData(Optional<Encounter> encounter, boolean eggClaimed) {
         this.encounter = encounter == null ? Optional.empty() : encounter;
+        this.eggClaimed = eggClaimed;
+    }
+
+    public boolean eggClaimed() {
+        return eggClaimed;
+    }
+
+    public boolean isDefeated() {
+        return encounter.filter(value -> value.stage() == Stage.CORPSE).isPresent();
+    }
+
+    public boolean canClaimEgg(UUID player) {
+        return !eggClaimed && encounter.filter(value -> value.stage() == Stage.CORPSE
+                && (value.eligiblePlayers().isEmpty() || value.eligiblePlayers().contains(player.toString())))
+                .isPresent();
+    }
+
+    public void markEggClaimed() {
+        eggClaimed = true;
+        setDirty();
     }
 
     public static AncientDragonEncounterData get(ServerLevel level) {
