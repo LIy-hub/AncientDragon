@@ -17,6 +17,7 @@ if (mc in ['1.21.1','1.21.2','1.21.3']) {
     edit('AncientDragonClient.java') { it.replace('LegacyClientParticles.initialize();', 'LegacyClientParticles.initialize();\n        com.liy.ancientdragon.compat.LegacyLeafClientParticles.initialize();') }
 }
 if (mc in ['1.21.1','1.21.2','1.21.3','1.21.4']) {
+    edit('AncientDragonHatchling.java') { it.replace('causeFallDamage(double distance', 'causeFallDamage(float distance') }
     ['SacredMountainStructurePiece.java','SacredMountainPlacementService.java','SacredMountainStructureAssetTest.java'].each { name -> edit(name) { it.replace(', serialized, false).blockState()', ', com.liy.ancientdragon.compat.LegacyBlockPalette.resolve(serialized), false).blockState()') } }
     edit('AncientCityGatewayBlock.java') { it.replace('import net.minecraft.world.entity.InsideBlockEffectApplier;', '').replace('Entity entity,\n            InsideBlockEffectApplier effects', 'Entity entity') }
     edit('SunheartAltarMenu.java') { it.replace('result.onCraftedBy(player, result.getCount())','result.onCraftedBy(player.level(), player, result.getCount())') }

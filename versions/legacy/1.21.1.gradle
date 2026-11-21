@@ -107,4 +107,3 @@ edit('AncientDragonEggBlock.java') { it
         interactWithEgg(state, level, pos, player);
         return net.minecraft.world.ItemInteractionResult.sidedSuccess(level.isClientSide());''')
 }
-edit('AncientDragonHatchling.java') { it.replace('causeFallDamage(double distance', 'causeFallDamage(float distance') }
