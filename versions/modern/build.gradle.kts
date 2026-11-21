@@ -9,6 +9,7 @@ plugins {
 }
 
 val minecraftVersion = providers.gradleProperty("minecraft_version").get()
+val gameRunRoot = "run/$minecraftVersion"
 val targets = mapOf(
     "1.21.9" to Pair("0.134.1+1.21.9", "565b2d9f10595789cc1f61897375f29ba7c6a312b0a96efe36ee2691f709ee7e"),
     "1.21.10" to Pair("0.138.4+1.21.10", "101aacd800d0a37121f435482da84c7b9e01a8072a0a5a0a0a559de648c3d5ef"),
@@ -44,7 +45,7 @@ repositories {
     mavenCentral()
 }
 group = "com.liy.ancientdragon"
-version = "0.1.0-beta.${if (minecraftVersion == "26.3") 2 else 1}+$minecraftVersion"
+version = if (minecraftVersion == "26.3") "0.1.0-beta.3-hatchling+26.3" else "0.1.0-beta.1+$minecraftVersion"
 base.archivesName.set("ancient-dragon")
 layout.buildDirectory.set(layout.projectDirectory.dir("build/$minecraftVersion"))
 java {
@@ -60,8 +61,8 @@ configure<net.fabricmc.loom.api.LoomGradleExtensionAPI> {
         }
     }
     runs {
-        named("client") { runDir("run/$minecraftVersion/client") }
-        named("server") { runDir("run/$minecraftVersion/server") }
+        named("client") { runDir("$gameRunRoot/client") }
+        named("server") { runDir("$gameRunRoot/server") }
     }
 }
 val blendLibDistribution = configurations.create("blendLibDistribution") {
@@ -223,6 +224,18 @@ fun portJava(text: String, name: String): String {
             .replace("Blocks.RED_CONCRETE", "Blocks.CONCRETE.red()")
             .replace("Blocks.YELLOW_CONCRETE", "Blocks.CONCRETE.yellow()")
             .replace("feet.getBottomCenter()", "Vec3.atBottomCenterOf(feet)")
+        if (name == "AncientDragonHatchling.java") {
+            result = result.replace("new FlyingMoveControl(this", "new FlyingMoveControl<>(this")
+                .replace("    @Override\n    protected boolean canFlyToOwner()", """
+                    @Override
+                    protected boolean omnidirectionalAirMover() {
+                        return true;
+                    }
+
+                    @Override
+                    protected boolean canFlyToOwner()
+                """.trimIndent().prependIndent("    "))
+        }
     }
     if (minecraftVersion == "26.3") {
         result = result
@@ -392,7 +405,15 @@ val verifyRuntimeJar = tasks.register("verifyRuntimeJar") {
                 val className = source.relativeTo(sourceRoot).invariantSeparatorsPath.removeSuffix(".java") + ".class"
                 check(className in entries) { "Missing gameplay class $className" }
             }
-            for (path in listOf("assets/ancient_dragon/models3d/entity/ancient_dragon.glb", "assets/ancient_dragon/collision/ancient_dragon_collision_rig.json", "assets/ancient_dragon/blend_models/entity/ancient_dragon.json", "META-INF/ASSET_LICENSE.md", "META-INF/THIRD_PARTY_NOTICES.md")) {
+            for (path in listOf("assets/ancient_dragon/models3d/entity/ancient_dragon.glb", "assets/ancient_dragon/collision/ancient_dragon_collision_rig.json", "assets/ancient_dragon/blend_models/entity/ancient_dragon.json",
+                "assets/ancient_dragon/blend_models/entity/hatchling.json",
+                "assets/ancient_dragon/blend_models/block/dragon_egg.json",
+                "assets/ancient_dragon/blend_models/block/dragon_egg_cracked.json",
+                "assets/ancient_dragon/models3d/entity/hatchling.glb",
+                "assets/ancient_dragon/models3d/block/dragon_egg.glb",
+                "assets/ancient_dragon/models3d/block/dragon_egg_cracked.glb",
+                "assets/ancient_dragon/textures/item/dragon_egg.png",
+                "META-INF/ASSET_LICENSE.md", "META-INF/THIRD_PARTY_NOTICES.md")) {
                 check(path in entries) { "Missing runtime asset $path" }
             }
             check(entries.none { it.endsWith(".log") || it.endsWith(".blend") || it.startsWith("run/") || it.startsWith("art/") })

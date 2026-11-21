@@ -2,6 +2,16 @@
 
 All notable changes to Ancient Dragon are documented here.
 
+## 0.1.0-beta.3-hatchling (Minecraft 26.3 preview)
+
+- A dragon egg rests on a shelf beside the Sacred Mountain roost. Once the dragon falls, a victory
+  participant can take the world's one egg. Previously defeated encounters can claim the egg when
+  the roost is loaded.
+- Place the egg on a solid block. The shell cracks during incubation and hatches after about two
+  minutes of loaded time. The player who placed it can tame the hatchling with raw cod or salmon.
+- With an empty hand, the owner can switch between staying and following. The hatchling has its
+  own resting, greeting and flight animations.
+
 ## 0.1.0-beta.1 - 2026-09-08
 
 First public Beta, updated to the released BlendLib Beta.2 version family.

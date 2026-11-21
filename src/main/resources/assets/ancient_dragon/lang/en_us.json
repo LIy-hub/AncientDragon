@@ -92,5 +92,20 @@
   "book.ancient_dragon.chronicle.dragon_fallen.1": "The last watcher has reached its sunset. You did not correct an error; you ended a watch older than every surviving record.",
   "book.ancient_dragon.chronicle.dragon_fallen.2": "The corpse, dragon heart, and Sunheart Altar are not ordinary spoils. The old world has entrusted its mountain, storm, and sun to those who came after.",
   "advancement.ancient_dragon.victory.title": "The Mountain Falls Silent",
-  "advancement.ancient_dragon.victory.description": "Defeat the Ancient Dragon of the Sacred Mountain"
+  "advancement.ancient_dragon.victory.description": "Defeat the Ancient Dragon of the Sacred Mountain",
+  "block.ancient_dragon.dragon_egg": "Ancient Dragon Egg",
+  "entity.ancient_dragon.hatchling": "Ancient Dragon Hatchling",
+  "message.ancient_dragon.egg.guarded": "The Ancient Dragon guards this egg. Defeat it before taking the egg.",
+  "message.ancient_dragon.egg.victory_party": "A player who helped defeat the Ancient Dragon can take this egg.",
+  "message.ancient_dragon.egg.inventory_full": "Make room in your inventory to pick up the egg.",
+  "message.ancient_dragon.egg.claimed": "Place the egg on a solid block in a safe spot. You can tame the hatchling with raw cod or salmon.",
+  "message.ancient_dragon.egg.placed": "The egg will hatch after about two minutes while this area is loaded. Sneak and use it with an empty hand to pick it up.",
+  "message.ancient_dragon.egg.needs_support": "The egg needs a solid block underneath to continue incubating.",
+  "message.ancient_dragon.egg.warming": "The egg is warming.",
+  "message.ancient_dragon.egg.cracking": "The shell is cracking. The hatchling needs room to emerge.",
+  "message.ancient_dragon.egg.reserved": "Only the player who placed this egg can pick it up.",
+  "message.ancient_dragon.hatchling.reserved": "The hatchling is waiting for the player who placed its egg.",
+  "message.ancient_dragon.hatchling.bonded": "The hatchling trusts you. Use it with an empty hand to switch between following and staying.",
+  "message.ancient_dragon.hatchling.stay": "The hatchling will stay here.",
+  "message.ancient_dragon.hatchling.follow": "The hatchling will follow you."
 }

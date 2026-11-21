@@ -59,6 +59,15 @@ final class SacredMountainStructureAssetTest {
     }
 
     @Test
+    void dragonEggFitsOnTheAuthoredRoostShelf() {
+        var nest = SacredMountainDragonNest.position(net.minecraft.core.BlockPos.ZERO, 0);
+        assertState(nest.getX(), nest.getY() - 1, nest.getZ(), "minecraft:pearlescent_froglight[axis=y]");
+        for (int height = 0; height <= 2; height++) {
+            assertState(nest.getX(), nest.getY() + height, nest.getZ(), "minecraft:air");
+        }
+    }
+
+    @Test
     void enchantingTablesAreAbsentFromAllThreeAuthoredSummits() {
         assertState(-162, 252, 112, "minecraft:air");
         assertState(-88, 283, -168, "minecraft:air");
