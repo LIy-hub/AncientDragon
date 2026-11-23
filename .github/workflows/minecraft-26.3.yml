@@ -3,6 +3,8 @@ name: Minecraft 26.3 verification
 on:
   push:
     branches: ["mc/26.3"]
+  pull_request:
+    branches: ["mc/26.3"]
   workflow_dispatch:
 
 permissions:
